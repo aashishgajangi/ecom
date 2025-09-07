@@ -1,0 +1,44 @@
+{
+  "name": "nisargalahari-template",
+  "version": "1.0.0",
+  "description": "Complete website template with homepage, navigation, header, hero, footer, and exact color gradients from Nisargalahari project",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "^15.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "autoprefixer": "^10.4.14",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "^15.0.0",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5.0.0"
+  },
+  "keywords": [
+    "nextjs",
+    "react",
+    "template",
+    "website",
+    "homepage",
+    "navigation",
+    "header",
+    "hero",
+    "footer",
+    "gradients",
+    "responsive",
+    "multi-language"
+  ],
+  "author": "Nisargalahari Template",
+  "license": "MIT"
+}

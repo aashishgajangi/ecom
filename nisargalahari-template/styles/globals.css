@@ -1,24 +1,15 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 255, 255, 255;
   --background-end-rgb: 255, 255, 255;
 }
 
-@theme {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
@@ -60,12 +51,12 @@
 
 @layer components {
   .gradient-text {
-    @apply bg-gradient-to-r from-[#70843d] to-[#7bd63c] bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary-start to-primary-end bg-clip-text text-transparent;
   }
   
   /* Special gradient class for Marathi text with extended background area */
   .gradient-text-marathi {
-    @apply bg-gradient-to-r from-[#70843d] to-[#7bd63c] bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary-start to-primary-end bg-clip-text text-transparent;
     /* Add padding to increase the gradient background area */
     padding-top: 0.5em;
     padding-bottom: 0.2em;
@@ -80,32 +71,29 @@
     background-clip: text;
   }
   
+  .gradient-bg {
+    @apply bg-gradient-to-r from-primary-start to-primary-end;
+  }
   
   .container-custom {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
   
   .btn-primary {
-    @apply px-6 py-3 rounded-lg text-white font-semibold hover:opacity-90 transition-opacity;
-    background: linear-gradient(to right, #70843d, #7bd63c);
+    @apply px-6 py-3 rounded-lg gradient-bg text-white font-semibold hover:opacity-90 transition-opacity;
   }
   
   .btn-secondary {
-    @apply px-6 py-3 rounded-lg border-2 text-gray-800 font-semibold hover:text-white transition-colors;
-    border-color: #70843d;
-  }
-  
-  .btn-secondary:hover {
-    background-color: #70843d;
+    @apply px-6 py-3 rounded-lg border-2 border-primary-start text-gray-800 font-semibold hover:bg-primary-start hover:text-white transition-colors;
   }
   
   .marathi-text {
-    @apply pt-1 leading-normal;
+    @apply pt-1 leading-normal !important;
   }
   
   /* Specific style for Marathi headings to prevent top clipping - with minimal height impact */
   .marathi-heading {
-    @apply leading-normal;
+    @apply leading-normal !important;
     /* Removing extra padding/margin and just keeping transform */
     transform: translateY(2px);
   }
