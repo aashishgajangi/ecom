@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 interface UserProfile {
   id: string;
@@ -24,34 +25,18 @@ export default function ProfilePage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { data: session } = useSession();
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const response = await fetch('/api/admin/profile');
-        if (response.ok) {
-          const userData = await response.json();
-          setProfile(userData);
-        } else {
-          setProfile({
-            id: "admin_001",
-            email: "aashish@example.com",
-            name: "Aashish Gajangi",
-            role: "ADMIN"
-          });
-        }
-      } catch {
-        setProfile({
-          id: "admin_001",
-          email: "aashish@example.com",
-          name: "Aashish Gajangi",
-          role: "ADMIN"
-        });
-      }
-    };
-    
-    fetchProfile();
-  }, []);
+    if (session?.user) {
+      setProfile({
+        id: session.user.id,
+        email: session.user.email || "",
+        name: session.user.name || "",
+        role: (session.user as any).role || "ADMIN"
+      });
+    }
+  }, [session]);
 
   const handleProfileUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -135,17 +120,17 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
       {/* Header */}
-      <header className="bg-white shadow-sm">
+      <header className="bg-white dark:bg-gray-800 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-gray-900">Profile Settings</h1>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Profile Settings</h1>
             </div>
             <button
               onClick={() => router.push("/admin/dashboard")}
-              className="text-blue-600 hover:text-blue-800"
+              className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
             >
               ← Back to Dashboard
             </button>
@@ -156,24 +141,24 @@ export default function ProfilePage() {
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Profile Update Form */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Update Profile</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Update Profile</h2>
             
             {message && (
-              <div className="bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded-md text-sm mb-4">
+              <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-600 dark:text-green-400 px-4 py-3 rounded-md text-sm mb-4">
                 {message}
               </div>
             )}
             
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm mb-4">
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-3 rounded-md text-sm mb-4">
                 {error}
               </div>
             )}
 
             <form onSubmit={handleProfileUpdate} className="space-y-4">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Full Name
                 </label>
                 <input
@@ -181,13 +166,13 @@ export default function ProfilePage() {
                   id="name"
                   value={profile.name}
                   onChange={(e) => setProfile({...profile, name: e.target.value})}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                   required
                 />
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Email Address
                 </label>
                 <input
@@ -195,22 +180,22 @@ export default function ProfilePage() {
                   id="email"
                   value={profile.email}
                   onChange={(e) => setProfile({...profile, email: e.target.value})}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Role
                 </label>
-                <p className="mt-1 text-sm text-gray-600">{profile.role}</p>
+                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{profile.role}</p>
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 dark:focus:ring-offset-gray-800"
               >
                 {loading ? "Updating..." : "Update Profile"}
               </button>
@@ -218,12 +203,12 @@ export default function ProfilePage() {
           </div>
 
           {/* Password Change Form */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Change Password</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Change Password</h2>
 
             <form onSubmit={handlePasswordChange} className="space-y-4">
               <div>
-                <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Current Password
                 </label>
                 <input
@@ -231,13 +216,13 @@ export default function ProfilePage() {
                   id="currentPassword"
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                   required
                 />
               </div>
 
               <div>
-                <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   New Password
                 </label>
                 <input
@@ -245,14 +230,14 @@ export default function ProfilePage() {
                   id="newPassword"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                   required
                   minLength={6}
                 />
               </div>
 
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Confirm New Password
                 </label>
                 <input
@@ -260,7 +245,7 @@ export default function ProfilePage() {
                   id="confirmPassword"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                   required
                   minLength={6}
                 />
@@ -269,7 +254,7 @@ export default function ProfilePage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50"
+                className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50 dark:focus:ring-offset-gray-800"
               >
                 {loading ? "Changing..." : "Change Password"}
               </button>
@@ -278,9 +263,9 @@ export default function ProfilePage() {
         </div>
 
         {/* Security Notes */}
-        <div className="mt-8 bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-yellow-800 mb-2">Security Recommendations</h3>
-          <ul className="text-sm text-yellow-700 space-y-1">
+        <div className="mt-8 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6">
+          <h3 className="text-lg font-semibold text-yellow-800 dark:text-yellow-400 mb-2">Security Recommendations</h3>
+          <ul className="text-sm text-yellow-700 dark:text-yellow-300 space-y-1">
             <li>• Use a strong, unique password</li>
             <li>• Change your password regularly</li>
             <li>• Never share your credentials with others</li>

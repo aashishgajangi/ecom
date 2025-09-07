@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 import * as bcrypt from 'bcrypt';
 import { Client } from 'pg';
 
@@ -19,12 +21,14 @@ async function executeQuery(query: string, values?: unknown[]) {
 
 export async function PUT(request: NextRequest) {
   try {
+    const session = await getServerSession(authOptions);
+    
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const body = await request.json();
     const { currentPassword, newPassword } = body;
-    
-    // For now, we'll use the admin user ID directly
-    // In a real implementation, you'd get this from the authenticated session
-    const userId = 'admin_001';
 
     // Validate input
     if (!currentPassword || !newPassword) {
@@ -38,7 +42,7 @@ export async function PUT(request: NextRequest) {
     // First get user with hashed password
     const users = await executeQuery(
       'SELECT id, password FROM users WHERE id = $1',
-      [userId]
+      [session.user.id]
     );
 
     if (users.length === 0) {
@@ -60,7 +64,7 @@ export async function PUT(request: NextRequest) {
     // Update the password with hashed version
     await executeQuery(
       'UPDATE users SET password = $1, "updatedAt" = NOW() WHERE id = $2',
-      [hashedPassword, userId]
+      [hashedPassword, session.user.id]
     );
 
     return NextResponse.json({ success: true, message: 'Password updated successfully' });
