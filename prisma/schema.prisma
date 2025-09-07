@@ -166,6 +166,66 @@ model BlogPost {
   @@map("blog_posts")
 }
 
+model HeaderSettings {
+  id         String   @id @default(cuid())
+  logoText   String
+  navigation Json
+  showCart   Boolean  @default(true)
+  showLogin  Boolean  @default(true)
+  updatedAt  DateTime @updatedAt
+
+  @@map("header_settings")
+}
+
+model FooterSettings {
+  id          String   @id @default(cuid())
+  companyInfo Json
+  quickLinks  Json
+  socialLinks Json
+  legalLinks  Json
+  updatedAt   DateTime @updatedAt
+
+  @@map("footer_settings")
+}
+
+model Page {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  content     String?
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  isHomepage  Boolean  @default(false)
+  order       Int      @default(0)
+
+  @@map("pages")
+}
+
+model HomepageSettings {
+  id                  String   @id @default(cuid())
+  heroTitle           String
+  heroSubtitle        String?
+  featuredProducts    Json?
+  showFeaturedSection Boolean  @default(true)
+  showServicesSection Boolean  @default(true)
+  showTestimonials    Boolean  @default(true)
+  updatedAt           DateTime @updatedAt
+
+  @@map("homepage_settings")
+}
+
+model DatabaseBackup {
+  id        String       @id @default(cuid())
+  filename  String
+  size      Int
+  status    BackupStatus @default(COMPLETED)
+  createdAt DateTime     @default(now())
+  notes     String?
+
+  @@map("database_backups")
+}
+
 enum UserRole {
   CUSTOMER
   ADMIN
@@ -189,70 +249,6 @@ enum BlogPostStatus {
   DRAFT
   PUBLISHED
   ARCHIVED
-}
-
-// Header and Footer Settings
-model HeaderSettings {
-  id          String   @id @default(cuid())
-  logoText    String
-  navigation  Json     // Array of { name: string, url: string, order: number, isActive: boolean }
-  showCart    Boolean  @default(true)
-  showLogin   Boolean  @default(true)
-  updatedAt   DateTime @updatedAt
-
-  @@map("header_settings")
-}
-
-model FooterSettings {
-  id          String   @id @default(cuid())
-  companyInfo Json     // { description: string, phone: string, email: string, address: string }
-  quickLinks  Json     // Array of { title: string, links: Array<{ name: string, url: string }> }
-  socialLinks Json     // { facebook: string, instagram: string, twitter: string, youtube: string }
-  legalLinks  Json     // Array of { name: string, url: string }
-  updatedAt   DateTime @updatedAt
-
-  @@map("footer_settings")
-}
-
-// Page Management
-model Page {
-  id          String   @id @default(cuid())
-  slug        String   @unique
-  title       String
-  content     String?
-  isPublished Boolean  @default(false)
-  isHomepage  Boolean  @default(false)
-  order       Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@map("pages")
-}
-
-// Homepage Settings
-model HomepageSettings {
-  id          String   @id @default(cuid())
-  heroTitle    String
-  heroSubtitle String?
-  featuredProducts Json? // Array of product IDs or data
-  showFeaturedSection Boolean @default(true)
-  showServicesSection Boolean @default(true)
-  showTestimonials    Boolean @default(true)
-  updatedAt   DateTime @updatedAt
-
-  @@map("homepage_settings")
-}
-
-// Backup Management
-model DatabaseBackup {
-  id          String   @id @default(cuid())
-  filename    String
-  size        Int
-  status      BackupStatus @default(COMPLETED)
-  createdAt   DateTime @default(now())
-  notes       String?
-
-  @@map("database_backups")
 }
 
 enum BackupStatus {
