@@ -53,7 +53,25 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
     }
 
-    const { slug, title, content, isPublished } = await request.json();
+    const { 
+      slug, 
+      title, 
+      content, 
+      isPublished, 
+      isHomepage, 
+      template,
+      metaTitle,
+      metaDescription,
+      metaKeywords,
+      focusKeyword,
+      canonicalUrl,
+      ogTitle,
+      ogDescription,
+      ogImage,
+      twitterTitle,
+      twitterDescription,
+      twitterImage
+    } = await request.json();
 
     if (!slug || !title) {
       return NextResponse.json(
@@ -74,13 +92,34 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // If setting as homepage, unset any existing homepage
+    if (isHomepage) {
+      await prisma.page.updateMany({
+        where: { isHomepage: true },
+        data: { isHomepage: false }
+      });
+    }
+
     // Create new page
     const page = await prisma.page.create({
       data: {
         slug,
         title,
         content: content || '',
-        isPublished: isPublished || false
+        isPublished: isPublished || false,
+        isHomepage: isHomepage || false,
+        template: template || 'default',
+        metaTitle: metaTitle || '',
+        metaDescription: metaDescription || '',
+        metaKeywords: metaKeywords || '',
+        focusKeyword: focusKeyword || '',
+        canonicalUrl: canonicalUrl || '',
+        ogTitle: ogTitle || '',
+        ogDescription: ogDescription || '',
+        ogImage: ogImage || '',
+        twitterTitle: twitterTitle || '',
+        twitterDescription: twitterDescription || '',
+        twitterImage: twitterImage || ''
       }
     });
 

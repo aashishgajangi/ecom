@@ -21,6 +21,8 @@ model User {
   blogPosts BlogPost[]
   cartItems CartItem[]
   orders    Order[]
+  pageRevisions PageRevision[]
+  media     Media[]
 
   @@map("users")
 }
@@ -189,17 +191,104 @@ model FooterSettings {
 }
 
 model Page {
+  id               String         @id @default(cuid())
+  slug             String         @unique
+  title            String
+  content          String?
+  isPublished      Boolean        @default(false)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  isHomepage       Boolean        @default(false)
+  order            Int            @default(0)
+  template         String?        // home, default, contact, about, etc.
+  
+  // SEO Metadata
+  metaTitle        String?
+  metaDescription  String?
+  metaKeywords     String?
+  canonicalUrl     String?
+  ogTitle          String?
+  ogDescription    String?
+  ogImage          String?
+  twitterCard      String?
+  twitterTitle     String?
+  twitterDescription String?
+  twitterImage     String?
+  
+  // Advanced SEO
+  structuredData   Json?
+  seoScore         Int?           @default(0)
+  focusKeyword     String?
+  
+  // Content Management
+  status           PageStatus     @default(DRAFT)
+  scheduledPublish DateTime?
+  scheduledUnpublish DateTime?
+  version          Int            @default(1)
+  parentPageId     String?
+  parentPage       Page?          @relation("PageHierarchy", fields: [parentPageId], references: [id])
+  childPages       Page[]         @relation("PageHierarchy")
+  
+  // Relationships
+  revisions        PageRevision[]
+  blocks           PageBlock[]
+  
+  @@map("pages")
+}
+
+model PageRevision {
+  id               String   @id @default(cuid())
+  pageId           String
+  title            String
+  content          String?
+  metaTitle        String?
+  metaDescription  String?
+  metaKeywords     String?
+  createdAt        DateTime @default(now())
+  authorId         String
+  author           User     @relation(fields: [authorId], references: [id])
+  page             Page     @relation(fields: [pageId], references: [id])
+  
+  @@map("page_revisions")
+}
+
+model ContentBlock {
   id          String   @id @default(cuid())
-  slug        String   @unique
+  identifier  String   @unique
   title       String
   content     String?
-  isPublished Boolean  @default(false)
+  type        BlockType @default(HTML)
+  isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  isHomepage  Boolean  @default(false)
-  order       Int      @default(0)
+  pages       PageBlock[]
+  
+  @@map("content_blocks")
+}
 
-  @@map("pages")
+model PageBlock {
+  id        String   @id @default(cuid())
+  pageId    String
+  blockId   String
+  order     Int      @default(0)
+  page      Page     @relation(fields: [pageId], references: [id])
+  block     ContentBlock @relation(fields: [blockId], references: [id])
+  
+  @@unique([pageId, blockId])
+  @@map("page_blocks")
+}
+
+model SEOSettings {
+  id                    String   @id @default(cuid())
+  globalMetaTitle       String?
+  globalMetaDescription String?
+  globalMetaKeywords    String?
+  socialLinks           Json?
+  analyticsCode         String?
+  verificationCodes     Json?
+  updatedAt             DateTime @updatedAt
+  
+  @@map("seo_settings")
 }
 
 model HomepageSettings {
@@ -213,6 +302,25 @@ model HomepageSettings {
   updatedAt           DateTime @updatedAt
 
   @@map("homepage_settings")
+}
+
+model Media {
+  id          String   @id @default(cuid())
+  filename    String
+  originalName String
+  url         String
+  size        Int
+  type        String
+  width       Int?
+  height      Int?
+  alt         String?
+  caption     String?
+  uploadedById String
+  uploadedBy  User     @relation(fields: [uploadedById], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("media")
 }
 
 model DatabaseBackup {
@@ -255,4 +363,22 @@ enum BackupStatus {
   PENDING
   COMPLETED
   FAILED
+}
+
+enum PageStatus {
+  DRAFT
+  PUBLISHED
+  SCHEDULED
+  ARCHIVED
+}
+
+enum BlockType {
+  HTML
+  RICH_TEXT
+  IMAGE
+  VIDEO
+  CAROUSEL
+  FORM
+  PRODUCT_GRID
+  CATEGORY_NAV
 }

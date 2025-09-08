@@ -24,7 +24,7 @@ export async function GET(
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
     }
 
-    // Get specific page
+    // Get specific page with all fields
     const page = await prisma.page.findUnique({
       where: { id }
     });
@@ -68,7 +68,25 @@ export async function PUT(
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
     }
 
-    const { slug, title, content, isPublished } = await request.json();
+    const { 
+      slug, 
+      title, 
+      content, 
+      isPublished, 
+      isHomepage, 
+      template,
+      metaTitle,
+      metaDescription,
+      metaKeywords,
+      focusKeyword,
+      canonicalUrl,
+      ogTitle,
+      ogDescription,
+      ogImage,
+      twitterTitle,
+      twitterDescription,
+      twitterImage
+    } = await request.json();
 
     if (!slug || !title) {
       return NextResponse.json(
@@ -92,14 +110,38 @@ export async function PUT(
       );
     }
 
-    // Update page
+    // If setting as homepage, unset any existing homepage
+    if (isHomepage) {
+      await prisma.page.updateMany({
+        where: { 
+          isHomepage: true,
+          id: { not: id }
+        },
+        data: { isHomepage: false }
+      });
+    }
+
+    // Update page with all fields
     const page = await prisma.page.update({
       where: { id },
       data: {
         slug,
         title,
         content: content || '',
-        isPublished: isPublished || false
+        isPublished: isPublished || false,
+        isHomepage: isHomepage || false,
+        template: template || 'default',
+        metaTitle: metaTitle || '',
+        metaDescription: metaDescription || '',
+        metaKeywords: metaKeywords || '',
+        focusKeyword: focusKeyword || '',
+        canonicalUrl: canonicalUrl || '',
+        ogTitle: ogTitle || '',
+        ogDescription: ogDescription || '',
+        ogImage: ogImage || '',
+        twitterTitle: twitterTitle || '',
+        twitterDescription: twitterDescription || '',
+        twitterImage: twitterImage || ''
       }
     });
 

@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
+import ReactMarkdown from 'react-markdown';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -32,10 +33,9 @@ export default async function DynamicPage({ params }: PageProps) {
 
         {/* Page Content */}
         <div className="bg-white rounded-lg shadow-md p-8">
-          <div 
-            className="prose prose-lg max-w-none"
-            dangerouslySetInnerHTML={{ __html: page.content || '<p>No content available.</p>' }}
-          />
+          <div className="prose prose-lg max-w-none">
+            <ReactMarkdown>{page.content || 'No content available.'}</ReactMarkdown>
+          </div>
         </div>
 
         {/* Page Metadata */}

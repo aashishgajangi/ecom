@@ -20,15 +20,6 @@ export default function PagesPage() {
   const router = useRouter();
   const [pages, setPages] = useState<Page[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showCreateForm, setShowCreateForm] = useState(false);
-  const [editingPage, setEditingPage] = useState<Page | null>(null);
-
-  // Form state
-  const [slug, setSlug] = useState('');
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [isPublished, setIsPublished] = useState(false);
-  const [formLoading, setFormLoading] = useState(false);
 
   useEffect(() => {
     if (status === 'loading') return;
@@ -57,75 +48,9 @@ export default function PagesPage() {
     }
   };
 
-  const resetForm = () => {
-    setSlug('');
-    setTitle('');
-    setContent('');
-    setIsPublished(false);
-    setEditingPage(null);
-    setShowCreateForm(false);
-  };
-
-  const handleCreate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormLoading(true);
-
-    try {
-      const response = await fetch('/api/admin/pages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ slug, title, content, isPublished }),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        alert(result.message);
-        resetForm();
-        fetchPages(); // Refresh the list
-      } else {
-        const error = await response.json();
-        alert(`Failed to create page: ${error.error}`);
-      }
-    } catch (error) {
-      console.error('Error creating page:', error);
-      alert('Failed to create page');
-    } finally {
-      setFormLoading(false);
-    }
-  };
-
-  const handleUpdate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!editingPage) return;
-
-    setFormLoading(true);
-
-    try {
-      const response = await fetch(`/api/admin/pages/${editingPage.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ slug, title, content, isPublished }),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        alert(result.message);
-        resetForm();
-        fetchPages(); // Refresh the list
-      } else {
-        const error = await response.json();
-        alert(`Failed to update page: ${error.error}`);
-      }
-    } catch (error) {
-      console.error('Error updating page:', error);
-      alert('Failed to update page');
-    } finally {
-      setFormLoading(false);
-    }
+  const handleEdit = (page: Page) => {
+    // Redirect to edit page with full SEO options
+    router.push(`/admin/content/pages/create?id=${page.id}`);
   };
 
   const handleDelete = async (id: string) => {
@@ -151,15 +76,6 @@ export default function PagesPage() {
     }
   };
 
-  const startEdit = (page: Page) => {
-    setEditingPage(page);
-    setSlug(page.slug);
-    setTitle(page.title);
-    setContent(page.content);
-    setIsPublished(page.isPublished);
-    setShowCreateForm(true);
-  };
-
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString();
   };
@@ -178,105 +94,20 @@ export default function PagesPage() {
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Page Management</h1>
           <div className="flex space-x-4">
-            <button
-              onClick={() => setShowCreateForm(!showCreateForm)}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            <Link
+              href="/admin/content/pages/create"
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 inline-block"
             >
-              {showCreateForm ? 'Cancel' : 'Create New Page'}
-            </button>
-            <button
-              onClick={() => router.push('/admin')}
-              className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
+              Create New Page
+            </Link>
+            <Link
+              href="/admin/dashboard"
+              className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 inline-block"
             >
               Back to Dashboard
-            </button>
+            </Link>
           </div>
         </div>
-
-        {/* Create/Edit Form */}
-        {showCreateForm && (
-          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-            <h2 className="text-xl font-semibold mb-4">
-              {editingPage ? 'Edit Page' : 'Create New Page'}
-            </h2>
-            <form onSubmit={editingPage ? handleUpdate : handleCreate} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="slug" className="block text-sm font-medium text-gray-700 mb-2">
-                    Slug *
-                  </label>
-                  <input
-                    type="text"
-                    id="slug"
-                    value={slug}
-                    onChange={(e) => setSlug(e.target.value)}
-                    placeholder="e.g., about-us"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
-                    Title *
-                  </label>
-                  <input
-                    type="text"
-                    id="title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder="Page title"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
-                  Content
-                </label>
-                <textarea
-                  id="content"
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  placeholder="Page content (HTML supported)"
-                  rows={6}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="isPublished"
-                  checked={isPublished}
-                  onChange={(e) => setIsPublished(e.target.checked)}
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                />
-                <label htmlFor="isPublished" className="ml-2 block text-sm text-gray-900">
-                  Published
-                </label>
-              </div>
-
-              <div className="flex space-x-4">
-                <button
-                  type="submit"
-                  disabled={formLoading}
-                  className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {formLoading ? 'Saving...' : (editingPage ? 'Update Page' : 'Create Page')}
-                </button>
-                <button
-                  type="button"
-                  onClick={resetForm}
-                  className="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </div>
-        )}
 
         {/* Pages List */}
         <div className="bg-white rounded-lg shadow-md p-6">
@@ -331,7 +162,7 @@ export default function PagesPage() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                         <button
-                          onClick={() => startEdit(page)}
+                          onClick={() => handleEdit(page)}
                           className="text-blue-600 hover:text-blue-900"
                         >
                           Edit
