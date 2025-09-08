@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 interface FooterSettings {
   id: string;
   companyInfo: {
+    companyName: string;
     description: string;
     phone: string;
     email: string;
@@ -135,10 +136,21 @@ export default function FooterSettingsPage() {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Company Information */}
         <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4">Company Information</h2>
+          <h2 className="text-xl font-semibold mb-4">🏢 Company Information</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-2">Description</label>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium mb-2">🏷️ Company Name</label>
+              <input
+                type="text"
+                value={footerSettings.companyInfo.companyName || ''}
+                onChange={(e) => updateCompanyInfo('companyName', e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-start focus:border-transparent"
+                placeholder="Your company name (appears in footer and copyright)"
+              />
+              <p className="text-xs text-gray-500 mt-1">This name appears in the footer title and copyright text</p>
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium mb-2">📝 Description</label>
               <textarea
                 value={footerSettings.companyInfo.description}
                 onChange={(e) => updateCompanyInfo('description', e.target.value)}
@@ -148,7 +160,7 @@ export default function FooterSettingsPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">Phone</label>
+              <label className="block text-sm font-medium mb-2">📞 Phone</label>
               <input
                 type="text"
                 value={footerSettings.companyInfo.phone}
@@ -158,7 +170,7 @@ export default function FooterSettingsPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">Email</label>
+              <label className="block text-sm font-medium mb-2">📧 Email</label>
               <input
                 type="email"
                 value={footerSettings.companyInfo.email}
@@ -167,8 +179,8 @@ export default function FooterSettingsPage() {
                 placeholder="Email address"
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium mb-2">Address</label>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium mb-2">📍 Address</label>
               <textarea
                 value={footerSettings.companyInfo.address}
                 onChange={(e) => updateCompanyInfo('address', e.target.value)}

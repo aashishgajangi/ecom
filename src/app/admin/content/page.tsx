@@ -123,11 +123,17 @@ export default function ContentDashboard() {
         </div>
 
         {/* Content Management - Simplified */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           {/* Page Management */}
           <div className="border border-gray-200 rounded-lg p-4">
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Pages</h3>
             <div className="space-y-2">
+              <Link
+                href="/admin/content/homepage/edit"
+                className="block w-full text-left px-3 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded font-medium hover:from-blue-600 hover:to-blue-700"
+              >
+                Edit Homepage
+              </Link>
               <Link
                 href="/admin/content/pages"
                 className="block w-full text-left px-3 py-2 bg-white border border-gray-200 rounded text-gray-700 hover:bg-gray-50"
@@ -155,6 +161,22 @@ export default function ContentDashboard() {
             </div>
           </div>
 
+          {/* Media Management */}
+          <div className="border border-gray-200 rounded-lg p-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">📸 Media</h3>
+            <div className="space-y-2">
+              <Link
+                href="/admin/content/media"
+                className="block w-full text-left px-3 py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded font-medium hover:from-purple-600 hover:to-purple-700"
+              >
+                📸 Media Library
+              </Link>
+              <div className="text-xs text-gray-500 px-3">
+                Upload, organize, and manage your images with drag & drop support
+              </div>
+            </div>
+          </div>
+
           {/* Site Configuration */}
           <div className="border border-gray-200 rounded-lg p-4">
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Configuration</h3>
@@ -167,9 +189,9 @@ export default function ContentDashboard() {
               </Link>
               <Link
                 href="/admin/content/footer"
-                className="block w-full text-left px-3 py-2 bg-white border border-gray-200 rounded text-gray-700 hover:bg-gray-50"
+                className="block w-full text-left px-3 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded font-medium hover:from-green-600 hover:to-green-700"
               >
-                Footer Settings
+                🏢 Company & Footer Settings
               </Link>
               <Link
                 href="/admin/content/navigation"

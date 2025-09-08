@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { writeFile, mkdir } from 'fs/promises';
+import { writeFile, mkdir, unlink } from 'fs/promises';
 import { join } from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -97,9 +97,11 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   try {
+    console.log('🔍 Media API GET called');
     const session = await auth();
     
     if (!session?.user?.id) {
+      console.log('❌ No session or user ID');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -109,8 +111,11 @@ export async function GET() {
     });
 
     if (user?.role !== 'ADMIN') {
+      console.log('❌ User is not admin:', user?.role);
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
     }
+
+    console.log('✅ Admin user authenticated, fetching media files...');
 
     // Get all media files
     const mediaFiles = await prisma.media.findMany({
@@ -125,6 +130,8 @@ export async function GET() {
         }
       }
     });
+
+    console.log(`📊 Found ${mediaFiles.length} media files`);
 
     // Image format guidelines
     const imageGuidelines = {
@@ -177,6 +184,114 @@ export async function GET() {
     console.error('Get media error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch media' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const session = await auth();
+    
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Check if user is admin
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id }
+    });
+
+    if (user?.role !== 'ADMIN') {
+      return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const mediaId = searchParams.get('id');
+
+    if (!mediaId) {
+      return NextResponse.json({ error: 'Media ID required' }, { status: 400 });
+    }
+
+    // Get media record
+    const media = await prisma.media.findUnique({
+      where: { id: mediaId }
+    });
+
+    if (!media) {
+      return NextResponse.json({ error: 'Media not found' }, { status: 404 });
+    }
+
+    // Delete file from filesystem
+    try {
+      const filePath = join(process.cwd(), 'public', 'uploads', media.filename);
+      await unlink(filePath);
+    } catch (fileError) {
+      console.warn('Could not delete file:', fileError);
+      // Continue anyway - maybe file was already deleted
+    }
+
+    // Delete media record from database
+    await prisma.media.delete({
+      where: { id: mediaId }
+    });
+
+    return NextResponse.json({
+      success: true,
+      message: 'Media deleted successfully'
+    });
+
+  } catch (error) {
+    console.error('Delete media error:', error);
+    return NextResponse.json(
+      { error: 'Failed to delete media' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    const session = await auth();
+    
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Check if user is admin
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id }
+    });
+
+    if (user?.role !== 'ADMIN') {
+      return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
+    }
+
+    const { id, originalName } = await request.json();
+
+    if (!id || !originalName) {
+      return NextResponse.json({ error: 'ID and originalName required' }, { status: 400 });
+    }
+
+    // Update media record
+    const updatedMedia = await prisma.media.update({
+      where: { id },
+      data: { 
+        originalName: originalName.trim(),
+        updatedAt: new Date()
+      }
+    });
+
+    return NextResponse.json({
+      success: true,
+      message: 'Media renamed successfully',
+      media: updatedMedia
+    });
+
+  } catch (error) {
+    console.error('Rename media error:', error);
+    return NextResponse.json(
+      { error: 'Failed to rename media' },
       { status: 500 }
     );
   }

@@ -187,23 +187,64 @@ export default function AdminDashboard() {
           </div>
         </div>
 
+        {/* Homepage Status */}
+        <div className="bg-white overflow-hidden shadow rounded-lg mb-8">
+          <div className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg leading-6 font-medium text-gray-900">🏠 Homepage Status</h3>
+                <p className="mt-1 text-sm text-gray-500">
+                  Customize your homepage with visual editor - Hero, Featured Product, Why Choose Us, Service Areas
+                </p>
+              </div>
+              <div className="flex space-x-3">
+                <Link
+                  href="/"
+                  target="_blank"
+                  className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                >
+                  👁️ View Live
+                </Link>
+                <Link
+                  href="/admin/content/homepage/edit"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
+                >
+                  ✨ Edit Homepage
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Action Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           <div className="bg-white overflow-hidden shadow rounded-lg">
             <div className="p-6">
-              <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">Content Management</h3>
+              <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">🏠 Homepage & Content</h3>
               <div className="space-y-3">
+                <Link
+                  href="/admin/content/homepage/edit"
+                  className="block w-full text-left px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md text-sm font-medium hover:from-blue-600 hover:to-blue-700"
+                >
+                  ✨ Edit Homepage
+                </Link>
                 <Link
                   href="/admin/content/pages/create"
                   className="block w-full text-left px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
                 >
-                  Create New Page
+                  ➕ Create New Page
                 </Link>
                 <Link
                   href="/admin/content/pages"
                   className="block w-full text-left px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
                 >
-                  Manage Pages
+                  📄 Manage All Pages
+                </Link>
+                <Link
+                  href="/admin/content"
+                  className="block w-full text-left px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
+                >
+                  🎨 Content Hub
                 </Link>
               </div>
             </div>
@@ -211,25 +252,42 @@ export default function AdminDashboard() {
 
           <div className="bg-white overflow-hidden shadow rounded-lg">
             <div className="p-6">
-              <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">Site Settings</h3>
+              <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">📸 Media & Assets</h3>
               <div className="space-y-3">
+                <Link
+                  href="/admin/content/media"
+                  className="block w-full text-left px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-md text-sm font-medium hover:from-purple-600 hover:to-purple-700"
+                >
+                  📸 Media Library
+                </Link>
+                <div className="text-xs text-gray-500 px-4">
+                  Upload, manage, and organize your images with drag & drop support
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white overflow-hidden shadow rounded-lg">
+            <div className="p-6">
+              <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">🏢 Site Settings</h3>
+              <div className="space-y-3">
+                <Link
+                  href="/admin/content/footer"
+                  className="block w-full text-left px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-md text-sm font-medium hover:from-green-600 hover:to-green-700"
+                >
+                  🏢 Company & Footer Settings
+                </Link>
                 <Link
                   href="/admin/content/header"
                   className="block w-full text-left px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
                 >
-                  Header Settings
-                </Link>
-                <Link
-                  href="/admin/content/footer"
-                  className="block w-full text-left px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
-                >
-                  Footer Settings
+                  📋 Header Settings
                 </Link>
                 <Link
                   href="/admin/content/navigation"
                   className="block w-full text-left px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
                 >
-                  Navigation Menu
+                  🧭 Navigation Menu
                 </Link>
               </div>
             </div>
@@ -256,6 +314,43 @@ export default function AdminDashboard() {
                   className="block w-full text-left px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
                 >
                   Import/Export
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* New Features Announcement */}
+        <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-6 mb-8">
+          <div className="flex items-start">
+            <div className="flex-shrink-0">
+              <div className="w-8 h-8 bg-purple-500 rounded-md flex items-center justify-center">
+                <span className="text-white text-sm">📸</span>
+              </div>
+            </div>
+            <div className="ml-4 flex-1">
+              <h3 className="text-lg font-medium text-gray-900">New Media Library & Visual Editors!</h3>
+              <p className="mt-1 text-sm text-gray-600">
+                Powerful new tools for managing your content and media:
+              </p>
+              <ul className="mt-2 text-sm text-gray-600 list-disc list-inside space-y-1">
+                <li><strong>📸 Media Library:</strong> Drag & drop image uploads, rename, organize, and manage all your media files</li>
+                <li><strong>🎭 Visual Homepage Editor:</strong> Edit hero section, featured products, and service areas</li>
+                <li><strong>🏢 Company Settings:</strong> Update company name, footer, and contact information</li>
+                <li><strong>🔍 SEO Preview:</strong> See how your pages will appear in Google search results</li>
+              </ul>
+              <div className="mt-4 flex gap-3">
+                <Link
+                  href="/admin/content/media"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700"
+                >
+                  📸 Try Media Library
+                </Link>
+                <Link
+                  href="/admin/content/homepage/edit"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700"
+                >
+                  ✨ Edit Homepage
                 </Link>
               </div>
             </div>

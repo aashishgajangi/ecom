@@ -2,6 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
+import Hero from '@/components/Hero';
+import FeaturedProduct from '@/components/FeaturedProduct';
+import WhyChooseUs from '@/components/WhyChooseUs';
+import ServiceAreas from '@/components/ServiceAreas';
 
 interface HomepagePage {
   id: string;
@@ -21,7 +25,7 @@ export default function Home() {
 
   const fetchHomepage = async () => {
     try {
-      // First try to get the homepage from pages
+      // Get the homepage from pages
       const response = await fetch('/api/pages/homepage');
       if (response.ok) {
         const data = await response.json();
@@ -32,21 +36,66 @@ export default function Home() {
         }
       }
       
-      // Fallback to old homepage settings for backward compatibility
-      const fallbackResponse = await fetch('/api/settings/homepage');
-      if (fallbackResponse.ok) {
-        const data = await fallbackResponse.json();
-        if (data.homepageSettings) {
-          // Convert old format to new page format
-          setHomepage({
-            id: 'legacy-homepage',
-            title: data.homepageSettings.heroTitle || 'Welcome to Nisargalahari',
-            content: data.homepageSettings.heroSubtitle || 'Pure, nature-friendly products that harness the power of nature',
-            template: 'home',
-            metadata: {}
-          });
+      // If no homepage found, create default structure
+      setHomepage({
+        id: 'default-homepage',
+        title: "Nature's Best, Delivered Fresh",
+        content: 'Experience the goodness of nature with top-quality products designed to nourish your body and soul.',
+        template: 'home',
+        metadata: {
+          homepageContent: {
+            hero: {
+              title: "Nature's Best, Delivered Fresh",
+              subtitle: "Experience the goodness of nature with top-quality products designed to nourish your body and soul.",
+              ctaText: "Explore Products",
+              ctaLink: "/products"
+            },
+            featuredProduct: {
+              title: "Our Featured Product",
+              description: "Experience the aroma and taste of our premium products, beneficial for the health of the entire family.",
+              imageUrl: "/uploads/2b450e54-44d9-4180-ab83-ddcab7320e32.jpeg",
+              productLink: "/products",
+              ctaText: "View Product"
+            },
+            whyChooseUs: {
+              title: "Why Choose Us?",
+              subtitle: "We are committed to providing the highest quality products, made with traditional methods and care.",
+              features: [
+                {
+                  icon: "check-circle",
+                  title: "100% Natural",
+                  description: "Our products are made from pure natural ingredients, ensuring the highest quality and authenticity."
+                },
+                {
+                  icon: "clock",
+                  title: "Traditional Process",
+                  description: "We follow traditional methods to prepare our products, preserving their natural goodness."
+                },
+                {
+                  icon: "shield-check",
+                  title: "Quality Certified",
+                  description: "Our products are certified by quality standards, ensuring safety and quality standards."
+                }
+              ]
+            },
+            serviceAreas: {
+              title: "Our Service Areas",
+              subtitle: "Premium quality products available across all major areas with free delivery.",
+              ctaText: "Get Products in Your Area",
+              ctaLink: "/mumbai/borivali",
+              areas: [
+                { name: 'Borivali', slug: 'borivali', priority: true },
+                { name: 'Dahisar', slug: 'dahisar', priority: true },
+                { name: 'Malad', slug: 'malad', priority: false },
+                { name: 'Goregaon', slug: 'goregaon', priority: false },
+                { name: 'Mira Road', slug: 'mira-road', priority: false },
+                { name: 'Andheri', slug: 'andheri', priority: false },
+                { name: 'Bandra', slug: 'bandra', priority: false }
+              ]
+            }
+          }
         }
-      }
+      });
     } catch (error) {
       console.error('Error fetching homepage:', error);
     } finally {
@@ -56,127 +105,85 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="container-custom py-12">
-        <div className="text-center max-w-4xl mx-auto">
-          <div className="animate-pulse">
-            <div className="h-12 bg-gray-200 rounded mb-6"></div>
-            <div className="h-6 bg-gray-200 rounded mb-8"></div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="p-6 bg-white rounded-lg shadow-md">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-gray-200 rounded-full"></div>
-                  <div className="h-6 bg-gray-200 rounded mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded"></div>
-                </div>
-              ))}
+      <>
+        <Hero />
+        <div className="py-16 bg-gray-50">
+          <div className="container-custom">
+            <div className="animate-pulse">
+              <div className="h-8 bg-gray-200 rounded mb-4 max-w-md mx-auto"></div>
+              <div className="h-4 bg-gray-200 rounded mb-8 max-w-2xl mx-auto"></div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="p-6 bg-white rounded-lg shadow-md">
+                    <div className="w-12 h-12 mx-auto mb-4 bg-gray-200 rounded-lg"></div>
+                    <div className="h-6 bg-gray-200 rounded mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded"></div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 
   if (!homepage) {
     return (
-      <div className="container-custom py-12">
-        <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 gradient-text">
-            Welcome to Nisargalahari
-          </h1>
-          <p className="text-xl text-gray-600 mb-8">
-            Pure, nature-friendly products that harness the power of nature
-          </p>
-          
-          {/* Default services section */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-            <div className="text-center p-6 bg-white rounded-lg shadow-md">
-              <div className="w-16 h-16 mx-auto mb-4 bg-primary-start/10 rounded-full flex items-center justify-center">
-                <span className="text-2xl">🌿</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Natural Ingredients</h3>
-              <p className="text-gray-600">Made with pure, organic ingredients sourced from nature</p>
-            </div>
-            
-            <div className="text-center p-6 bg-white rounded-lg shadow-md">
-              <div className="w-16 h-16 mx-auto mb-4 bg-primary-mid/10 rounded-full flex items-center justify-center">
-                <span className="text-2xl">✨</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Premium Quality</h3>
-              <p className="text-gray-600">Highest quality standards for all our natural products</p>
-            </div>
-            
-            <div className="text-center p-6 bg-white rounded-lg shadow-md">
-              <div className="w-16 h-16 mx-auto mb-4 bg-primary-end/10 rounded-full flex items-center justify-center">
-                <span className="text-2xl">🌎</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Eco-Friendly</h3>
-              <p className="text-gray-600">Sustainable practices that respect our environment</p>
-            </div>
-          </div>
-          
-          <div className="mt-12">
-            <button className="btn-primary mr-4">
-              Explore Products
-            </button>
-            <button className="btn-secondary">
-              Learn More
-            </button>
-          </div>
-        </div>
-      </div>
+      <>
+        <Hero />
+        <FeaturedProduct />
+        <WhyChooseUs />
+        <ServiceAreas />
+      </>
     );
   }
 
+  // Get structured content from metadata
+  const homepageContent = homepage.metadata?.homepageContent;
+
+  if (homepageContent) {
+    return (
+      <>
+        <Hero 
+          title={homepageContent.hero.title}
+          subtitle={homepageContent.hero.subtitle}
+          ctaText={homepageContent.hero.ctaText}
+          ctaLink={homepageContent.hero.ctaLink}
+        />
+        <FeaturedProduct 
+          title={homepageContent.featuredProduct.title}
+          description={homepageContent.featuredProduct.description}
+          imageUrl={homepageContent.featuredProduct.imageUrl}
+          productLink={homepageContent.featuredProduct.productLink}
+          ctaText={homepageContent.featuredProduct.ctaText}
+        />
+        <WhyChooseUs 
+          title={homepageContent.whyChooseUs.title}
+          subtitle={homepageContent.whyChooseUs.subtitle}
+          features={homepageContent.whyChooseUs.features}
+        />
+        <ServiceAreas 
+          title={homepageContent.serviceAreas.title}
+          subtitle={homepageContent.serviceAreas.subtitle}
+          serviceAreas={homepageContent.serviceAreas.areas}
+          ctaText={homepageContent.serviceAreas.ctaText}
+          ctaLink={homepageContent.serviceAreas.ctaLink}
+        />
+      </>
+    );
+  }
+
+  // Fallback to basic hero
   return (
-    <div className="container-custom py-12">
-      <div className="text-center max-w-4xl mx-auto">
-        <h1 className="text-4xl md:text-6xl font-bold mb-6 gradient-text">
-          {homepage.title}
-        </h1>
-        <div className="text-xl text-gray-600 mb-8 prose prose-lg max-w-none">
-          <ReactMarkdown>{homepage.content}</ReactMarkdown>
-        </div>
-        
-        {/* Render content based on template */}
-        {homepage.template === 'home' && (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-              <div className="text-center p-6 bg-white rounded-lg shadow-md">
-                <div className="w-16 h-16 mx-auto mb-4 bg-primary-start/10 rounded-full flex items-center justify-center">
-                  <span className="text-2xl">🌿</span>
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Natural Ingredients</h3>
-                <p className="text-gray-600">Made with pure, organic ingredients sourced from nature</p>
-              </div>
-              
-              <div className="text-center p-6 bg-white rounded-lg shadow-md">
-                <div className="w-16 h-16 mx-auto mb-4 bg-primary-mid/10 rounded-full flex items-center justify-center">
-                  <span className="text-2xl">✨</span>
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Premium Quality</h3>
-                <p className="text-gray-600">Highest quality standards for all our natural products</p>
-              </div>
-              
-              <div className="text-center p-6 bg-white rounded-lg shadow-md">
-                <div className="w-16 h-16 mx-auto mb-4 bg-primary-end/10 rounded-full flex items-center justify-center">
-                  <span className="text-2xl">🌎</span>
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Eco-Friendly</h3>
-                <p className="text-gray-600">Sustainable practices that respect our environment</p>
-              </div>
-            </div>
-            
-            <div className="mt-12">
-              <button className="btn-primary mr-4">
-                Explore Products
-              </button>
-              <button className="btn-secondary">
-                Learn More
-              </button>
-            </div>
-          </>
-        )}
-      </div>
-    </div>
+    <>
+      <Hero 
+        title={homepage.title}
+        subtitle={homepage.content}
+      />
+      <FeaturedProduct />
+      <WhyChooseUs />
+      <ServiceAreas />
+    </>
   );
 }

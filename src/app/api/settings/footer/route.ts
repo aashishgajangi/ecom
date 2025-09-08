@@ -11,6 +11,7 @@ export async function GET() {
       footerSettings = await prisma.footerSettings.create({
         data: {
           companyInfo: {
+            companyName: 'Nisargalahari',
             description: 'Pure, nature-friendly products that harness the power of nature.',
             phone: '+91 9324070794',
             email: 'info@nisargalahari.com',

@@ -15,6 +15,11 @@ interface PageFormData {
   isHomepage: boolean;
   template: string;
   
+  // Template Configuration
+  showHero: boolean;
+  heroTitle: string;
+  heroSubtitle: string;
+  
   // SEO Fields
   metaTitle: string;
   metaDescription: string;
@@ -46,6 +51,11 @@ function CreatePageContent() {
     isHomepage: searchParams.get('homepage') === 'true',
     template: 'default',
     
+    // Template Configuration
+    showHero: false,
+    heroTitle: '',
+    heroSubtitle: '',
+    
     // SEO Fields
     metaTitle: '',
     metaDescription: '',
@@ -73,6 +83,7 @@ function CreatePageContent() {
       const response = await fetch(`/api/admin/pages/${pageId}`);
       if (response.ok) {
         const pageData = await response.json();
+        const metadata = pageData.page?.metadata as any || {};
         setFormData({
           slug: pageData.page?.slug || '',
           title: pageData.page?.title || '',
@@ -80,6 +91,12 @@ function CreatePageContent() {
           isPublished: pageData.page?.isPublished || false,
           isHomepage: pageData.page?.isHomepage || false,
           template: pageData.page?.template || 'default',
+          
+          // Template Configuration
+          showHero: metadata.showHero || false,
+          heroTitle: metadata.heroTitle || '',
+          heroSubtitle: metadata.heroSubtitle || '',
+          
           metaTitle: pageData.page?.metaTitle || '',
           metaDescription: pageData.page?.metaDescription || '',
           metaKeywords: pageData.page?.metaKeywords || '',
@@ -125,12 +142,24 @@ function CreatePageContent() {
     const method = pageId ? 'PUT' : 'POST';
 
     try {
+      // Package template configuration into metadata
+      const { showHero, heroTitle, heroSubtitle, ...otherData } = formData;
+      const submitData = {
+        ...otherData,
+        metadata: {
+          showHero,
+          heroTitle,
+          heroSubtitle,
+          template: formData.template
+        }
+      };
+
       const response = await fetch(url, {
         method: method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(submitData),
       });
 
       if (response.ok) {
@@ -261,6 +290,9 @@ function CreatePageContent() {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="default">Default Template</option>
+                  <option value="hero">Hero Template (with large banner)</option>
+                  <option value="centered">Centered Template (centered content)</option>
+                  <option value="wide">Wide Template (full width content)</option>
                   <option value="home">Homepage Template</option>
                   <option value="contact">Contact Template</option>
                   <option value="about">About Template</option>
@@ -291,6 +323,55 @@ function CreatePageContent() {
               </div>
             </div>
           </div>
+
+          {/* Template Configuration */}
+          {(formData.template === 'hero' || formData.template === 'centered' || formData.template === 'wide') && (
+            <div className="mb-8">
+              <h2 className="text-xl font-semibold mb-4">Template Configuration</h2>
+              
+              <div className="space-y-4">
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={formData.showHero}
+                    onChange={(e) => handleInputChange('showHero', e.target.checked)}
+                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  />
+                  <span className="ml-2 text-sm text-gray-900">Show Hero Section</span>
+                </label>
+                
+                {formData.showHero && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ml-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Hero Title (optional - defaults to page title)
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.heroTitle}
+                        onChange={(e) => handleInputChange('heroTitle', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Leave empty to use page title"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Hero Subtitle
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.heroSubtitle}
+                        onChange={(e) => handleInputChange('heroSubtitle', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Enter hero subtitle"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Page Content */}
           <div className="mb-8">

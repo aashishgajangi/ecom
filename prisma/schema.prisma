@@ -9,20 +9,20 @@ datasource db {
 }
 
 model User {
-  id        String     @id @default(cuid())
-  email     String     @unique
-  password  String
-  name      String?
-  role      UserRole   @default(CUSTOMER)
-  isActive  Boolean    @default(true)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  addresses Address[]
-  blogPosts BlogPost[]
-  cartItems CartItem[]
-  orders    Order[]
+  id            String         @id @default(cuid())
+  email         String         @unique
+  password      String
+  name          String?
+  role          UserRole       @default(CUSTOMER)
+  isActive      Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  addresses     Address[]
+  blogPosts     BlogPost[]
+  cartItems     CartItem[]
+  media         Media[]
+  orders        Order[]
   pageRevisions PageRevision[]
-  media     Media[]
 
   @@map("users")
 }
@@ -191,89 +191,82 @@ model FooterSettings {
 }
 
 model Page {
-  id               String         @id @default(cuid())
-  slug             String         @unique
-  title            String
-  content          String?
-  isPublished      Boolean        @default(false)
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @updatedAt
-  isHomepage       Boolean        @default(false)
-  order            Int            @default(0)
-  template         String?        // home, default, contact, about, etc.
-  
-  // SEO Metadata
-  metaTitle        String?
-  metaDescription  String?
-  metaKeywords     String?
-  canonicalUrl     String?
-  ogTitle          String?
-  ogDescription    String?
-  ogImage          String?
-  twitterCard      String?
-  twitterTitle     String?
-  twitterDescription String?
-  twitterImage     String?
-  
-  // Advanced SEO
-  structuredData   Json?
-  seoScore         Int?           @default(0)
-  focusKeyword     String?
-  
-  // Content Management
-  status           PageStatus     @default(DRAFT)
-  scheduledPublish DateTime?
+  id                 String         @id @default(cuid())
+  slug               String         @unique
+  title              String
+  content            String?
+  isPublished        Boolean        @default(false)
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  isHomepage         Boolean        @default(false)
+  order              Int            @default(0)
+  template           String?
+  canonicalUrl       String?
+  focusKeyword       String?
+  metaDescription    String?
+  metaKeywords       String?
+  metaTitle          String?
+  ogDescription      String?
+  ogImage            String?
+  ogTitle            String?
+  parentPageId       String?
+  scheduledPublish   DateTime?
   scheduledUnpublish DateTime?
-  version          Int            @default(1)
-  parentPageId     String?
-  parentPage       Page?          @relation("PageHierarchy", fields: [parentPageId], references: [id])
-  childPages       Page[]         @relation("PageHierarchy")
-  
-  // Relationships
-  revisions        PageRevision[]
-  blocks           PageBlock[]
-  
+  seoScore           Int?           @default(0)
+  status             PageStatus     @default(DRAFT)
+  structuredData     Json?
+  twitterCard        String?
+  twitterDescription String?
+  twitterImage       String?
+  twitterTitle       String?
+  version            Int            @default(1)
+  metadata           Json?
+  blocks             PageBlock[]
+  revisions          PageRevision[]
+  parentPage         Page?          @relation("PageHierarchy", fields: [parentPageId], references: [id])
+  childPages         Page[]         @relation("PageHierarchy")
+
   @@map("pages")
 }
 
 model PageRevision {
-  id               String   @id @default(cuid())
-  pageId           String
-  title            String
-  content          String?
-  metaTitle        String?
-  metaDescription  String?
-  metaKeywords     String?
-  createdAt        DateTime @default(now())
-  authorId         String
-  author           User     @relation(fields: [authorId], references: [id])
-  page             Page     @relation(fields: [pageId], references: [id])
-  
+  id              String   @id @default(cuid())
+  pageId          String
+  title           String
+  content         String?
+  metaTitle       String?
+  metaDescription String?
+  metaKeywords    String?
+  createdAt       DateTime @default(now())
+  authorId        String
+  author          User     @relation(fields: [authorId], references: [id])
+  page            Page     @relation(fields: [pageId], references: [id])
+
   @@map("page_revisions")
 }
 
 model ContentBlock {
-  id          String   @id @default(cuid())
-  identifier  String   @unique
-  title       String
-  content     String?
-  type        BlockType @default(HTML)
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  pages       PageBlock[]
-  
+  id         String      @id @default(cuid())
+  identifier String      @unique
+  title      String
+  content    String?
+  type       BlockType   @default(HTML)
+  isActive   Boolean     @default(true)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  pages      PageBlock[]
+
   @@map("content_blocks")
 }
 
 model PageBlock {
-  id        String   @id @default(cuid())
-  pageId    String
-  blockId   String
-  order     Int      @default(0)
-  page      Page     @relation(fields: [pageId], references: [id])
-  block     ContentBlock @relation(fields: [blockId], references: [id])
-  
+  id      String       @id @default(cuid())
+  pageId  String
+  blockId String
+  order   Int          @default(0)
+  block   ContentBlock @relation(fields: [blockId], references: [id])
+  page    Page         @relation(fields: [pageId], references: [id])
+
   @@unique([pageId, blockId])
   @@map("page_blocks")
 }
@@ -287,7 +280,7 @@ model SEOSettings {
   analyticsCode         String?
   verificationCodes     Json?
   updatedAt             DateTime @updatedAt
-  
+
   @@map("seo_settings")
 }
 
@@ -305,20 +298,20 @@ model HomepageSettings {
 }
 
 model Media {
-  id          String   @id @default(cuid())
-  filename    String
+  id           String   @id @default(cuid())
+  filename     String
   originalName String
-  url         String
-  size        Int
-  type        String
-  width       Int?
-  height      Int?
-  alt         String?
-  caption     String?
+  url          String
+  size         Int
+  type         String
+  width        Int?
+  height       Int?
+  alt          String?
+  caption      String?
   uploadedById String
-  uploadedBy  User     @relation(fields: [uploadedById], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  uploadedBy   User     @relation(fields: [uploadedById], references: [id])
 
   @@map("media")
 }

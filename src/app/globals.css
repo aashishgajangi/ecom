@@ -13,6 +13,11 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  
+  /* Add primary color system for compatibility */
+  --color-primary-start: #70843d;
+  --color-primary-mid: #5a9f53;
+  --color-primary-end: #7bd63c;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -80,6 +85,9 @@
     background-clip: text;
   }
   
+  .gradient-bg {
+    background: linear-gradient(to right, #70843d, #7bd63c);
+  }
   
   .container-custom {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;

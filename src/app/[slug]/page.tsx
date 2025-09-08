@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
-import ReactMarkdown from 'react-markdown';
+import PageTemplate from '@/components/PageTemplate';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -22,28 +22,34 @@ export default async function DynamicPage({ params }: PageProps) {
     notFound();
   }
 
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        {/* Page Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">{page.title}</h1>
-          <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
-        </div>
+  // Parse metadata for template options
+  const metadata = page.metadata as any || {};
+  const template = metadata.template || 'default';
+  const showHero = metadata.showHero || false;
+  const heroTitle = metadata.heroTitle;
+  const heroSubtitle = metadata.heroSubtitle;
 
-        {/* Page Content */}
-        <div className="bg-white rounded-lg shadow-md p-8">
-          <div className="prose prose-lg max-w-none">
-            <ReactMarkdown>{page.content || 'No content available.'}</ReactMarkdown>
+  return (
+    <>
+      <PageTemplate
+        title={page.title}
+        content={page.content || 'No content available.'}
+        template={template}
+        showHero={showHero}
+        heroTitle={heroTitle}
+        heroSubtitle={heroSubtitle}
+        structuredContent={metadata.structuredContent}
+      />
+      
+      {/* Page Metadata Footer */}
+      <div className="py-8 bg-gray-50 border-t">
+        <div className="container-custom">
+          <div className="text-center text-gray-600 text-sm">
+            <p>Last updated: {new Date(page.updatedAt).toLocaleDateString()}</p>
           </div>
         </div>
-
-        {/* Page Metadata */}
-        <div className="mt-8 text-center text-gray-600 text-sm">
-          <p>Last updated: {new Date(page.updatedAt).toLocaleDateString()}</p>
-        </div>
       </div>
-    </div>
+    </>
   );
 }
 
