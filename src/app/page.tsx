@@ -8,7 +8,7 @@ interface HomepagePage {
   title: string;
   content: string;
   template: string;
-  metadata: any;
+  metadata: Record<string, unknown>;
 }
 
 export default function Home() {

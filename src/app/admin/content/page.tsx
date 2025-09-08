@@ -14,7 +14,7 @@ interface ContentStats {
 }
 
 export default function ContentDashboard() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   const [stats, setStats] = useState<ContentStats>({
     totalPages: 0,
@@ -50,9 +50,9 @@ export default function ContentDashboard() {
         
         setStats({
           totalPages: pages.length,
-          publishedPages: pages.filter((p: any) => p.isPublished).length,
-          draftPages: pages.filter((p: any) => !p.isPublished).length,
-          homepageExists: pages.some((p: any) => p.isHomepage),
+          publishedPages: pages.filter((p: { isPublished: boolean }) => p.isPublished).length,
+          draftPages: pages.filter((p: { isPublished: boolean }) => !p.isPublished).length,
+          homepageExists: pages.some((p: { isHomepage: boolean }) => p.isHomepage),
           navigationItems: headerSettings?.navigation?.length || 0
         });
       }
@@ -240,3 +240,4 @@ export default function ContentDashboard() {
     </div>
   );
 }
+

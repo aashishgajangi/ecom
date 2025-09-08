@@ -100,10 +100,10 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
-            {sortedNavigation.map((item) => (
+            {sortedNavigation.map((item, index) => (
               <Link
-                key={item.url}
-                href={item.url}
+                key={item.url || `nav-item-${index}`}
+                href={item.url || '#'}
                 className="hover:text-primary-start transition-colors"
               >
                 {item.name}
@@ -200,10 +200,10 @@ const Header = () => {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <nav className="md:hidden mt-3 space-y-3">
-            {sortedNavigation.map((item) => (
+            {sortedNavigation.map((item, index) => (
               <Link
-                key={item.url}
-                href={item.url}
+                key={item.url || `mobile-nav-item-${index}`}
+                href={item.url || '#'}
                 className="block hover:text-primary-start transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >

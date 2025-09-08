@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { parseDatabaseUrl, buildPgDumpCommand, DatabaseConfig } from '@/lib/db-utils';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import fs from 'fs';
@@ -11,7 +11,7 @@ const execAsync = promisify(exec);
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -28,6 +28,18 @@ export async function POST(request: NextRequest) {
 
     const { notes } = await request.json();
 
+    // Parse database configuration
+    let dbConfig: DatabaseConfig;
+    try {
+      dbConfig = parseDatabaseUrl();
+    } catch (error) {
+      console.error('Database configuration error:', error);
+      return NextResponse.json(
+        { error: 'Database configuration error' },
+        { status: 500 }
+      );
+    }
+
     // Create backup directory if it doesn't exist
     const backupDir = path.join(process.cwd(), 'backups');
     if (!fs.existsSync(backupDir)) {
@@ -38,10 +50,17 @@ export async function POST(request: NextRequest) {
     const filename = `backup_${timestamp}.dump`;
     const filepath = path.join(backupDir, filename);
 
-    // Create database backup
-    const { stderr } = await execAsync(
-      `pg_dump -U aashish -d ecom -F c -b -v -f "${filepath}"`
-    );
+    // Create database backup using dynamic configuration
+    const backupCommand = buildPgDumpCommand(dbConfig, filepath);
+    console.log('Running backup command:', backupCommand.replace(dbConfig.password, '***'));
+
+    // Set PGPASSWORD environment variable for authentication
+    const env = { ...process.env };
+    if (dbConfig.password) {
+      env.PGPASSWORD = dbConfig.password;
+    }
+
+    const { stderr } = await execAsync(backupCommand, { env });
 
     // pg_dump writes progress to stderr even on success, so we only check if file was created
     // Check if backup file was actually created
@@ -74,17 +93,24 @@ export async function POST(request: NextRequest) {
     console.error('Backup error:', error);
     
     // Save failed backup record
-    await prisma.databaseBackup.create({
-      data: {
-        filename: 'failed_backup',
-        size: 0,
-        status: 'FAILED',
-        notes: `Error: ${error instanceof Error ? error.message : 'Unknown error'}`
-      }
-    });
+    try {
+      await prisma.databaseBackup.create({
+        data: {
+          filename: `failed_backup_${new Date().toISOString().replace(/[:.]/g, '-')}`,
+          size: 0,
+          status: 'FAILED',
+          notes: `Error: ${error instanceof Error ? error.message : 'Unknown error'}`
+        }
+      });
+    } catch (dbError) {
+      console.error('Failed to save error record:', dbError);
+    }
 
     return NextResponse.json(
-      { error: 'Failed to create database backup' },
+      { 
+        error: 'Failed to create database backup',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }
@@ -92,7 +118,7 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

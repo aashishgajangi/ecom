@@ -30,10 +30,10 @@ export default function ProfilePage() {
   useEffect(() => {
     if (session?.user) {
       setProfile({
-        id: session.user.id,
+        id: (session.user as { id: string }).id,
         email: session.user.email || "",
         name: session.user.name || "",
-        role: (session.user as any).role || "ADMIN"
+        role: (session.user as { role?: string }).role || "ADMIN"
       });
     }
   }, [session]);

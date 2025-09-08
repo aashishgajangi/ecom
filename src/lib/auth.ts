@@ -1,11 +1,11 @@
-import NextAuth, { type AuthOptions, type SessionStrategy } from "next-auth";
-import Credentials from "next-auth/providers/credentials";
+import NextAuth from "next-auth/next";
+import CredentialsProvider from "next-auth/providers/credentials";
 import * as bcrypt from "bcrypt";
 import { prisma } from "./prisma";
 
-export const authOptions: AuthOptions = {
+export const authOptions = {
   providers: [
-    Credentials({
+    CredentialsProvider({
       name: "credentials",
       credentials: {
         email: { label: "Email", type: "email" },
@@ -45,20 +45,20 @@ export const authOptions: AuthOptions = {
     }),
   ],
   session: {
-    strategy: "jwt" as SessionStrategy,
+    strategy: "jwt" as const,
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }: { token: any; user: any }) {
       if (user) {
-        token.role = (user as any).role;
+        token.role = (user as { role: string }).role;
         token.id = user.id;
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: any; token: any }) {
       if (session?.user && token) {
-        (session.user as any).id = token.id as string;
-        (session.user as any).role = token.role as string;
+        (session.user as { id: string; role: string }).id = token.id as string;
+        (session.user as { id: string; role: string }).role = token.role as string;
       }
       return session;
     },
@@ -68,4 +68,18 @@ export const authOptions: AuthOptions = {
   },
 };
 
-export const { handlers, auth, signIn, signOut } = NextAuth(authOptions);
+const nextAuth = NextAuth(authOptions);
+
+export const handlers = {
+  GET: nextAuth,
+  POST: nextAuth
+};
+
+// For App Router, we need to use getServerSession with authOptions
+import { getServerSession } from "next-auth/next";
+
+export async function auth() {
+  return await getServerSession(authOptions);
+}
+
+export { signIn, signOut } from "next-auth/react";
