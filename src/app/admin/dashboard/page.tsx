@@ -298,6 +298,12 @@ export default function AdminDashboard() {
               <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">🏢 Site Settings</h3>
               <div className="space-y-3">
                 <Link
+                  href="/admin/content/branding"
+                  className="block w-full text-left px-4 py-2 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-md text-sm font-medium hover:from-indigo-600 hover:to-indigo-700"
+                >
+                  🎨 Site Branding & Favicon
+                </Link>
+                <Link
                   href="/admin/content/footer"
                   className="block w-full text-left px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-md text-sm font-medium hover:from-green-600 hover:to-green-700"
                 >
@@ -307,7 +313,7 @@ export default function AdminDashboard() {
                   href="/admin/content/header"
                   className="block w-full text-left px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
                 >
-                  📋 Header Settings
+                  📋 Header & Logo Settings
                 </Link>
                 <Link
                   href="/admin/content/navigation"

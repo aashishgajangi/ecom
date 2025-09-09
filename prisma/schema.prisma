@@ -319,6 +319,8 @@ model BlogPost {
 model HeaderSettings {
   id         String   @id @default(cuid())
   logoText   String
+  logoImage  String?  // URL to logo image file
+  logoType   LogoType @default(TEXT) // TEXT or IMAGE or BOTH
   navigation Json
   showCart   Boolean  @default(true)
   showLogin  Boolean  @default(true)
@@ -536,4 +538,10 @@ enum DiscountType {
   FIXED_AMOUNT
   BUY_X_GET_Y
   BULK_DISCOUNT
+}
+
+enum LogoType {
+  TEXT
+  IMAGE
+  BOTH
 }

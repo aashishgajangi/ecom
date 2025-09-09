@@ -182,10 +182,16 @@ export default function ContentDashboard() {
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Configuration</h3>
             <div className="space-y-2">
               <Link
+                href="/admin/content/branding"
+                className="block w-full text-left px-3 py-2 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded font-medium hover:from-indigo-600 hover:to-indigo-700"
+              >
+                🎨 Site Branding & Favicon
+              </Link>
+              <Link
                 href="/admin/content/header"
                 className="block w-full text-left px-3 py-2 bg-white border border-gray-200 rounded text-gray-700 hover:bg-gray-50"
               >
-                Header Settings
+                Header & Logo Settings
               </Link>
               <Link
                 href="/admin/content/footer"

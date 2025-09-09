@@ -12,6 +12,8 @@ interface NavigationItem {
 interface HeaderSettings {
   id: string;
   logoText: string;
+  logoImage?: string;
+  logoType: 'TEXT' | 'IMAGE' | 'BOTH';
   navigation: NavigationItem[];
   showCart: boolean;
   showLogin: boolean;
@@ -22,6 +24,7 @@ export default function HeaderSettingsPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     fetchHeaderSettings();
@@ -105,6 +108,50 @@ export default function HeaderSettingsPage() {
     });
   };
 
+  const handleLogoUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    setMessage('');
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/admin/media', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setHeaderSettings({
+          ...headerSettings!,
+          logoImage: data.url,
+          logoType: headerSettings!.logoText ? 'BOTH' : 'IMAGE'
+        });
+        setMessage('Logo uploaded successfully!');
+      } else {
+        setMessage('Failed to upload logo');
+      }
+    } catch (error) {
+      console.error('Error uploading logo:', error);
+      setMessage('Error uploading logo');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const removeLogo = () => {
+    if (!headerSettings) return;
+    setHeaderSettings({
+      ...headerSettings,
+      logoImage: undefined,
+      logoType: 'TEXT'
+    });
+  };
+
   if (loading) {
     return (
       <div className="container-custom py-8">
@@ -134,16 +181,108 @@ export default function HeaderSettingsPage() {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Logo Text */}
-        <div>
-          <label className="block text-sm font-medium mb-2">Logo Text</label>
-          <input
-            type="text"
-            value={headerSettings.logoText}
-            onChange={(e) => setHeaderSettings({ ...headerSettings, logoText: e.target.value })}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-start focus:border-transparent"
-            placeholder="Enter logo text"
-          />
+        {/* Logo Configuration */}
+        <div className="space-y-6">
+          <h2 className="text-xl font-semibold text-gray-800">Logo Configuration</h2>
+          
+          {/* Logo Type Selection */}
+          <div>
+            <label className="block text-sm font-medium mb-2">Logo Display Type</label>
+            <div className="flex space-x-4">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="logoType"
+                  value="TEXT"
+                  checked={headerSettings.logoType === 'TEXT'}
+                  onChange={(e) => setHeaderSettings({ ...headerSettings, logoType: e.target.value as 'TEXT' | 'IMAGE' | 'BOTH' })}
+                  className="mr-2"
+                />
+                Text Only
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="logoType"
+                  value="IMAGE"
+                  checked={headerSettings.logoType === 'IMAGE'}
+                  onChange={(e) => setHeaderSettings({ ...headerSettings, logoType: e.target.value as 'TEXT' | 'IMAGE' | 'BOTH' })}
+                  className="mr-2"
+                />
+                Image Only
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="logoType"
+                  value="BOTH"
+                  checked={headerSettings.logoType === 'BOTH'}
+                  onChange={(e) => setHeaderSettings({ ...headerSettings, logoType: e.target.value as 'TEXT' | 'IMAGE' | 'BOTH' })}
+                  className="mr-2"
+                />
+                Text + Image
+              </label>
+            </div>
+          </div>
+
+          {/* Logo Text */}
+          {(headerSettings.logoType === 'TEXT' || headerSettings.logoType === 'BOTH') && (
+            <div>
+              <label className="block text-sm font-medium mb-2">Logo Text</label>
+              <input
+                type="text"
+                value={headerSettings.logoText}
+                onChange={(e) => setHeaderSettings({ ...headerSettings, logoText: e.target.value })}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-start focus:border-transparent"
+                placeholder="Enter logo text"
+              />
+            </div>
+          )}
+
+          {/* Logo Image Upload */}
+          {(headerSettings.logoType === 'IMAGE' || headerSettings.logoType === 'BOTH') && (
+            <div>
+              <label className="block text-sm font-medium mb-2">Logo Image</label>
+              
+              {/* Current Logo Preview */}
+              {headerSettings.logoImage && (
+                <div className="mb-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                  <p className="text-sm text-gray-600 mb-2">Current Logo:</p>
+                  <div className="flex items-center space-x-4">
+                    <img 
+                      src={headerSettings.logoImage} 
+                      alt="Current Logo" 
+                      className="h-12 w-auto object-contain border border-gray-300 rounded"
+                    />
+                    <button
+                      type="button"
+                      onClick={removeLogo}
+                      className="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600"
+                    >
+                      Remove Logo
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Upload New Logo */}
+              <div className="flex items-center space-x-4">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleLogoUpload}
+                  disabled={uploading}
+                  className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-start focus:border-transparent"
+                />
+                {uploading && (
+                  <div className="text-sm text-gray-600">Uploading...</div>
+                )}
+              </div>
+              <p className="text-xs text-gray-500 mt-1">
+                Recommended: PNG or SVG format, max height 80px for best results
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Navigation Items */}

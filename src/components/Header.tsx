@@ -12,6 +12,8 @@ interface NavigationItem {
 
 interface HeaderSettings {
   logoText: string;
+  logoImage?: string;
+  logoType?: 'TEXT' | 'IMAGE' | 'BOTH';
   navigation: NavigationItem[];
   showCart: boolean;
   showLogin: boolean;
@@ -59,9 +61,13 @@ const Header = () => {
       <header className="fixed w-full bg-white/95 backdrop-blur-sm shadow-sm z-50">
         <div className="container-custom py-3">
           <div className="flex items-center justify-between">
-            <div className="text-2xl font-bold">
-              <span className="gradient-text">Loading...</span>
+            <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>
+            <div className="hidden md:flex items-center space-x-6">
+              <div className="h-4 w-16 bg-gray-200 rounded animate-pulse"></div>
+              <div className="h-4 w-20 bg-gray-200 rounded animate-pulse"></div>
+              <div className="h-4 w-16 bg-gray-200 rounded animate-pulse"></div>
             </div>
+            <div className="h-6 w-6 bg-gray-200 rounded animate-pulse md:hidden"></div>
           </div>
         </div>
       </header>
@@ -74,7 +80,7 @@ const Header = () => {
         <div className="container-custom py-3">
           <div className="flex items-center justify-between">
             <div className="text-2xl font-bold">
-              <span className="gradient-text">Website</span>
+              <span className="gradient-text">Loading...</span>
             </div>
           </div>
         </div>
@@ -90,10 +96,22 @@ const Header = () => {
     <header className="fixed w-full bg-white/95 backdrop-blur-sm shadow-sm z-50">
       <div className="container-custom py-3">
         <div className="flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold">
-            <span className="gradient-text">
-              {headerSettings.logoText}
-            </span>
+          <Link href="/" className="flex items-center gap-3">
+            {/* Logo Image */}
+            {(headerSettings.logoType === 'IMAGE' || headerSettings.logoType === 'BOTH') && headerSettings.logoImage && (
+              <img 
+                src={headerSettings.logoImage} 
+                alt="Logo" 
+                className="h-8 md:h-10 w-auto object-contain"
+              />
+            )}
+            
+            {/* Logo Text */}
+            {(!headerSettings.logoType || headerSettings.logoType === 'TEXT' || headerSettings.logoType === 'BOTH') && (
+              <span className="text-xl md:text-2xl font-bold gradient-text">
+                {headerSettings.logoText}
+              </span>
+            )}
           </Link>
 
           {/* Desktop Navigation */}

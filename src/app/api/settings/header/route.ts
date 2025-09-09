@@ -11,6 +11,8 @@ export async function GET() {
       headerSettings = await prisma.headerSettings.create({
         data: {
           logoText: 'Nisargalahari',
+          logoImage: null,
+          logoType: 'TEXT',
           navigation: [
             { name: 'Home', url: '/', order: 1, isActive: true },
             { name: 'About', url: '/about', order: 2, isActive: true },
@@ -36,7 +38,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const { logoText, navigation, showCart, showLogin } = await request.json();
+    const { logoText, logoImage, logoType, navigation, showCart, showLogin } = await request.json();
 
     // Update or create header settings
     let headerSettings = await prisma.headerSettings.findFirst();
@@ -47,6 +49,8 @@ export async function POST(request: NextRequest) {
         where: { id: headerSettings.id },
         data: {
           logoText,
+          logoImage,
+          logoType,
           navigation,
           showCart,
           showLogin
@@ -57,6 +61,8 @@ export async function POST(request: NextRequest) {
       headerSettings = await prisma.headerSettings.create({
         data: {
           logoText,
+          logoImage,
+          logoType,
           navigation,
           showCart,
           showLogin
