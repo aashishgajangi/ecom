@@ -38,8 +38,6 @@ export default function MediaLibrary() {
   const [selectedFiles, setSelectedFiles] = useState<Set<string>>(new Set());
   const [isDragOver, setIsDragOver] = useState(false);
   const [message, setMessage] = useState('');
-  const [editingFile, setEditingFile] = useState<{ id: string; name: string } | null>(null);
-  const [loadingImages, setLoadingImages] = useState<Set<string>>(new Set());
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -171,47 +169,12 @@ export default function MediaLibrary() {
     }
   };
 
-  const handleRename = async (fileId: string, newName: string) => {
-    try {
-      const response = await fetch('/api/admin/media', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: fileId,
-          originalName: newName,
-        }),
-      });
-
-      if (response.ok) {
-        setMessage('File renamed successfully! ✅');
-        setMediaFiles(files => 
-          files.map(f => f.id === fileId ? { ...f, originalName: newName } : f)
-        );
-        setEditingFile(null);
-      } else {
-        const error = await response.json();
-        setMessage(`Rename failed: ${error.error} ❌`);
-      }
-    } catch (error) {
-      console.error('Rename error:', error);
-      setMessage('Rename failed ❌');
-    }
-  };
 
   const copyToClipboard = (url: string) => {
     navigator.clipboard.writeText(url);
     setMessage('URL copied to clipboard! 📋');
   };
 
-  const formatFileSize = (bytes: number): string => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  };
 
   const filteredFiles = mediaFiles.filter(file =>
     file.originalName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -246,7 +209,7 @@ export default function MediaLibrary() {
       setMessage(`${selectedFiles.size} file(s) deleted successfully! ✅`);
       fetchMediaFiles();
       setSelectedFiles(new Set());
-    } catch (error) {
+    } catch {
       setMessage('Bulk delete failed ❌');
     }
   };
@@ -359,10 +322,12 @@ export default function MediaLibrary() {
                   <div className="mt-2">
                     <strong>Test Image Preview:</strong>
                     <div className="mt-1 border border-gray-300 rounded" style={{ width: '100px', height: '100px', overflow: 'hidden' }}>
-                      <img 
+                      <Image 
                         src={mediaFiles[0]?.url} 
                         alt="Test"
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        width={100}
+                        height={100}
+                        style={{ objectFit: 'cover' }}
                         onLoad={() => console.log('🎯 Debug test image loaded')}
                         onError={() => console.log('💥 Debug test image failed')}
                       />
@@ -455,13 +420,14 @@ export default function MediaLibrary() {
 
                 {/* Image - Exact same approach as working test image */}
                 <div 
-                  className="border border-gray-300 rounded mb-2" 
+                  className="border border-gray-300 rounded mb-2 relative" 
                   style={{ width: '100%', height: '150px', overflow: 'hidden' }}
                 >
-                  <img 
+                  <Image 
                     src={file.url} 
                     alt={file.originalName}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    fill
+                    style={{ objectFit: 'cover' }}
                     onLoad={() => console.log('🎯 SIMPLE image loaded:', file.originalName)}
                     onError={() => console.log('💥 SIMPLE image failed:', file.originalName)}
                   />
@@ -481,13 +447,6 @@ export default function MediaLibrary() {
                     title="Copy URL"
                   >
                     📋
-                  </button>
-                  <button
-                    onClick={() => setEditingFile({ id: file.id, name: file.originalName })}
-                    className="flex-1 px-2 py-1 bg-gray-500 text-white text-xs rounded hover:bg-gray-600"
-                    title="Rename"
-                  >
-                    ✏️
                   </button>
                   <button
                     onClick={() => handleDelete(file.id)}

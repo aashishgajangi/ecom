@@ -7,7 +7,7 @@ import StructuredContentRenderer from './StructuredContentRenderer';
 interface PageSection {
   id: string;
   type: 'hero' | 'text' | 'image' | 'gallery' | 'features' | 'contact' | 'cta';
-  content: any;
+  content: Record<string, unknown>;
   order: number;
 }
 

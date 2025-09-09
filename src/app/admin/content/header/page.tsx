@@ -68,7 +68,7 @@ export default function HeaderSettingsPage() {
     }
   };
 
-  const updateNavigationItem = (index: number, field: keyof NavigationItem, value: any) => {
+  const updateNavigationItem = (index: number, field: keyof NavigationItem, value: string | number | boolean) => {
     if (!headerSettings) return;
     
     const updatedNavigation = [...headerSettings.navigation];

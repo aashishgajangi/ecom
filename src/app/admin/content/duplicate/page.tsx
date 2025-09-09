@@ -94,7 +94,7 @@ export default function PageDuplicator() {
       });
 
       if (response.ok) {
-        const result = await response.json();
+        await response.json();
         alert(`Page duplicated successfully! The new page has been created as a draft.`);
         router.push('/admin/content/pages');
       } else {
@@ -234,7 +234,7 @@ export default function PageDuplicator() {
             <li>• Use this tool to quickly create similar pages based on existing content</li>
             <li>• All content, including HTML formatting, will be copied to the new page</li>
             <li>• The new page will be created as a draft for you to review and modify</li>
-            <li>• Make sure the new slug is unique and doesn't conflict with existing pages</li>
+            <li>• Make sure the new slug is unique and doesn&apos;t conflict with existing pages</li>
             <li>• You can modify the content after duplication in the page editor</li>
           </ul>
         </div>

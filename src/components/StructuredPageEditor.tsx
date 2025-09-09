@@ -6,7 +6,7 @@ import Image from 'next/image';
 interface PageSection {
   id: string;
   type: 'hero' | 'text' | 'image' | 'gallery' | 'features' | 'contact' | 'cta';
-  content: any;
+  content: Record<string, unknown>;
   order: number;
 }
 
@@ -35,7 +35,7 @@ const StructuredPageEditor = ({
 }: StructuredPageEditorProps) => {
   const [imageUploading, setImageUploading] = useState<string | null>(null);
 
-  const updateSection = (sectionId: string, newContent: any) => {
+  const updateSection = (sectionId: string, newContent: Record<string, unknown>) => {
     const updatedSections = sections.map(section =>
       section.id === sectionId
         ? { ...section, content: { ...section.content, ...newContent } }
@@ -154,13 +154,13 @@ const StructuredPageEditor = ({
           <div className="space-y-4">
             <input
               type="text"
-              value={section.content.title || ''}
+              value={String(section.content.title || '')}
               onChange={(e) => updateSection(section.id, { title: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Hero title"
             />
             <textarea
-              value={section.content.subtitle || ''}
+              value={String(section.content.subtitle || '')}
               onChange={(e) => updateSection(section.id, { subtitle: e.target.value })}
               rows={2}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -169,14 +169,14 @@ const StructuredPageEditor = ({
             <div className="grid grid-cols-2 gap-4">
               <input
                 type="text"
-                value={section.content.ctaText || ''}
+                value={String(section.content.ctaText || '')}
                 onChange={(e) => updateSection(section.id, { ctaText: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Button text"
               />
               <input
                 type="text"
-                value={section.content.ctaLink || ''}
+                value={String(section.content.ctaLink || '')}
                 onChange={(e) => updateSection(section.id, { ctaLink: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Button link"
@@ -206,13 +206,13 @@ const StructuredPageEditor = ({
           <div className="space-y-4">
             <input
               type="text"
-              value={section.content.title || ''}
+              value={String(section.content.title || '')}
               onChange={(e) => updateSection(section.id, { title: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Section title"
             />
             <textarea
-              value={section.content.text || ''}
+              value={String(section.content.text || '')}
               onChange={(e) => updateSection(section.id, { text: e.target.value })}
               rows={6}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -224,11 +224,11 @@ const StructuredPageEditor = ({
       case 'image':
         return (
           <div className="space-y-4">
-            {section.content.imageUrl && (
+            {Boolean(section.content.imageUrl) && (
               <div className="relative w-full h-48">
                 <Image
-                  src={section.content.imageUrl}
-                  alt={section.content.alt || ''}
+                  src={String(section.content.imageUrl)}
+                  alt={String(section.content.alt || '')}
                   fill
                   className="object-cover rounded-md"
                 />
@@ -246,14 +246,14 @@ const StructuredPageEditor = ({
             />
             <input
               type="text"
-              value={section.content.caption || ''}
+              value={String(section.content.caption || '')}
               onChange={(e) => updateSection(section.id, { caption: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Image caption (optional)"
             />
             <input
               type="text"
-              value={section.content.alt || ''}
+              value={String(section.content.alt || '')}
               onChange={(e) => updateSection(section.id, { alt: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Alt text for accessibility"
@@ -266,13 +266,13 @@ const StructuredPageEditor = ({
           <div className="space-y-4">
             <input
               type="text"
-              value={section.content.title || ''}
+              value={String(section.content.title || '')}
               onChange={(e) => updateSection(section.id, { title: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Features section title"
             />
             <textarea
-              value={section.content.subtitle || ''}
+              value={String(section.content.subtitle || '')}
               onChange={(e) => updateSection(section.id, { subtitle: e.target.value })}
               rows={2}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -280,14 +280,14 @@ const StructuredPageEditor = ({
             />
             <div className="space-y-3">
               <h4 className="font-medium">Features</h4>
-              {(section.content.features || []).map((feature: any, index: number) => (
+              {(section.content.features as Array<Record<string, unknown>> || []).map((feature: Record<string, unknown>, index: number) => (
                 <div key={index} className="border border-gray-200 rounded-md p-3">
                   <div className="grid grid-cols-2 gap-3">
                     <input
                       type="text"
-                      value={feature.title || ''}
+                      value={String(feature.title || '')}
                       onChange={(e) => {
-                        const newFeatures = [...section.content.features];
+                        const newFeatures = [...(Array.isArray(section.content.features) ? section.content.features as Array<Record<string, unknown>> : [])];
                         newFeatures[index] = { ...feature, title: e.target.value };
                         updateSection(section.id, { features: newFeatures });
                       }}
@@ -295,9 +295,9 @@ const StructuredPageEditor = ({
                       placeholder="Feature title"
                     />
                     <select
-                      value={feature.icon || ''}
+                      value={String(feature.icon || '')}
                       onChange={(e) => {
-                        const newFeatures = [...section.content.features];
+                        const newFeatures = [...(Array.isArray(section.content.features) ? section.content.features as Array<Record<string, unknown>> : [])];
                         newFeatures[index] = { ...feature, icon: e.target.value };
                         updateSection(section.id, { features: newFeatures });
                       }}
@@ -311,9 +311,9 @@ const StructuredPageEditor = ({
                     </select>
                   </div>
                   <textarea
-                    value={feature.description || ''}
+                    value={String(feature.description || '')}
                     onChange={(e) => {
-                      const newFeatures = [...section.content.features];
+                      const newFeatures = [...(Array.isArray(section.content.features) ? section.content.features as Array<Record<string, unknown>> : [])];
                       newFeatures[index] = { ...feature, description: e.target.value };
                       updateSection(section.id, { features: newFeatures });
                     }}
@@ -332,14 +332,14 @@ const StructuredPageEditor = ({
           <div className="space-y-4">
             <input
               type="text"
-              value={section.content.title || ''}
+              value={String(section.content.title || '')}
               onChange={(e) => updateSection(section.id, { title: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Contact section title"
             />
             <input
               type="text"
-              value={section.content.subtitle || ''}
+              value={String(section.content.subtitle || '')}
               onChange={(e) => updateSection(section.id, { subtitle: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Contact subtitle"
@@ -347,21 +347,21 @@ const StructuredPageEditor = ({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <input
                 type="email"
-                value={section.content.email || ''}
+                value={String(section.content.email || '')}
                 onChange={(e) => updateSection(section.id, { email: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Email address"
               />
               <input
                 type="tel"
-                value={section.content.phone || ''}
+                value={String(section.content.phone || '')}
                 onChange={(e) => updateSection(section.id, { phone: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Phone number"
               />
             </div>
             <textarea
-              value={section.content.address || ''}
+              value={String(section.content.address || '')}
               onChange={(e) => updateSection(section.id, { address: e.target.value })}
               rows={3}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -375,13 +375,13 @@ const StructuredPageEditor = ({
           <div className="space-y-4">
             <input
               type="text"
-              value={section.content.title || ''}
+              value={String(section.content.title || '')}
               onChange={(e) => updateSection(section.id, { title: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="CTA title"
             />
             <textarea
-              value={section.content.subtitle || ''}
+              value={String(section.content.subtitle || '')}
               onChange={(e) => updateSection(section.id, { subtitle: e.target.value })}
               rows={2}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -390,14 +390,14 @@ const StructuredPageEditor = ({
             <div className="grid grid-cols-2 gap-4">
               <input
                 type="text"
-                value={section.content.buttonText || ''}
+                value={String(section.content.buttonText || '')}
                 onChange={(e) => updateSection(section.id, { buttonText: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Button text"
               />
               <input
                 type="text"
-                value={section.content.buttonLink || ''}
+                value={String(section.content.buttonLink || '')}
                 onChange={(e) => updateSection(section.id, { buttonLink: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Button link"
@@ -480,7 +480,7 @@ const StructuredPageEditor = ({
 
       {sections.length === 0 && (
         <div className="text-center py-8 text-gray-500">
-          <p>No sections added yet. Click "Add Section" above to get started.</p>
+          <p>No sections added yet. Click &quot;Add Section&quot; above to get started.</p>
         </div>
       )}
     </div>

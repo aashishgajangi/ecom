@@ -10,13 +10,13 @@ export async function GET(
     const { id } = await params;
     const session = await auth();
     
-    if (!session?.user?.id) {
+    if (!session?.user || !(session.user as any).id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Check if user is admin
     const user = await prisma.user.findUnique({
-      where: { id: session.user.id }
+      where: { id: (session.user as any).id }
     });
 
     if (user?.role !== 'ADMIN') {
@@ -54,13 +54,13 @@ export async function PUT(
     const { id } = await params;
     const session = await auth();
     
-    if (!session?.user?.id) {
+    if (!session?.user || !(session.user as any).id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Check if user is admin
     const user = await prisma.user.findUnique({
-      where: { id: session.user.id }
+      where: { id: (session.user as any).id }
     });
 
     if (user?.role !== 'ADMIN') {
@@ -167,13 +167,13 @@ export async function DELETE(
     const { id } = await params;
     const session = await auth();
     
-    if (!session?.user?.id) {
+    if (!session?.user || !(session.user as any).id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Check if user is admin
     const user = await prisma.user.findUnique({
-      where: { id: session.user.id }
+      where: { id: (session.user as any).id }
     });
 
     if (user?.role !== 'ADMIN') {

@@ -130,7 +130,7 @@ const defaultTemplates: Template[] = [
 ];
 
 export default function ContentTemplates() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
   const [applying, setApplying] = useState(false);
@@ -247,7 +247,7 @@ export default function ContentTemplates() {
               ) : (
                 <div className="text-center text-gray-500 py-8">
                   <p>Select a template to preview its content</p>
-                  <p className="text-sm mt-2">Click "Preview" on any template to see its structure</p>
+                  <p className="text-sm mt-2">Click &quot;Preview&quot; on any template to see its structure</p>
                 </div>
               )}
             </div>

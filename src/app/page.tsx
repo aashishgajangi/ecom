@@ -1,18 +1,68 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import ReactMarkdown from 'react-markdown';
 import Hero from '@/components/Hero';
 import FeaturedProduct from '@/components/FeaturedProduct';
 import WhyChooseUs from '@/components/WhyChooseUs';
 import ServiceAreas from '@/components/ServiceAreas';
+
+interface HeroContent {
+  title: string;
+  subtitle: string;
+  ctaText: string;
+  ctaLink: string;
+}
+
+interface FeaturedProductContent {
+  title: string;
+  description: string;
+  imageUrl: string;
+  productLink: string;
+  ctaText: string;
+}
+
+interface WhyChooseUsFeature {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+interface WhyChooseUsContent {
+  title: string;
+  subtitle: string;
+  features: WhyChooseUsFeature[];
+}
+
+interface ServiceArea {
+  name: string;
+  slug: string;
+  priority: boolean;
+}
+
+interface ServiceAreasContent {
+  title: string;
+  subtitle: string;
+  ctaText: string;
+  ctaLink: string;
+  areas: ServiceArea[];
+}
+
+interface HomepageContentStructure {
+  hero: HeroContent;
+  featuredProduct: FeaturedProductContent;
+  whyChooseUs: WhyChooseUsContent;
+  serviceAreas: ServiceAreasContent;
+}
 
 interface HomepagePage {
   id: string;
   title: string;
   content: string;
   template: string;
-  metadata: Record<string, unknown>;
+  metadata: {
+    homepageContent?: HomepageContentStructure;
+    [key: string]: unknown;
+  };
 }
 
 export default function Home() {
@@ -142,7 +192,7 @@ export default function Home() {
   // Get structured content from metadata
   const homepageContent = homepage.metadata?.homepageContent;
 
-  if (homepageContent) {
+  if (homepageContent && homepageContent.hero) {
     return (
       <>
         <Hero 

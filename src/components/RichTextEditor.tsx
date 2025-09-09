@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import Image from 'next/image';
 
 interface RichTextEditorProps {
   value: string;
@@ -365,11 +366,14 @@ export default function RichTextEditor({ value, onChange, placeholder, className
                         className="border border-gray-200 rounded-lg overflow-hidden cursor-pointer hover:shadow-md transition-shadow"
                         onClick={() => insertImageFromLibrary(media.url, media.originalName)}
                       >
-                        <img
-                          src={media.url}
-                          alt={media.originalName}
-                          className="w-full h-32 object-cover"
-                        />
+                        <div className="relative w-full h-32">
+                          <Image
+                            src={media.url}
+                            alt={media.originalName}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
                         <div className="p-2">
                           <p className="text-xs font-medium truncate">{media.originalName}</p>
                           <p className="text-xs text-gray-500">

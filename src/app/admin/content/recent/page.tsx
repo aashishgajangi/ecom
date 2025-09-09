@@ -236,7 +236,7 @@ export default function RecentActivity() {
             <li>• This section shows recent content management activities</li>
             <li>• Activities include page creation, updates, and publication status changes</li>
             <li>• Use the filter to view specific types of activities</li>
-            <li>• Click "View" to quickly navigate to any page for editing</li>
+            <li>• Click &quot;View&quot; to quickly navigate to any page for editing</li>
             <li>• The statistics show an overview of your content status</li>
           </ul>
         </div>

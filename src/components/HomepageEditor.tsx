@@ -101,20 +101,20 @@ const HomepageEditor = ({ content = defaultContent, onChange, onImageUpload }: H
   const [activeSection, setActiveSection] = useState<'hero' | 'featuredProduct' | 'whyChooseUs' | 'serviceAreas'>('hero');
   const [imageUploading, setImageUploading] = useState(false);
 
-  const updateSection = (section: keyof HomepageContent, data: any) => {
+  const updateSection = (section: keyof HomepageContent, data: Partial<HomepageContent[keyof HomepageContent]>) => {
     onChange({
       ...content,
       [section]: { ...content[section], ...data }
     });
   };
 
-  const updateFeature = (index: number, feature: any) => {
+  const updateFeature = (index: number, feature: Partial<HomepageContent['whyChooseUs']['features'][0]>) => {
     const newFeatures = [...content.whyChooseUs.features];
     newFeatures[index] = { ...newFeatures[index], ...feature };
     updateSection('whyChooseUs', { features: newFeatures });
   };
 
-  const updateArea = (index: number, area: any) => {
+  const updateArea = (index: number, area: Partial<HomepageContent['serviceAreas']['areas'][0]>) => {
     const newAreas = [...content.serviceAreas.areas];
     newAreas[index] = { ...newAreas[index], ...area };
     updateSection('serviceAreas', { areas: newAreas });

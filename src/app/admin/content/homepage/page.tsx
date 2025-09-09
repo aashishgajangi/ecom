@@ -6,7 +6,7 @@ interface HomepageSettings {
   id: string;
   heroTitle: string;
   heroSubtitle: string;
-  featuredProducts: any[];
+  featuredProducts: Record<string, unknown>[];
   showFeaturedSection: boolean;
   showServicesSection: boolean;
   showTestimonials: boolean;
@@ -162,7 +162,7 @@ export default function HomepageSettingsPage() {
             <h3 className="font-semibold text-blue-800 mb-2">Coming Soon</h3>
             <p className="text-blue-700 text-sm">
               Featured products management will be integrated with the products system.
-              You'll be able to select products to feature on the homepage from the products admin panel.
+              You&apos;ll be able to select products to feature on the homepage from the products admin panel.
             </p>
           </div>
         </div>

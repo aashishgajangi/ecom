@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
 interface NavigationItem {
@@ -23,7 +22,6 @@ const Header = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [headerSettings, setHeaderSettings] = useState<HeaderSettings | null>(null);
   const [loading, setLoading] = useState(true);
-  const pathname = usePathname() || '/';
 
   useEffect(() => {
     fetchHeaderSettings();

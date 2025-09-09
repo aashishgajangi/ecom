@@ -273,8 +273,8 @@ export default function ContentCleanup() {
           <ul className="text-blue-700 text-sm space-y-1">
             <li>• <strong>Empty Pages</strong> (yellow background) have little or no content</li>
             <li>• <strong>Old Drafts</strong> (orange background) are unpublished pages older than 30 days</li>
-            <li>• Select pages using checkboxes or the "Select" button</li>
-            <li>• Use "Select All" to choose all pages for bulk operations</li>
+            <li>• Select pages using checkboxes or the &quot;Select&quot; button</li>
+            <li>• Use &quot;Select All&quot; to choose all pages for bulk operations</li>
             <li>• Always review pages before deleting - this action cannot be undone</li>
             <li>• Consider exporting important content before cleanup</li>
           </ul>

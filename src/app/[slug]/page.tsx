@@ -23,11 +23,14 @@ export default async function DynamicPage({ params }: PageProps) {
   }
 
   // Parse metadata for template options
-  const metadata = page.metadata as any || {};
-  const template = metadata.template || 'default';
-  const showHero = metadata.showHero || false;
-  const heroTitle = metadata.heroTitle;
-  const heroSubtitle = metadata.heroSubtitle;
+  const metadata = (page.metadata as Record<string, unknown>) || {};
+  const templateValue = metadata.template;
+  const template = (templateValue === 'hero' || templateValue === 'centered' || templateValue === 'wide') 
+    ? templateValue 
+    : 'default' as const;
+  const showHero = Boolean(metadata.showHero) || false;
+  const heroTitle = typeof metadata.heroTitle === 'string' ? metadata.heroTitle : undefined;
+  const heroSubtitle = typeof metadata.heroSubtitle === 'string' ? metadata.heroSubtitle : undefined;
 
   return (
     <>
@@ -38,7 +41,14 @@ export default async function DynamicPage({ params }: PageProps) {
         showHero={showHero}
         heroTitle={heroTitle}
         heroSubtitle={heroSubtitle}
-        structuredContent={metadata.structuredContent}
+        structuredContent={Array.isArray(metadata.structuredContent) ? 
+          (metadata.structuredContent as Array<any>).filter((section: any) => 
+            section && 
+            typeof section.id === 'string' &&
+            ['hero', 'text', 'image', 'gallery', 'features', 'contact', 'cta'].includes(section.type) &&
+            typeof section.content === 'object' &&
+            typeof section.order === 'number'
+          ) : undefined}
       />
       
       {/* Page Metadata Footer */}

@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 
 interface NavigationItem {
   name: string;
@@ -55,8 +54,8 @@ export default function NavigationManager() {
           const footerItems = footerData.footerSettings?.quickLinks?.[0]?.links || [];
           
           setNavigation({
-            header: headerItems.map((item: any) => ({ ...item, location: 'header' })),
-            footer: footerItems.map((item: any, index: number) => ({ 
+            header: headerItems.map((item: NavigationItem) => ({ ...item, location: 'header' })),
+            footer: footerItems.map((item: NavigationItem, index: number) => ({ 
               ...item, 
               order: index + 1, 
               isActive: true, 
@@ -115,7 +114,7 @@ export default function NavigationManager() {
     }
   };
 
-  const updateNavigationItem = (location: 'header' | 'footer', index: number, field: keyof NavigationItem, value: any) => {
+  const updateNavigationItem = (location: 'header' | 'footer', index: number, field: keyof NavigationItem, value: string | number | boolean) => {
     setNavigation(prev => ({
       ...prev,
       [location]: prev[location].map((item, i) => 
@@ -361,11 +360,11 @@ export default function NavigationManager() {
         <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
           <h3 className="text-lg font-semibold text-blue-800 mb-2">Navigation Tips</h3>
           <ul className="text-blue-700 text-sm space-y-1">
-            <li>• Use relative URLs for internal links (e.g., "/about", "/contact")</li>
-            <li>• Use full URLs for external links (e.g., "https://example.com")</li>
+            <li>• Use relative URLs for internal links (e.g., &quot;/about&quot;, &quot;/contact&quot;)</li>
+            <li>• Use full URLs for external links (e.g., &quot;https://example.com&quot;)</li>
             <li>• Header navigation appears in the main menu at the top of the page</li>
             <li>• Footer navigation appears in the quick links section of the footer</li>
-            <li>• Inactive items won't be displayed to visitors</li>
+            <li>• Inactive items won&apos;t be displayed to visitors</li>
             <li>• Use the arrow buttons to reorder navigation items</li>
           </ul>
         </div>

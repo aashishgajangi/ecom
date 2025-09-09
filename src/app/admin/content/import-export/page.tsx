@@ -2,12 +2,10 @@
 
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function ImportExport() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
+  const { status } = useSession();
   const [importing, setImporting] = useState(false);
   const [exporting, setExporting] = useState(false);
 

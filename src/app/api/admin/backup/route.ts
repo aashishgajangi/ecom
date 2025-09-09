@@ -13,13 +13,13 @@ export async function POST(request: NextRequest) {
   try {
     const session = await auth();
     
-    if (!session?.user?.id) {
+    if (!session?.user || !(session.user as any).id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Check if user is admin
     const user = await prisma.user.findUnique({
-      where: { id: session.user.id }
+      where: { id: (session.user as any).id }
     });
 
     if (user?.role !== 'ADMIN') {
@@ -120,13 +120,13 @@ export async function GET() {
   try {
     const session = await auth();
     
-    if (!session?.user?.id) {
+    if (!session?.user || !(session.user as any).id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Check if user is admin
     const user = await prisma.user.findUnique({
-      where: { id: session.user.id }
+      where: { id: (session.user as any).id }
     });
 
     if (user?.role !== 'ADMIN') {

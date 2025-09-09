@@ -6,7 +6,7 @@ import Link from 'next/link';
 interface PageSection {
   id: string;
   type: 'hero' | 'text' | 'image' | 'gallery' | 'features' | 'contact' | 'cta';
-  content: any;
+  content: Record<string, unknown>;
   order: number;
 }
 
@@ -89,7 +89,7 @@ const StructuredContentRenderer = ({ sections }: StructuredContentRendererProps)
               backgroundPosition: 'center'
             } : {}}
           >
-            {section.content.backgroundImage && (
+            {Boolean(section.content.backgroundImage) && (
               <div className="absolute inset-0 bg-black bg-opacity-40"></div>
             )}
             <div className="container-custom relative z-10">
@@ -98,22 +98,22 @@ const StructuredContentRenderer = ({ sections }: StructuredContentRendererProps)
                   section.content.backgroundImage ? 'text-white' : ''
                 }`}>
                   <span className={section.content.backgroundImage ? 'text-white' : 'gradient-text'}>
-                    {section.content.title}
+                    {String(section.content.title || '')}
                   </span>
                 </h1>
-                {section.content.subtitle && (
+                {Boolean(section.content.subtitle) && (
                   <p className={`text-xl max-w-3xl mx-auto mb-8 ${
                     section.content.backgroundImage ? 'text-gray-100' : 'text-gray-600'
                   }`}>
-                    {section.content.subtitle}
+                    {String(section.content.subtitle || '')}
                   </p>
                 )}
-                {section.content.ctaText && section.content.ctaLink && (
+                {Boolean(section.content.ctaText) && Boolean(section.content.ctaLink) && (
                   <Link 
-                    href={section.content.ctaLink}
+                    href={String(section.content.ctaLink || '')}
                     className="inline-flex items-center gap-3 px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-[#70843d] to-[#7bd63c] hover:from-[#7bd63c] hover:to-[#70843d] text-white font-semibold text-base md:text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
                   >
-                    {section.content.ctaText}
+                    {String(section.content.ctaText || '')}
                     <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
@@ -129,14 +129,14 @@ const StructuredContentRenderer = ({ sections }: StructuredContentRendererProps)
           <section key={section.id} className="py-16">
             <div className="container-custom">
               <div className="max-w-4xl mx-auto">
-                {section.content.title && (
+                {Boolean(section.content.title) && (
                   <h2 className="text-3xl md:text-4xl font-bold mb-8 gradient-text text-center">
-                    {section.content.title}
+                    {String(section.content.title || '')}
                   </h2>
                 )}
-                {section.content.text && (
+                {Boolean(section.content.text) && (
                   <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
-                    {section.content.text.split('\n').map((paragraph: string, index: number) => (
+                    {String(section.content.text || '').split('\n').map((paragraph: string, index: number) => (
                       <p key={index} className="mb-4">
                         {paragraph}
                       </p>
@@ -153,19 +153,19 @@ const StructuredContentRenderer = ({ sections }: StructuredContentRendererProps)
           <section key={section.id} className="py-16">
             <div className="container-custom">
               <div className="max-w-4xl mx-auto text-center">
-                {section.content.imageUrl && (
+                {Boolean(section.content.imageUrl) && (
                   <div className="relative w-full h-96 mb-6">
                     <Image
-                      src={section.content.imageUrl}
-                      alt={section.content.alt || ''}
+                      src={String(section.content.imageUrl || '')}
+                      alt={String(section.content.alt || '')}
                       fill
                       className="object-cover rounded-lg shadow-lg"
                     />
                   </div>
                 )}
-                {section.content.caption && (
+                {Boolean(section.content.caption) && (
                   <p className="text-gray-600 italic">
-                    {section.content.caption}
+                    {String(section.content.caption || '')}
                   </p>
                 )}
               </div>
@@ -178,20 +178,20 @@ const StructuredContentRenderer = ({ sections }: StructuredContentRendererProps)
           <section key={section.id} className="py-16 bg-gray-50">
             <div className="container-custom">
               <div className="text-center mb-12">
-                {section.content.title && (
+                {Boolean(section.content.title) && (
                   <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                    {section.content.title}
+                    {String(section.content.title || '')}
                   </h2>
                 )}
-                {section.content.subtitle && (
+                {Boolean(section.content.subtitle) && (
                   <p className="text-gray-600 max-w-2xl mx-auto">
-                    {section.content.subtitle}
+                    {String(section.content.subtitle || '')}
                   </p>
                 )}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {(section.content.features || []).map((feature: any, index: number) => (
+                {(section.content.features as Array<Record<string, unknown>> || []).map((feature: Record<string, unknown>, index: number) => (
                   <div key={index} className="bg-white p-6 rounded-lg shadow-md">
                     <div className="w-12 h-12 gradient-bg rounded-lg flex items-center justify-center mb-4">
                       <svg
@@ -200,14 +200,14 @@ const StructuredContentRenderer = ({ sections }: StructuredContentRendererProps)
                         stroke="currentColor"
                         viewBox="0 0 24 24"
                       >
-                        {getIconSvg(feature.icon)}
+                        {getIconSvg(String(feature.icon || 'check-circle'))}
                       </svg>
                     </div>
                     <h3 className="text-xl font-semibold mb-2">
-                      {feature.title}
+                      {String(feature.title || '')}
                     </h3>
                     <p className="text-gray-600">
-                      {feature.description}
+                      {String(feature.description || '')}
                     </p>
                   </div>
                 ))}
@@ -221,19 +221,19 @@ const StructuredContentRenderer = ({ sections }: StructuredContentRendererProps)
           <section key={section.id} className="py-16 bg-gray-50">
             <div className="container-custom">
               <div className="max-w-4xl mx-auto text-center">
-                {section.content.title && (
+                {Boolean(section.content.title) && (
                   <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                    {section.content.title}
+                    {String(section.content.title || '')}
                   </h2>
                 )}
-                {section.content.subtitle && (
+                {Boolean(section.content.subtitle) && (
                   <p className="text-gray-600 mb-8">
-                    {section.content.subtitle}
+                    {String(section.content.subtitle || '')}
                   </p>
                 )}
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                  {section.content.email && (
+                  {Boolean(section.content.email) && (
                     <div className="space-y-2">
                       <div className="w-12 h-12 gradient-bg rounded-lg flex items-center justify-center mx-auto mb-4">
                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -241,11 +241,11 @@ const StructuredContentRenderer = ({ sections }: StructuredContentRendererProps)
                         </svg>
                       </div>
                       <h3 className="font-semibold">Email</h3>
-                      <p className="text-gray-600">{section.content.email}</p>
+                      <p className="text-gray-600">{String(section.content.email || '')}</p>
                     </div>
                   )}
                   
-                  {section.content.phone && (
+                  {Boolean(section.content.phone) && (
                     <div className="space-y-2">
                       <div className="w-12 h-12 gradient-bg rounded-lg flex items-center justify-center mx-auto mb-4">
                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -253,11 +253,11 @@ const StructuredContentRenderer = ({ sections }: StructuredContentRendererProps)
                         </svg>
                       </div>
                       <h3 className="font-semibold">Phone</h3>
-                      <p className="text-gray-600">{section.content.phone}</p>
+                      <p className="text-gray-600">{String(section.content.phone || '')}</p>
                     </div>
                   )}
                   
-                  {section.content.address && (
+                  {Boolean(section.content.address) && (
                     <div className="space-y-2">
                       <div className="w-12 h-12 gradient-bg rounded-lg flex items-center justify-center mx-auto mb-4">
                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -266,7 +266,7 @@ const StructuredContentRenderer = ({ sections }: StructuredContentRendererProps)
                         </svg>
                       </div>
                       <h3 className="font-semibold">Address</h3>
-                      <p className="text-gray-600">{section.content.address}</p>
+                      <p className="text-gray-600">{String(section.content.address || '')}</p>
                     </div>
                   )}
                 </div>
@@ -280,22 +280,22 @@ const StructuredContentRenderer = ({ sections }: StructuredContentRendererProps)
           <section key={section.id} className="py-16 bg-gradient-to-br from-[#70843d]/10 to-[#7bd63c]/10">
             <div className="container-custom">
               <div className="max-w-4xl mx-auto text-center">
-                {section.content.title && (
+                {Boolean(section.content.title) && (
                   <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                    {section.content.title}
+                    {String(section.content.title || '')}
                   </h2>
                 )}
-                {section.content.subtitle && (
+                {Boolean(section.content.subtitle) && (
                   <p className="text-gray-600 mb-8 text-xl">
-                    {section.content.subtitle}
+                    {String(section.content.subtitle || '')}
                   </p>
                 )}
-                {section.content.buttonText && section.content.buttonLink && (
+                {Boolean(section.content.buttonText) && Boolean(section.content.buttonLink) && (
                   <Link 
-                    href={section.content.buttonLink}
+                    href={String(section.content.buttonLink || '')}
                     className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#70843d] to-[#7bd63c] hover:from-[#7bd63c] hover:to-[#70843d] text-white font-semibold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
                   >
-                    {section.content.buttonText}
+                    {String(section.content.buttonText || '')}
                     <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>

@@ -35,7 +35,7 @@ interface PageFormData {
 }
 
 function CreatePageContent() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
@@ -123,7 +123,7 @@ function CreatePageContent() {
     }
   }, [status, router]);
 
-  const handleInputChange = (field: keyof PageFormData, value: any) => {
+  const handleInputChange = (field: keyof PageFormData, value: string | boolean) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
@@ -163,7 +163,7 @@ function CreatePageContent() {
       });
 
       if (response.ok) {
-        const result = await response.json();
+        await response.json();
         setMessage(pageId ? 'Page updated successfully!' : 'Page created successfully!');
         
         // Redirect to pages list after successful operation

@@ -149,7 +149,7 @@ export default function SEOPreview({
         {focusKeyword && (
           <div className="flex items-start space-x-2 text-sm text-green-700">
             <span>✅</span>
-            <span>Focus keyword: "{focusKeyword}"</span>
+            <span>Focus keyword: &quot;{focusKeyword}&quot;</span>
           </div>
         )}
         

@@ -22,7 +22,7 @@ export async function PUT(request: NextRequest) {
   try {
     const session = await auth();
     
-    if (!session?.user?.id) {
+    if (!session?.user || !(session.user as any).id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -41,7 +41,7 @@ export async function PUT(request: NextRequest) {
     // First get user with hashed password
     const users = await executeQuery(
       'SELECT id, password FROM users WHERE id = $1',
-      [session.user.id]
+      [(session.user as any).id]
     );
 
     if (users.length === 0) {
@@ -63,7 +63,7 @@ export async function PUT(request: NextRequest) {
     // Update the password with hashed version
     await executeQuery(
       'UPDATE users SET password = $1, "updatedAt" = NOW() WHERE id = $2',
-      [hashedPassword, session.user.id]
+      [hashedPassword, (session.user as any).id]
     );
 
     return NextResponse.json({ success: true, message: 'Password updated successfully' });
