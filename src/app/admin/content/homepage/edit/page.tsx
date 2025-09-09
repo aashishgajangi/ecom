@@ -242,9 +242,21 @@ export default function HomepageTest() {
             {/* Featured Product Section Editor */}
             {activeSection === 'featuredProduct' && (
               <>
+                <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg mb-6">
+                  <h4 className="font-semibold text-blue-800 mb-2">✨ Dynamic Featured Products</h4>
+                  <p className="text-blue-700 text-sm mb-3">
+                    The homepage now automatically displays featured products from your products database! 
+                    Products marked as &quot;Featured&quot; in the admin panel will appear here automatically.
+                  </p>
+                  <div className="flex items-center gap-4 text-sm">
+                    <span className="text-blue-600">💡 <strong>To feature a product:</strong></span>
+                    <span className="text-blue-600">Go to Products → Select Product → Toggle &quot;Featured&quot; status</span>
+                  </div>
+                </div>
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    🎯 Section Title
+                    🎯 Section Title (Optional Override)
                   </label>
                   <input
                     type="text"
@@ -254,13 +266,14 @@ export default function HomepageTest() {
                       featuredProduct: { ...prev.featuredProduct, title: e.target.value }
                     }))}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Section title"
+                    placeholder="Leave empty to use dynamic title"
                   />
+                  <p className="text-xs text-gray-500 mt-1">If empty, will show &quot;Featured Product&quot; for dynamic products</p>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    📝 Description
+                    📝 Section Description (Optional Override)
                   </label>
                   <textarea
                     value={content.featuredProduct.description}
@@ -270,41 +283,47 @@ export default function HomepageTest() {
                     }))}
                     rows={3}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Product description"
+                    placeholder="Leave empty to use dynamic product descriptions"
                   />
+                  <p className="text-xs text-gray-500 mt-1">If empty, will use individual product descriptions</p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      🔘 CTA Button Text
-                    </label>
-                    <input
-                      type="text"
-                      value={content.featuredProduct.ctaText}
-                      onChange={(e) => setContent(prev => ({
-                        ...prev,
-                        featuredProduct: { ...prev.featuredProduct, ctaText: e.target.value }
-                      }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="Button text"
-                    />
-                  </div>
+                <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                  <h5 className="font-semibold text-gray-800 mb-2">🎮 Fallback Static Content</h5>
+                  <p className="text-gray-600 text-sm mb-3">These settings are used only if no featured products are found in the database.</p>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        🔘 Fallback CTA Text
+                      </label>
+                      <input
+                        type="text"
+                        value={content.featuredProduct.ctaText}
+                        onChange={(e) => setContent(prev => ({
+                          ...prev,
+                          featuredProduct: { ...prev.featuredProduct, ctaText: e.target.value }
+                        }))}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="View Product"
+                      />
+                    </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      🔗 Product Link
-                    </label>
-                    <input
-                      type="text"
-                      value={content.featuredProduct.productLink}
-                      onChange={(e) => setContent(prev => ({
-                        ...prev,
-                        featuredProduct: { ...prev.featuredProduct, productLink: e.target.value }
-                      }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="/products"
-                    />
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        🔗 Fallback Product Link
+                      </label>
+                      <input
+                        type="text"
+                        value={content.featuredProduct.productLink}
+                        onChange={(e) => setContent(prev => ({
+                          ...prev,
+                          featuredProduct: { ...prev.featuredProduct, productLink: e.target.value }
+                        }))}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="/products"
+                      />
+                    </div>
                   </div>
                 </div>
               </>
