@@ -23,6 +23,7 @@ model User {
   media         Media[]
   orders        Order[]
   pageRevisions PageRevision[]
+  productReviews ProductReview[]
 
   @@map("users")
 }
@@ -43,37 +44,108 @@ model Address {
 }
 
 model Category {
-  id          String    @id @default(cuid())
-  name        String
-  slug        String    @unique
-  description String?
-  isActive    Boolean   @default(true)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  products    Product[]
+  id           String        @id @default(cuid())
+  name         String
+  slug         String        @unique
+  description  String?
+  image        String?
+  icon         String?
+  parentId     String?
+  isActive     Boolean       @default(true)
+  order        Int           @default(0)
+  seoTitle     String?
+  seoDescription String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  products     Product[]
+  subcategories Category[]   @relation("CategoryHierarchy")
+  parentCategory Category?   @relation("CategoryHierarchy", fields: [parentId], references: [id])
 
   @@map("categories")
 }
 
 model Product {
-  id           String         @id @default(cuid())
-  name         String
-  slug         String         @unique
-  description  String
-  price        Decimal
-  comparePrice Decimal?
-  quantity     Int            @default(0)
-  isActive     Boolean        @default(true)
-  isFeatured   Boolean        @default(false)
-  categoryId   String
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  cartItems    CartItem[]
-  orderItems   OrderItem[]
-  images       ProductImage[]
-  category     Category       @relation(fields: [categoryId], references: [id])
+  id                String                @id @default(cuid())
+  name              String
+  slug              String                @unique
+  description       String
+  shortDescription  String?
+  price             Decimal
+  comparePrice      Decimal?
+  costPrice         Decimal?
+  quantity          Int                   @default(0)
+  minQuantity       Int                   @default(1)
+  weight            Decimal?
+  weightUnit        WeightUnit            @default(GRAMS)
+  dimensions        Json?                 // {length, width, height, unit}
+  isActive          Boolean               @default(true)
+  isFeatured        Boolean               @default(false)
+  isDigital         Boolean               @default(false)
+  requiresShipping  Boolean               @default(true)
+  trackInventory    Boolean               @default(true)
+  allowBackorder    Boolean               @default(false)
+  categoryId        String
+  brandId           String?
+  manufacturerId    String?
+  sku               String?               @unique
+  barcode           String?               @unique
+  nutritionChart    String?               // File path to nutrition chart
+  expiryDate        DateTime?
+  shelfLife         Int?                  // In days
+  storageInstructions String?
+  ingredients       String?
+  allergens         String?
+  certifications    String[]              // Organic, Fair Trade, etc.
+  seoTitle          String?
+  seoDescription    String?
+  seoKeywords       String?
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+  cartItems         CartItem[]
+  orderItems        OrderItem[]
+  images            ProductImage[]
+  variants          ProductVariant[]
+  tags              ProductTag[]
+  discounts         ProductDiscount[]
+  reviews           ProductReview[]
+  category          Category              @relation(fields: [categoryId], references: [id])
+  brand             Brand?                @relation(fields: [brandId], references: [id])
+  manufacturer      Manufacturer?         @relation(fields: [manufacturerId], references: [id])
 
   @@map("products")
+}
+
+model Brand {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  logo        String?
+  website     String?
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+
+  @@map("brands")
+}
+
+model Manufacturer {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  logo        String?
+  website     String?
+  address     String?
+  phone       String?
+  email       String?
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+
+  @@map("manufacturers")
 }
 
 model ProductImage {
@@ -86,6 +158,82 @@ model ProductImage {
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@map("product_images")
+}
+
+model ProductVariant {
+  id        String   @id @default(cuid())
+  productId String
+  name      String
+  sku       String?  @unique
+  price     Decimal?
+  weight    Decimal?
+  quantity  Int      @default(0)
+  isActive  Boolean  @default(true)
+  options   Json     // {color: "Red", size: "Large"}
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_variants")
+}
+
+model Tag {
+  id          String       @id @default(cuid())
+  name        String
+  slug        String       @unique
+  description String?
+  color       String?      // Hex color for display
+  isActive    Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  products    ProductTag[]
+
+  @@map("tags")
+}
+
+model ProductTag {
+  id        String  @id @default(cuid())
+  productId String
+  tagId     String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  tag       Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, tagId])
+  @@map("product_tags")
+}
+
+model ProductDiscount {
+  id          String      @id @default(cuid())
+  productId   String
+  name        String
+  type        DiscountType
+  value       Decimal     // Percentage or fixed amount
+  minQuantity Int?        @default(1)
+  maxQuantity Int?
+  startDate   DateTime?
+  endDate     DateTime?
+  isActive    Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  product     Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_discounts")
+}
+
+model ProductReview {
+  id        String   @id @default(cuid())
+  productId String
+  userId    String
+  rating    Int      // 1-5 stars
+  title     String?
+  comment   String?
+  isApproved Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("product_reviews")
 }
 
 model CartItem {
@@ -374,4 +522,18 @@ enum BlockType {
   FORM
   PRODUCT_GRID
   CATEGORY_NAV
+}
+
+enum WeightUnit {
+  GRAMS
+  KILOGRAMS
+  POUNDS
+  OUNCES
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED_AMOUNT
+  BUY_X_GET_Y
+  BULK_DISCOUNT
 }

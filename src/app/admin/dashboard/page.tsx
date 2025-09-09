@@ -217,7 +217,33 @@ export default function AdminDashboard() {
         </div>
 
         {/* Action Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white overflow-hidden shadow rounded-lg">
+            <div className="p-6">
+              <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">🛍️ E-commerce</h3>
+              <div className="space-y-3">
+                <Link
+                  href="/admin/products"
+                  className="block w-full text-left px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-md text-sm font-medium hover:from-green-600 hover:to-green-700"
+                >
+                  🛍️ Manage Products
+                </Link>
+                <Link
+                  href="/admin/products/create"
+                  className="block w-full text-left px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
+                >
+                  ➕ Add New Product
+                </Link>
+                <Link
+                  href="/admin/products/categories"
+                  className="block w-full text-left px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
+                >
+                  📂 Categories & Tags
+                </Link>
+              </div>
+            </div>
+          </div>
+
           <div className="bg-white overflow-hidden shadow rounded-lg">
             <div className="p-6">
               <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">🏠 Homepage & Content</h3>
