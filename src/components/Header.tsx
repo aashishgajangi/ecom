@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import CartIcon from './CartIcon';
 
 interface NavigationItem {
   name: string;
@@ -20,8 +22,8 @@ interface HeaderSettings {
 }
 
 const Header = () => {
+  const { data: session } = useSession();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false);
   const [headerSettings, setHeaderSettings] = useState<HeaderSettings | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -45,9 +47,6 @@ const Header = () => {
     }
   };
 
-  const toggleCart = () => {
-    setIsCartOpen(!isCartOpen);
-  };
 
   // Define the account icon for reuse across mobile and desktop
   const AccountIcon = ({ className = "h-5 w-5" }) => (
@@ -128,17 +127,9 @@ const Header = () => {
 
             {/* Cart Button */}
             {headerSettings.showCart && (
-              <div className="relative">
-                <button 
-                  onClick={toggleCart}
-                  className="flex items-center gap-1 hover:text-primary-start"
-                  aria-label="Open cart"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                  <span className="text-sm">Cart</span>
-                </button>
+              <div className="flex items-center gap-1 hover:text-primary-start">
+                <CartIcon />
+                <span className="text-sm">Cart</span>
               </div>
             )}
 
@@ -158,15 +149,7 @@ const Header = () => {
           <div className="flex items-center gap-3 md:hidden">
             {/* Mobile Cart Button */}
             {headerSettings.showCart && (
-              <button 
-                onClick={toggleCart}
-                className="hover:text-primary-start transition-colors"
-                aria-label="Open cart"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-              </button>
+              <CartIcon className="hover:text-primary-start transition-colors" />
             )}
             
             {/* Mobile Account Icon */}

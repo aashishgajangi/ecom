@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Metadata } from 'next';
+import AddToCartButton from '@/components/AddToCartButton';
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
@@ -315,25 +316,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
             )}
 
             {/* Add to Cart Section */}
-            <div className="space-y-4 pt-6 border-t">
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center border border-gray-300 rounded-lg">
-                  <button className="px-3 py-2 hover:bg-gray-100 transition-colors">-</button>
-                  <span className="px-4 py-2 border-x border-gray-300">1</span>
-                  <button className="px-3 py-2 hover:bg-gray-100 transition-colors">+</button>
-                </div>
-                
-                <button 
-                  className="flex-1 gradient-bg text-white py-3 px-6 rounded-lg font-semibold hover:opacity-90 transition-all transform hover:scale-105 shadow-lg"
-                  disabled={product.quantity === 0}
-                >
-                  {product.quantity > 0 ? 'Add to Cart' : 'Out of Stock'}
-                </button>
-              </div>
-              
-              <button className="w-full border-2 border-[#70843d] text-[#70843d] py-3 px-6 rounded-lg font-semibold hover:bg-[#70843d]/10 transition-colors">
-                Buy Now
-              </button>
+            <div className="pt-6 border-t">
+              <AddToCartButton
+                productId={product.id}
+                productName={product.name}
+                maxQuantity={product.quantity}
+                disabled={product.quantity === 0}
+              />
             </div>
 
             {/* Product Info */}
