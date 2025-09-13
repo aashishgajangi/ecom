@@ -156,7 +156,16 @@ const FeaturedProduct = ({
                     <div className="pt-2">
                       <Link 
                         href={`/products/${product.slug}`}
-                        className="inline-flex items-center gap-3 px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-[#70843d] to-[#7bd63c] hover:from-[#7bd63c] hover:to-[#70843d] text-white font-semibold text-base md:text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                        className="inline-flex items-center gap-3 px-6 py-3 md:px-8 md:py-4 text-white font-semibold text-base md:text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                        style={{ 
+                          background: 'var(--gradient-button, linear-gradient(to right, #70843d, #7bd63c))'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = 'var(--gradient-accent, linear-gradient(to right, #7bd63c, #70843d))';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = 'var(--gradient-button, linear-gradient(to right, #70843d, #7bd63c))';
+                        }}
                       >
                         View Product Details
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -238,19 +247,28 @@ const FeaturedProduct = ({
             </div>
             
             {/* Enhanced Glow Effect - Hidden on Mobile */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#70843d]/20 to-[#7bd63c]/20 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10 scale-150 hidden md:block"></div>
+            <div className="absolute inset-0 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10 scale-150 hidden md:block"
+                 style={{background: 'linear-gradient(to right, var(--color-primary-200), var(--color-secondary-200))'}}></div>
             
             {/* Floating Design Elements - Hidden on Mobile */}
-            <div className="absolute -top-4 -left-4 w-6 h-6 bg-gradient-to-r from-[#70843d]/60 to-[#7bd63c]/60 rounded-full animate-pulse hidden md:block"></div>
-            <div className="absolute -bottom-4 -right-4 w-5 h-5 bg-gradient-to-r from-[#7bd63c]/60 to-[#70843d]/60 rounded-full animate-pulse delay-1000 hidden md:block"></div>
-            <div className="absolute top-1/2 -left-6 w-3 h-3 bg-gradient-to-r from-[#70843d]/40 to-[#7bd63c]/40 rounded-full animate-pulse delay-500 hidden md:block"></div>
-            <div className="absolute top-1/2 -right-6 w-4 h-4 bg-gradient-to-r from-[#7bd63c]/40 to-[#70843d]/40 rounded-full animate-pulse delay-1500 hidden md:block"></div>
+            <div className="absolute -top-4 -left-4 w-6 h-6 rounded-full animate-pulse hidden md:block"
+                 style={{background: 'linear-gradient(to right, var(--color-primary-400), var(--color-secondary-400))'}}></div>
+            <div className="absolute -bottom-4 -right-4 w-5 h-5 rounded-full animate-pulse delay-1000 hidden md:block"
+                 style={{background: 'linear-gradient(to right, var(--color-secondary-400), var(--color-primary-400))'}}></div>
+            <div className="absolute top-1/2 -left-6 w-3 h-3 rounded-full animate-pulse delay-500 hidden md:block"
+                 style={{background: 'linear-gradient(to right, var(--color-primary-300), var(--color-secondary-300))'}}></div>
+            <div className="absolute top-1/2 -right-6 w-4 h-4 rounded-full animate-pulse delay-1500 hidden md:block"
+                 style={{background: 'linear-gradient(to right, var(--color-secondary-300), var(--color-primary-300))'}}></div>
             
             {/* Corner Accents - Hidden on Mobile */}
-            <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-[#70843d]/30 rounded-tl-lg hidden md:block"></div>
-            <div className="absolute top-0 right-0 w-8 h-8 border-r-2 border-t-2 border-[#7bd63c]/30 rounded-tr-lg hidden md:block"></div>
-            <div className="absolute bottom-0 left-0 w-8 h-8 border-l-2 border-b-2 border-[#70843d]/30 rounded-bl-lg hidden md:block"></div>
-            <div className="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-[#7bd63c]/30 rounded-br-lg hidden md:block"></div>
+            <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 rounded-tl-lg hidden md:block"
+                 style={{borderColor: 'var(--color-primary-300)'}}></div>
+            <div className="absolute top-0 right-0 w-8 h-8 border-r-2 border-t-2 rounded-tr-lg hidden md:block"
+                 style={{borderColor: 'var(--color-secondary-300)'}}></div>
+            <div className="absolute bottom-0 left-0 w-8 h-8 border-l-2 border-b-2 rounded-bl-lg hidden md:block"
+                 style={{borderColor: 'var(--color-primary-300)'}}></div>
+            <div className="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 rounded-br-lg hidden md:block"
+                 style={{borderColor: 'var(--color-secondary-300)'}}></div>
           </div>
         </div>
         
@@ -258,7 +276,16 @@ const FeaturedProduct = ({
         <div className="text-center mt-6 md:mt-8">
           <Link 
             href={productLink}
-            className="inline-flex items-center gap-3 px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-[#70843d] to-[#7bd63c] hover:from-[#7bd63c] hover:to-[#70843d] text-white font-semibold text-base md:text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+            className="inline-flex items-center gap-3 px-6 py-3 md:px-8 md:py-4 text-white font-semibold text-base md:text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+            style={{ 
+              background: 'var(--gradient-button, linear-gradient(to right, #70843d, #7bd63c))'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'var(--gradient-accent, linear-gradient(to right, #7bd63c, #70843d))';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'var(--gradient-button, linear-gradient(to right, #70843d, #7bd63c))';
+            }}
           >
             {ctaText}
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

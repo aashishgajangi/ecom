@@ -52,9 +52,12 @@ const ServiceAreas = ({
               href={`/mumbai/${area.slug}`}
               className={`block p-3 md:p-4 text-center rounded-xl transition-all duration-300 ${
                 area.priority 
-                  ? 'bg-gradient-to-br from-[#70843d] to-[#7bd63c] text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1' 
+                  ? 'text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1' 
                   : 'bg-gray-50 text-gray-700 shadow-md hover:shadow-lg hover:bg-gray-100'
               }`}
+              style={area.priority ? {
+                background: 'var(--gradient-primary, var(--color-primary-500, #70843d))'
+              } : undefined}
             >
               <h3 className="font-semibold text-sm md:text-base">
                 {area.name}

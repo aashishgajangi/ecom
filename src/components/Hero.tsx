@@ -38,7 +38,16 @@ const Hero = ({
             <div className="pt-2 md:pt-4 lg:pt-6">
               <Link 
                 href={ctaLink}
-                className="group inline-flex items-center gap-2 px-5 py-2.5 md:px-6 md:py-3 lg:px-8 lg:py-4 bg-gradient-to-r from-[#70843d] to-[#7bd63c] hover:from-[#7bd63c] hover:to-[#70843d] text-white font-semibold text-sm md:text-base lg:text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                className="group inline-flex items-center gap-2 px-5 py-2.5 md:px-6 md:py-3 lg:px-8 lg:py-4 text-white font-semibold text-sm md:text-base lg:text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
+                style={{ 
+                  background: 'var(--gradient-button, var(--color-primary-500, #70843d))'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'var(--gradient-accent, var(--color-primary-600, #5a6b34))';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'var(--gradient-button, var(--color-primary-500, #70843d))';
+                }}
                 aria-label={ctaText}
               >
                 {ctaText}

@@ -111,7 +111,16 @@ const StructuredContentRenderer = ({ sections }: StructuredContentRendererProps)
                 {Boolean(section.content.ctaText) && Boolean(section.content.ctaLink) && (
                   <Link 
                     href={String(section.content.ctaLink || '')}
-                    className="inline-flex items-center gap-3 px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-[#70843d] to-[#7bd63c] hover:from-[#7bd63c] hover:to-[#70843d] text-white font-semibold text-base md:text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                    className="inline-flex items-center gap-3 px-6 py-3 md:px-8 md:py-4 text-white font-semibold text-base md:text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                    style={{ 
+                      background: 'var(--gradient-button, linear-gradient(to right, #70843d, #7bd63c))'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'var(--gradient-accent, linear-gradient(to right, #7bd63c, #70843d))';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'var(--gradient-button, linear-gradient(to right, #70843d, #7bd63c))';
+                    }}
                   >
                     {String(section.content.ctaText || '')}
                     <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -277,7 +286,13 @@ const StructuredContentRenderer = ({ sections }: StructuredContentRendererProps)
 
       case 'cta':
         return (
-          <section key={section.id} className="py-16 bg-gradient-to-br from-[#70843d]/10 to-[#7bd63c]/10">
+          <section 
+            key={section.id} 
+            className="py-16"
+            style={{
+              background: 'linear-gradient(135deg, var(--color-primary-50, rgba(112, 132, 61, 0.1)), var(--color-secondary-50, rgba(123, 214, 60, 0.1)))'
+            }}
+          >
             <div className="container-custom">
               <div className="max-w-4xl mx-auto text-center">
                 {Boolean(section.content.title) && (
@@ -293,7 +308,16 @@ const StructuredContentRenderer = ({ sections }: StructuredContentRendererProps)
                 {Boolean(section.content.buttonText) && Boolean(section.content.buttonLink) && (
                   <Link 
                     href={String(section.content.buttonLink || '')}
-                    className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#70843d] to-[#7bd63c] hover:from-[#7bd63c] hover:to-[#70843d] text-white font-semibold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                    className="inline-flex items-center gap-3 px-8 py-4 text-white font-semibold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                    style={{ 
+                      background: 'var(--gradient-button, linear-gradient(to right, #70843d, #7bd63c))'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'var(--gradient-accent, linear-gradient(to right, #7bd63c, #70843d))';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'var(--gradient-button, linear-gradient(to right, #70843d, #7bd63c))';
+                    }}
                   >
                     {String(section.content.buttonText || '')}
                     <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

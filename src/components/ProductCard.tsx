@@ -100,14 +100,29 @@ const ProductCard = ({
         {/* Brand */}
         {brand && (
           <div className="flex items-center">
-            <span className="bg-[#70843d]/10 text-[#70843d] px-2 py-1 rounded-full text-xs font-medium">
+            <span 
+              className="px-2 py-1 rounded-full text-xs font-medium"
+              style={{
+                backgroundColor: 'var(--color-primary-50, rgba(112, 132, 61, 0.1))',
+                color: 'var(--color-primary-600, #70843d)'
+              }}
+            >
               {brand.name}
             </span>
           </div>
         )}
 
         {/* Product Name */}
-        <h3 className="font-semibold text-gray-900 group-hover:text-[#70843d] transition-colors line-clamp-2">
+        <h3 
+          className="font-semibold text-gray-900 transition-colors line-clamp-2"
+          style={{'--hover-color': 'var(--color-primary-600, #70843d)'} as any}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = 'var(--color-primary-600, #70843d)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = '#111827'; // text-gray-900
+          }}
+        >
           {name}
         </h3>
 

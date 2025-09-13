@@ -65,12 +65,24 @@
 
 @layer components {
   .gradient-text {
-    @apply bg-gradient-to-r from-[#70843d] to-[#7bd63c] bg-clip-text text-transparent;
+    /* Check if gradient-primary is a solid color or gradient */
+    background: var(--gradient-primary, linear-gradient(to right, #70843d, #7bd63c));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  /* Alternative solid text class for when gradients aren't desired */
+  .solid-text {
+    color: var(--color-primary-500, #70843d);
   }
   
   /* Special gradient class for Marathi text with extended background area */
   .gradient-text-marathi {
-    @apply bg-gradient-to-r from-[#70843d] to-[#7bd63c] bg-clip-text text-transparent;
+    background: var(--gradient-primary, linear-gradient(to right, #70843d, #7bd63c));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
     /* Add padding to increase the gradient background area */
     padding-top: 0.5em;
     padding-bottom: 0.2em;
@@ -80,13 +92,15 @@
     /* Ensure the background is properly sized */
     background-size: 100% 120%;
     background-position: 0 -0.1em;
-    /* Make sure clipping only occurs at text boundaries */
-    -webkit-background-clip: text;
-    background-clip: text;
   }
   
   .gradient-bg {
-    background: linear-gradient(to right, #70843d, #7bd63c);
+    background: var(--gradient-primary, linear-gradient(to right, #70843d, #7bd63c));
+  }
+  
+  /* Smart background class that handles both solid colors and gradients */
+  .theme-bg {
+    background: var(--gradient-primary, var(--color-primary-500, #70843d));
   }
   
   .container-custom {
@@ -115,17 +129,28 @@
   }
   
   .btn-primary {
-    @apply px-6 py-3 rounded-lg text-white font-semibold hover:opacity-90 transition-opacity;
-    background: linear-gradient(to right, #70843d, #7bd63c);
+    @apply px-6 py-3 rounded-lg text-white font-semibold transition-all;
+    background: var(--gradient-button, var(--color-primary-500, #70843d));
+  }
+  
+  .btn-primary:hover {
+    background: var(--gradient-accent, var(--color-primary-600, #5a6b34));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
   
   .btn-secondary {
-    @apply px-6 py-3 rounded-lg border-2 text-gray-800 font-semibold hover:text-white transition-colors;
-    border-color: #70843d;
+    @apply px-6 py-3 rounded-lg border-2 font-semibold transition-all;
+    color: var(--color-primary-600, #70843d);
+    border-color: var(--color-primary-600, #70843d);
+    background: transparent;
   }
   
   .btn-secondary:hover {
-    background-color: #70843d;
+    background-color: var(--color-primary-600, #70843d);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
   
   .marathi-text {

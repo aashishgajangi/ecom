@@ -24,6 +24,7 @@ model User {
   orders        Order[]
   pageRevisions PageRevision[]
   productReviews ProductReview[]
+  themes        Theme[]
 
   @@map("users")
 }
@@ -544,4 +545,39 @@ enum LogoType {
   TEXT
   IMAGE
   BOTH
+}
+
+model Theme {
+  id          String       @id @default(cuid())
+  name        String
+  slug        String       @unique
+  description String?
+  isActive    Boolean      @default(false)
+  isDefault   Boolean      @default(false)
+  isSystem    Boolean      @default(false) // System themes cannot be deleted
+  colorScheme Json         // Complete color scheme object
+  typography  Json?        // Font settings
+  spacing     Json?        // Spacing/sizing settings
+  borders     Json?        // Border radius, shadows, etc.
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  createdBy   String?
+  creator     User?        @relation(fields: [createdBy], references: [id])
+  version     String       @default("1.0.0")
+  tags        String[]     // For categorization
+  preview     String?      // Preview image URL
+  themeSettings ThemeSettings[]
+  
+  @@map("themes")
+}
+
+model ThemeSettings {
+  id              String   @id @default(cuid())
+  activeThemeId   String?
+  allowUserThemes Boolean  @default(true) // Allow custom themes
+  enableDarkMode  Boolean  @default(true)
+  updatedAt       DateTime @updatedAt
+  activeTheme     Theme?   @relation(fields: [activeThemeId], references: [id])
+  
+  @@map("theme_settings")
 }

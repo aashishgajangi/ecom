@@ -165,7 +165,7 @@ const AddToCartButton = ({
         <button 
           onClick={handleAddToCart}
           disabled={loading || maxQuantity === 0}
-          className="flex-1 gradient-bg text-white py-3 px-6 rounded-lg font-semibold hover:opacity-90 transition-all transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:transform-none"
+          className="flex-1 btn-primary shadow-lg disabled:opacity-50 disabled:transform-none"
         >
           {loading ? 'Adding...' : 'Add to Cart'}
         </button>
@@ -173,7 +173,7 @@ const AddToCartButton = ({
         <button 
           onClick={handleBuyNow}
           disabled={loading || maxQuantity === 0}
-          className="flex-1 border-2 border-[#70843d] text-[#70843d] py-3 px-6 rounded-lg font-semibold hover:bg-[#70843d]/10 transition-colors disabled:opacity-50"
+          className="flex-1 btn-secondary disabled:opacity-50"
         >
           {loading ? 'Processing...' : 'Buy Now'}
         </button>
