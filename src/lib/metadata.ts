@@ -15,7 +15,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     const headerSettings = await prisma.headerSettings.findFirst();
     
     return {
-      siteName: headerSettings?.logoText || 'Nisargalahari',
+      siteName: headerSettings?.logoText || 'Ecom',
       siteDescription: 'Pure, nature-friendly products that harness the power of nature',
       logoUrl: undefined, // Will implement image logo later
       faviconUrl: '/favicon.ico'
@@ -23,7 +23,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   } catch (error) {
     console.error('Error fetching site settings:', error);
     return {
-      siteName: 'Nisargalahari',
+      siteName: 'Ecom',
       siteDescription: 'Pure, nature-friendly products that harness the power of nature',
       faviconUrl: '/favicon.ico'
     };

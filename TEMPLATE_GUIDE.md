@@ -1,7 +1,7 @@
 # Structured Content System Guide
 
 ## Overview
-The new structured content system replaces traditional rich text editing with a visual, section-based approach. Each page is built using different types of content sections that can be arranged, customized, and styled according to the Nisargalahari design guidelines.
+The new structured content system replaces traditional rich text editing with a visual, section-based approach. Each page is built using different types of content sections that can be arranged, customized, and styled according to the Ecom design guidelines.
 
 ## Key Features
 - **Visual Section Editor**: No more complex text editing - build pages with visual sections

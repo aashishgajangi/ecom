@@ -11,11 +11,11 @@ export async function GET() {
       footerSettings = await prisma.footerSettings.create({
         data: {
           companyInfo: {
-            companyName: 'Nisargalahari',
+            companyName: 'Ecom',
             description: 'Pure, nature-friendly products that harness the power of nature.',
-            phone: '+91 9324070794',
-            email: 'info@nisargalahari.com',
-            address: 'Room No. 7, Shiv Shankar Chawl, Hanuman Tekdi, Borivali East Mumbai 400 066.'
+            phone: '+1 (555) 123-4567',
+            email: 'info@ecom.com',
+            address: 'Your Business Address Here'
           },
           quickLinks: [
             {

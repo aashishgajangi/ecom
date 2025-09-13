@@ -81,7 +81,7 @@ const Footer = () => {
           {/* Company Info */}
           <div className="lg:col-span-2">
             <h3 className="text-xl font-bold mb-4 gradient-text">
-              {footerSettings.companyInfo.companyName || "Nisargalahari"}
+              {footerSettings.companyInfo.companyName || "Ecom"}
             </h3>
             <p className="text-gray-300 mb-4">
               {footerSettings.companyInfo.description}
@@ -176,7 +176,7 @@ const Footer = () => {
             ))}
           </div>
           <div className="text-center text-gray-400 text-sm mt-4">
-            © {new Date().getFullYear()} {footerSettings.companyInfo.companyName || "Nisargalahari"}. All rights reserved.
+            © {new Date().getFullYear()} {footerSettings.companyInfo.companyName || "Ecom"}. All rights reserved.
           </div>
         </div>
       </div>

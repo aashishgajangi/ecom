@@ -1,4 +1,4 @@
-# Nisargalahari E-commerce - Unified Color Scheme
+# Ecom E-commerce - Unified Color Scheme
 
 ## 🎨 Brand Color System
 
@@ -128,7 +128,7 @@ hover-effects: group-hover:text-[#70843d];
 
 ## 🎯 Brand Identity
 
-The color scheme creates a **natural, organic, and premium** feel that perfectly matches the Nisargalahari brand:
+The color scheme creates a **natural, organic, and premium** feel that perfectly matches the Ecom brand:
 
 - **#70843d** (Dark Green): Authority, trust, stability
 - **#5a9f53** (Medium Green): Growth, harmony, balance  

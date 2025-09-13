@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document outlines the design patterns and guidelines for maintaining consistency across all admin pages in the CommerceHub application. The design follows the nisargalahari-template style while accounting for Tailwind v4 differences.
+This document outlines the design patterns and guidelines for maintaining consistency across all admin pages in the Ecom application. The design follows modern ecommerce patterns while accounting for Tailwind v4 differences.
 
 ## Design Principles
 

@@ -10,7 +10,7 @@ export async function GET() {
       // Create default homepage settings
       homepageSettings = await prisma.homepageSettings.create({
         data: {
-          heroTitle: 'Welcome to Nisargalahari',
+          heroTitle: 'Welcome to Ecom',
           heroSubtitle: 'Pure, nature-friendly products that harness the power of nature',
           showFeaturedSection: true,
           showServicesSection: true,

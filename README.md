@@ -1,4 +1,4 @@
-# Nisargalahari E-commerce Platform
+# Ecom E-commerce Platform
 
 A sophisticated full-featured e-commerce platform built with Next.js 15, TypeScript, Prisma, and PostgreSQL. This platform combines powerful CMS capabilities with e-commerce functionality, featuring a comprehensive admin panel, visual content editors, and advanced media management.
 

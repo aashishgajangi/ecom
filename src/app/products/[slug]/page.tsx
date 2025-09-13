@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   const primaryImage = product.images.find(img => img.isPrimary) || product.images[0];
 
   return {
-    title: product.seoTitle || `${product.name} | Nisargalahari`,
+    title: product.seoTitle || `${product.name} | Ecom`,
     description: product.seoDescription || product.shortDescription || product.description,
     keywords: product.seoKeywords,
     openGraph: {
@@ -40,8 +40,8 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
       description: product.shortDescription || product.description,
       images: primaryImage ? [primaryImage.url] : [],
       type: 'website',
-      url: `https://www.nisargalahari.com/products/${product.slug}`,
-      siteName: 'Nisargalahari',
+      url: `https://www.ecom.com/products/${product.slug}`,
+      siteName: 'Ecom',
     },
     twitter: {
       card: 'summary_large_image',

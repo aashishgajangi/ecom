@@ -1,7 +1,7 @@
-# Nisargalahari E-commerce Platform - Technical Documentation
+# Ecom E-commerce Platform - Technical Documentation
 
 ## Project Overview
-Nisargalahari is a sophisticated full-featured e-commerce platform built with Next.js 15, featuring advanced CMS capabilities, comprehensive admin panel, visual content editors, and a complete foundation for e-commerce functionality. The platform combines content management with e-commerce in a unified, professional system.
+Ecom is a sophisticated full-featured e-commerce platform built with Next.js 15, featuring advanced CMS capabilities, comprehensive admin panel, visual content editors, and a complete foundation for e-commerce functionality. The platform combines content management with e-commerce in a unified, professional system.
 
 ## Technology Stack
 - **Frontend**: Next.js 15.5.2 with TypeScript

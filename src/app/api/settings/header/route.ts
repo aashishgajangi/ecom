@@ -10,7 +10,7 @@ export async function GET() {
       // Create default header settings
       headerSettings = await prisma.headerSettings.create({
         data: {
-          logoText: 'Nisargalahari',
+          logoText: 'Ecom',
           logoImage: null,
           logoType: 'TEXT',
           navigation: [
