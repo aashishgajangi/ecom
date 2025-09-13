@@ -64,50 +64,312 @@
 }
 
 @layer components {
+  /* === TEXT STYLES === */
   .gradient-text {
-    /* Check if gradient-primary is a solid color or gradient */
-    background: var(--gradient-primary, linear-gradient(to right, #70843d, #7bd63c));
+    background: var(--gradient-primary, linear-gradient(135deg, var(--color-primary-500, #70843d) 0%, var(--color-secondary-500, #7bd63c) 100%));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
   
-  /* Alternative solid text class for when gradients aren't desired */
   .solid-text {
     color: var(--color-primary-500, #70843d);
   }
   
-  /* Special gradient class for Marathi text with extended background area */
   .gradient-text-marathi {
-    background: var(--gradient-primary, linear-gradient(to right, #70843d, #7bd63c));
+    background: var(--gradient-primary, linear-gradient(135deg, var(--color-primary-500, #70843d) 0%, var(--color-secondary-500, #7bd63c) 100%));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    /* Add padding to increase the gradient background area */
     padding-top: 0.5em;
     padding-bottom: 0.2em;
-    /* Offset the text position to compensate for padding */
     margin-top: -0.5em;
     margin-bottom: -0.2em;
-    /* Ensure the background is properly sized */
     background-size: 100% 120%;
     background-position: 0 -0.1em;
   }
-  
+
+  /* === BACKGROUND STYLES === */
   .gradient-bg {
-    background: var(--gradient-primary, linear-gradient(to right, #70843d, #7bd63c));
+    background: var(--gradient-primary, linear-gradient(135deg, var(--color-primary-500, #70843d) 0%, var(--color-secondary-500, #7bd63c) 100%));
   }
   
-  /* Smart background class that handles both solid colors and gradients */
   .theme-bg {
     background: var(--gradient-primary, var(--color-primary-500, #70843d));
   }
+
+  .hero-bg {
+    background: var(--ui-hero-background, var(--gradient-primary, linear-gradient(135deg, #70843d 0%, #7bd63c 100%)));
+  }
+
+  .card-bg {
+    background: var(--ui-card-background, #ffffff);
+  }
+
+  /* === BUTTON STYLES === */
+  .btn-primary {
+    @apply px-6 py-3 rounded-lg text-white font-semibold transition-all;
+    background: var(--gradient-button, var(--color-primary-500, #70843d));
+  }
   
+  .btn-primary:hover {
+    background: var(--gradient-accent, var(--color-primary-600, #5a6b34));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .btn-secondary {
+    @apply px-6 py-3 rounded-lg border-2 font-semibold transition-all;
+    color: var(--ui-interactive-hover, var(--color-primary-600, #70843d));
+    border-color: var(--ui-interactive-hover, var(--color-primary-600, #70843d));
+    background: transparent;
+  }
+  
+  .btn-secondary:hover {
+    background-color: var(--ui-interactive-hover, var(--color-primary-600, #70843d));
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  /* === BADGE STYLES === */
+  .badge-sale {
+    background-color: var(--ui-badge-sale, #ef4444);
+    color: white;
+  }
+
+  .badge-featured {
+    background: linear-gradient(135deg, var(--ui-badge-featured, #f59e0b), #f97316);
+    color: white;
+  }
+
+  .badge-new {
+    background-color: var(--ui-badge-new, #22c55e);
+    color: white;
+  }
+
+  .badge-stock {
+    background-color: var(--ui-badge-stock, #22c55e);
+    color: white;
+  }
+
+  .badge-out-of-stock {
+    background-color: var(--ui-badge-outOfStock, #6b7280);
+    color: white;
+  }
+
+  /* === RATING STYLES === */
+  .rating-filled {
+    color: var(--ui-rating-filled, #fbbf24);
+  }
+
+  .rating-empty {
+    color: var(--ui-rating-empty, #d1d5db);
+  }
+
+  /* === STATUS STYLES === */
+  .status-in-stock {
+    color: var(--ui-status-inStock, #22c55e);
+  }
+
+  .status-out-of-stock {
+    color: var(--ui-status-outOfStock, #ef4444);
+  }
+
+  .status-low-stock {
+    color: var(--ui-status-lowStock, #f59e0b);
+  }
+
+  .status-processing {
+    color: var(--ui-status-processing, #3b82f6);
+  }
+
+  .status-shipped {
+    color: var(--ui-status-shipped, #8b5cf6);
+  }
+
+  .status-delivered {
+    color: var(--ui-status-delivered, #22c55e);
+  }
+
+  .status-cancelled {
+    color: var(--ui-status-cancelled, #6b7280);
+  }
+
+  /* === INTERACTIVE ELEMENT STYLES === */
+  .interactive-hover:hover {
+    color: var(--ui-interactive-hover, #70843d);
+  }
+
+  .interactive-focus:focus {
+    outline: 2px solid var(--ui-interactive-focus, #70843d);
+    outline-offset: 2px;
+  }
+
+  .interactive-disabled:disabled {
+    color: var(--ui-interactive-disabled, #9ca3af);
+    cursor: not-allowed;
+  }
+
+  /* === CARD STYLES === */
+  .card {
+    background: var(--ui-card-background, #ffffff);
+    border: 1px solid var(--ui-card-border, #e5e7eb);
+    box-shadow: var(--ui-card-shadow, 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05));
+  }
+
+  .card:hover {
+    box-shadow: var(--ui-card-hoverShadow, 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04));
+  }
+
+  /* === FORM STYLES === */
+  .form-input {
+    background: var(--ui-form-inputBackground, #ffffff);
+    border: 1px solid var(--ui-form-inputBorder, #d1d5db);
+  }
+
+  .form-input:focus {
+    border-color: var(--ui-form-inputFocus, #70843d);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(112, 132, 61, 0.1);
+  }
+
+  .form-label {
+    color: var(--ui-form-label, #374151);
+  }
+
+  .form-placeholder::placeholder {
+    color: var(--ui-form-placeholder, #9ca3af);
+  }
+
+  .form-error {
+    color: var(--ui-form-error, #ef4444);
+  }
+
+  .form-success {
+    color: var(--ui-form-success, #22c55e);
+  }
+
+  /* === NAVIGATION STYLES === */
+  .nav-bg {
+    background: var(--ui-nav-background, #ffffff);
+  }
+
+  .nav-text {
+    color: var(--ui-nav-text, #374151);
+  }
+
+  .nav-hover:hover {
+    color: var(--ui-nav-hover, #70843d);
+  }
+
+  .nav-active {
+    color: var(--ui-nav-active, #70843d);
+  }
+
+  .nav-border {
+    border-color: var(--ui-nav-border, #e5e7eb);
+  }
+
+  /* === FOOTER STYLES === */
+  .footer-bg {
+    background: var(--ui-footer-background, #f9fafb);
+  }
+
+  .footer-text {
+    color: var(--ui-footer-text, #6b7280);
+  }
+
+  .footer-link {
+    color: var(--ui-footer-link, #70843d);
+  }
+
+  .footer-link:hover {
+    color: var(--ui-footer-linkHover, #5a6b34);
+  }
+
+  .footer-border {
+    border-color: var(--ui-footer-border, #e5e7eb);
+  }
+
+  /* === HERO STYLES === */
+  .hero-bg {
+    background: var(--ui-hero-background, linear-gradient(135deg, #70843d 0%, #7bd63c 100%));
+  }
+
+  .hero-text {
+    color: var(--ui-hero-text, #ffffff);
+  }
+
+  .hero-overlay {
+    background: var(--ui-hero-overlay, rgba(0, 0, 0, 0.1));
+  }
+
+  /* === PAGINATION STYLES === */
+  .pagination-bg {
+    background: var(--ui-pagination-background, #ffffff);
+  }
+
+  .pagination-text {
+    color: var(--ui-pagination-text, #374151);
+  }
+
+  .pagination-hover:hover {
+    background: var(--ui-pagination-hover, #f3f4f6);
+  }
+
+  .pagination-active {
+    background: var(--ui-pagination-active, #70843d);
+    color: white;
+  }
+
+  .pagination-border {
+    border-color: var(--ui-pagination-border, #d1d5db);
+  }
+
+  /* === LOADING STYLES === */
+  .loading-spinner {
+    border-color: var(--ui-loading-spinner, #70843d);
+  }
+
+  .loading-bg {
+    background: var(--ui-loading-background, #f9fafb);
+  }
+
+  .loading-text {
+    color: var(--ui-loading-text, #6b7280);
+  }
+
+  /* === ALERT STYLES === */
+  .alert-info {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: var(--ui-alert-info, #3b82f6);
+    border-color: var(--ui-alert-info, #3b82f6);
+  }
+
+  .alert-warning {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: var(--ui-alert-warning, #f59e0b);
+    border-color: var(--ui-alert-warning, #f59e0b);
+  }
+
+  .alert-error {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--ui-alert-error, #ef4444);
+    border-color: var(--ui-alert-error, #ef4444);
+  }
+
+  .alert-success {
+    background-color: rgba(34, 197, 94, 0.1);
+    color: var(--ui-alert-success, #22c55e);
+    border-color: var(--ui-alert-success, #22c55e);
+  }
+
+  /* === LAYOUT UTILITIES === */
   .container-custom {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
   
-  /* Improved spacing utilities for consistent design */
   .section-padding {
     @apply py-12 md:py-16 lg:py-20;
   }
@@ -128,39 +390,12 @@
     @apply p-6 md:p-8;
   }
   
-  .btn-primary {
-    @apply px-6 py-3 rounded-lg text-white font-semibold transition-all;
-    background: var(--gradient-button, var(--color-primary-500, #70843d));
-  }
-  
-  .btn-primary:hover {
-    background: var(--gradient-accent, var(--color-primary-600, #5a6b34));
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
-  
-  .btn-secondary {
-    @apply px-6 py-3 rounded-lg border-2 font-semibold transition-all;
-    color: var(--color-primary-600, #70843d);
-    border-color: var(--color-primary-600, #70843d);
-    background: transparent;
-  }
-  
-  .btn-secondary:hover {
-    background-color: var(--color-primary-600, #70843d);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
-  
   .marathi-text {
     @apply pt-1 leading-normal;
   }
   
-  /* Specific style for Marathi headings to prevent top clipping - with minimal height impact */
   .marathi-heading {
     @apply leading-normal;
-    /* Removing extra padding/margin and just keeping transform */
     transform: translateY(2px);
   }
 }

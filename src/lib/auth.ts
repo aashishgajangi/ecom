@@ -70,6 +70,7 @@ export const authOptions = {
   pages: {
     signIn: "/admin/login",
   },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 const nextAuth = NextAuth(authOptions);

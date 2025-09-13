@@ -182,6 +182,12 @@ export default function ContentDashboard() {
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Configuration</h3>
             <div className="space-y-2">
               <Link
+                href="/admin/themes"
+                className="block w-full text-left px-3 py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded font-medium hover:from-purple-600 hover:to-purple-700"
+              >
+                🎨 Theme Management
+              </Link>
+              <Link
                 href="/admin/content/branding"
                 className="block w-full text-left px-3 py-2 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded font-medium hover:from-indigo-600 hover:to-indigo-700"
               >

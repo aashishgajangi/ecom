@@ -74,12 +74,12 @@ const ProductCard = ({
         {/* Product Badges */}
         <div className="absolute top-3 left-3 flex flex-col space-y-2">
           {hasDiscount && (
-            <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
+            <span className="badge-sale px-2 py-1 rounded-full text-xs font-semibold">
               SALE
             </span>
           )}
           {isFeatured && (
-            <span className="bg-gradient-to-r from-amber-400 to-orange-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
+            <span className="badge-featured px-2 py-1 rounded-full text-xs font-semibold">
               Featured
             </span>
           )}
@@ -88,7 +88,7 @@ const ProductCard = ({
         {/* Stock Status */}
         {quantity === 0 && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <span className="bg-gray-900 text-white px-3 py-1 rounded-full text-sm font-semibold">
+            <span className="badge-out-of-stock px-3 py-1 rounded-full text-sm font-semibold">
               Out of Stock
             </span>
           </div>
@@ -104,7 +104,7 @@ const ProductCard = ({
               className="px-2 py-1 rounded-full text-xs font-medium"
               style={{
                 backgroundColor: 'var(--color-primary-50, rgba(112, 132, 61, 0.1))',
-                color: 'var(--color-primary-600, #70843d)'
+                color: 'var(--ui-interactive-hover, #70843d)'
               }}
             >
               {brand.name}
@@ -113,16 +113,7 @@ const ProductCard = ({
         )}
 
         {/* Product Name */}
-        <h3 
-          className="font-semibold text-gray-900 transition-colors line-clamp-2"
-          style={{'--hover-color': 'var(--color-primary-600, #70843d)'} as any}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = 'var(--color-primary-600, #70843d)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = '#111827'; // text-gray-900
-          }}
-        >
+        <h3 className="font-semibold text-gray-900 interactive-hover transition-colors line-clamp-2">
           {name}
         </h3>
 
@@ -141,7 +132,7 @@ const ProductCard = ({
                 <svg
                   key={i}
                   className={`w-4 h-4 ${
-                    i < Math.floor(averageRating) ? 'text-yellow-400' : 'text-gray-300'
+                    i < Math.floor(averageRating) ? 'rating-filled' : 'rating-empty'
                   }`}
                   fill="currentColor"
                   viewBox="0 0 20 20"
@@ -178,7 +169,7 @@ const ProductCard = ({
 
         {/* Sales Info */}
         {totalSales > 0 && (
-          <div className="text-xs text-[#70843d] font-medium">
+          <div className="text-xs font-medium" style={{ color: 'var(--ui-interactive-hover, #70843d)' }}>
             {totalSales} sold
           </div>
         )}

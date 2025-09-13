@@ -195,15 +195,15 @@ function RegisterForm() {
                 name="terms"
                 type="checkbox"
                 required
-                className="h-4 w-4 text-[#70843d] focus:ring-[#70843d] border-gray-300 rounded"
+                className="h-4 w-4 border-gray-300 rounded form-input"
               />
               <label htmlFor="terms" className="ml-2 block text-sm text-gray-700">
                 I agree to the{' '}
-                <Link href="/terms" className="text-[#70843d] hover:text-[#70843d]/80">
+                <Link href="/terms" className="interactive-hover">
                   Terms of Service
                 </Link>{' '}
                 and{' '}
-                <Link href="/privacy" className="text-[#70843d] hover:text-[#70843d]/80">
+                <Link href="/privacy" className="interactive-hover">
                   Privacy Policy
                 </Link>
               </label>
@@ -232,7 +232,7 @@ function RegisterForm() {
           <div className="mt-6 text-center">
             <Link
               href="/auth/login"
-              className="inline-flex items-center px-6 py-3 border-2 border-[#70843d] text-[#70843d] rounded-lg font-semibold hover:bg-[#70843d]/10 transition-colors"
+              className="inline-flex items-center px-6 py-3 border-2 rounded-lg font-semibold transition-colors btn-secondary"
             >
               Sign in instead
             </Link>

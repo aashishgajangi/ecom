@@ -77,7 +77,7 @@ const ServiceAreas = ({
           </p>
           <Link
             href={ctaLink}
-            className="inline-flex items-center gap-2 md:gap-3 px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-[#70843d] to-[#7bd63c] text-white font-semibold text-sm md:text-base rounded-xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+            className="inline-flex items-center gap-2 md:gap-3 px-6 py-3 md:px-8 md:py-4 text-white font-semibold text-sm md:text-base rounded-xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 gradient-bg"
           >
             {ctaText}
             <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

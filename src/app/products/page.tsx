@@ -152,7 +152,7 @@ export default function ProductsPage() {
                   placeholder="Search products..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#70843d] focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-2 form-input rounded-lg interactive-focus"
                 />
                 <svg className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -179,7 +179,7 @@ export default function ProductsPage() {
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#70843d] focus:border-transparent"
+                className="px-3 py-2 form-input rounded-lg interactive-focus"
               >
                 <option value="">All Categories</option>
                 {categories.map((category) => (
@@ -193,7 +193,7 @@ export default function ProductsPage() {
               <select
                 value={selectedBrand}
                 onChange={(e) => setSelectedBrand(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#70843d] focus:border-transparent"
+                className="px-3 py-2 form-input rounded-lg interactive-focus"
               >
                 <option value="">All Brands</option>
                 {brands.map((brand) => (
@@ -207,7 +207,7 @@ export default function ProductsPage() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#70843d] focus:border-transparent"
+                className="px-3 py-2 form-input rounded-lg interactive-focus"
               >
                 <option value="featured">Featured</option>
                 <option value="newest">Newest</option>
@@ -281,12 +281,12 @@ export default function ProductsPage() {
                     {/* Product Badges */}
                     <div className="absolute top-3 left-3 flex flex-col space-y-2">
                       {product.hasDiscount && (
-                        <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
+                        <span className="badge-sale px-2 py-1 rounded-full text-xs font-semibold">
                           SALE
                         </span>
                       )}
                       {product.isFeatured && (
-                        <span className="bg-gradient-to-r from-amber-400 to-orange-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
+                        <span className="badge-featured px-2 py-1 rounded-full text-xs font-semibold">
                           Featured
                         </span>
                       )}
@@ -295,7 +295,7 @@ export default function ProductsPage() {
                     {/* Stock Status */}
                     {product.quantity === 0 && (
                       <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                        <span className="bg-gray-900 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                        <span className="badge-out-of-stock px-3 py-1 rounded-full text-sm font-semibold">
                           Out of Stock
                         </span>
                       </div>
@@ -307,14 +307,20 @@ export default function ProductsPage() {
                     {/* Brand */}
                     {product.brand && (
                       <div className="flex items-center">
-                        <span className="bg-[#70843d]/10 text-[#70843d] px-2 py-1 rounded-full text-xs font-medium">
+                        <span 
+                          className="px-2 py-1 rounded-full text-xs font-medium"
+                          style={{
+                            backgroundColor: 'var(--color-primary-50, rgba(112, 132, 61, 0.1))',
+                            color: 'var(--ui-interactive-hover, #70843d)'
+                          }}
+                        >
                           {product.brand.name}
                         </span>
                       </div>
                     )}
 
                     {/* Product Name */}
-                    <h3 className="font-semibold text-gray-900 group-hover:text-[#70843d] transition-colors line-clamp-2">
+                    <h3 className="font-semibold text-gray-900 interactive-hover transition-colors line-clamp-2">
                       {product.name}
                     </h3>
 
@@ -326,7 +332,7 @@ export default function ProductsPage() {
                             <svg
                               key={i}
                               className={`w-4 h-4 ${
-                                i < Math.floor(product.averageRating) ? 'text-yellow-400' : 'text-gray-300'
+                                i < Math.floor(product.averageRating) ? 'rating-filled' : 'rating-empty'
                               }`}
                               fill="currentColor"
                               viewBox="0 0 20 20"
@@ -358,7 +364,7 @@ export default function ProductsPage() {
 
                     {/* Sales Info */}
                     {product.totalSales > 0 && (
-                      <div className="text-xs text-[#70843d] font-medium">
+                      <div className="text-xs font-medium" style={{ color: 'var(--ui-interactive-hover, #70843d)' }}>
                         {product.totalSales} sold
                       </div>
                     )}
@@ -386,8 +392,8 @@ export default function ProductsPage() {
                       onClick={() => setPage(pageNum)}
                       className={`px-4 py-2 border rounded-lg transition-colors ${
                         pageNum === page
-                          ? 'gradient-bg text-white border-[#70843d]'
-                          : 'border-gray-300 hover:bg-gray-50'
+                          ? 'pagination-active border-current'
+                          : 'pagination-border pagination-hover'
                       }`}
                     >
                       {pageNum}

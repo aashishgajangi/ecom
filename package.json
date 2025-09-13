@@ -1,11 +1,11 @@
 {
-  "name": "ecom",
+  "name": "hangoutcakes-ecom",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3005",
+    "dev": "next dev -p 3011",
     "build": "next build",
-    "start": "next start -p 3005",
+    "start": "next start -p 3011",
     "lint": "eslint",
     "create-admin": "node scripts/create-admin.js"
   },

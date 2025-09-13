@@ -70,7 +70,11 @@ export async function POST(request: NextRequest) {
   try {
     const session = await auth();
     
+    console.log('Theme POST - Session:', session);
+    console.log('Theme POST - Headers:', request.headers.get('cookie'));
+    
     if (!session?.user || !(session.user as any).id) {
+      console.log('Theme POST - No session or user ID');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -79,7 +83,10 @@ export async function POST(request: NextRequest) {
       where: { id: (session.user as any).id }
     });
 
+    console.log('Theme POST - User from DB:', user);
+
     if (user?.role !== 'ADMIN') {
+      console.log('Theme POST - User role is not ADMIN:', user?.role);
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
     }
 

@@ -127,7 +127,7 @@ function LoginForm() {
                   id="remember-me"
                   name="remember-me"
                   type="checkbox"
-                  className="h-4 w-4 text-[#70843d] focus:ring-[#70843d] border-gray-300 rounded"
+                  className="h-4 w-4 border-gray-300 rounded form-input"
                 />
                 <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
                   Remember me
@@ -136,7 +136,7 @@ function LoginForm() {
 
               <Link
                 href="/auth/forgot-password"
-                className="text-sm text-[#70843d] hover:text-[#70843d]/80 transition-colors"
+                className="text-sm interactive-hover transition-colors"
               >
                 Forgot password?
               </Link>
@@ -165,7 +165,7 @@ function LoginForm() {
           <div className="mt-6 text-center">
             <Link
               href="/auth/register"
-              className="inline-flex items-center px-6 py-3 border-2 border-[#70843d] text-[#70843d] rounded-lg font-semibold hover:bg-[#70843d]/10 transition-colors"
+              className="inline-flex items-center px-6 py-3 border-2 rounded-lg font-semibold transition-colors btn-secondary"
             >
               Create new account
             </Link>

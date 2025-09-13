@@ -112,7 +112,13 @@ const FeaturedProduct = ({
                   <div className="space-y-4 md:space-y-6">
                     {/* Category & Brand */}
                     <div className="flex flex-wrap items-center gap-2 text-sm">
-                      <span className="px-3 py-1 bg-[#70843d]/10 text-[#70843d] rounded-full font-medium">
+                      <span 
+                        className="px-3 py-1 rounded-full font-medium"
+                        style={{
+                          backgroundColor: 'var(--color-primary-50, rgba(112, 132, 61, 0.1))',
+                          color: 'var(--ui-interactive-hover, #70843d)'
+                        }}
+                      >
                         {product.category}
                       </span>
                       {product.brand && (
@@ -134,7 +140,10 @@ const FeaturedProduct = ({
                     
                     {/* Price */}
                     <div className="flex items-center gap-3">
-                      <span className="text-2xl md:text-3xl font-bold text-[#70843d]">
+                      <span 
+                        className="text-2xl md:text-3xl font-bold"
+                        style={{ color: 'var(--ui-interactive-hover, #70843d)' }}
+                      >
                         ₹{product.finalPrice.toFixed(2)}
                       </span>
                       {product.discountPercentage && (

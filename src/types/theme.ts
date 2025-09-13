@@ -138,6 +138,112 @@ export interface ColorScheme {
     button: string;
     accent: string;
   };
+
+  // UI Component Colors
+  ui: {
+    // Badge colors
+    badge: {
+      sale: string;
+      featured: string;
+      new: string;
+      stock: string;
+      outOfStock: string;
+    };
+    
+    // Rating colors
+    rating: {
+      filled: string;
+      empty: string;
+    };
+    
+    // Status colors
+    status: {
+      inStock: string;
+      outOfStock: string;
+      lowStock: string;
+      processing: string;
+      shipped: string;
+      delivered: string;
+      cancelled: string;
+    };
+    
+    // Interactive element colors
+    interactive: {
+      hover: string;
+      active: string;
+      disabled: string;
+      focus: string;
+      selected: string;
+    };
+    
+    // Card colors
+    card: {
+      background: string;
+      border: string;
+      shadow: string;
+      hoverShadow: string;
+    };
+    
+    // Form colors
+    form: {
+      inputBackground: string;
+      inputBorder: string;
+      inputFocus: string;
+      label: string;
+      placeholder: string;
+      error: string;
+      success: string;
+    };
+    
+    // Navigation colors
+    nav: {
+      background: string;
+      text: string;
+      hover: string;
+      active: string;
+      border: string;
+    };
+    
+    // Footer colors
+    footer: {
+      background: string;
+      text: string;
+      link: string;
+      linkHover: string;
+      border: string;
+    };
+    
+    // Hero section colors
+    hero: {
+      background: string;
+      text: string;
+      overlay: string;
+    };
+    
+    // Pagination colors
+    pagination: {
+      background: string;
+      text: string;
+      hover: string;
+      active: string;
+      border: string;
+    };
+    
+    // Loading colors
+    loading: {
+      spinner: string;
+      background: string;
+      text: string;
+    };
+    
+    // Alert colors
+    alert: {
+      info: string;
+      warning: string;
+      error: string;
+      success: string;
+    };
+  };
 }
 
 export interface Typography {
@@ -408,6 +514,112 @@ export const DEFAULT_COLOR_SCHEME: ColorScheme = {
     card: 'linear-gradient(135deg, #ffffff 0%, #f9fafb 100%)',
     button: 'linear-gradient(135deg, #70843d 0%, #7bd63c 100%)',
     accent: 'linear-gradient(135deg, #7bd63c 0%, #70843d 100%)'
+  },
+
+  // UI Component Colors
+  ui: {
+    // Badge colors
+    badge: {
+      sale: '#ef4444',
+      featured: '#f59e0b',
+      new: '#22c55e',
+      stock: '#22c55e',
+      outOfStock: '#6b7280'
+    },
+    
+    // Rating colors
+    rating: {
+      filled: '#fbbf24',
+      empty: '#d1d5db'
+    },
+    
+    // Status colors
+    status: {
+      inStock: '#22c55e',
+      outOfStock: '#ef4444',
+      lowStock: '#f59e0b',
+      processing: '#3b82f6',
+      shipped: '#8b5cf6',
+      delivered: '#22c55e',
+      cancelled: '#6b7280'
+    },
+    
+    // Interactive element colors
+    interactive: {
+      hover: '#70843d',
+      active: '#5a6b34',
+      disabled: '#9ca3af',
+      focus: '#70843d',
+      selected: '#70843d'
+    },
+    
+    // Card colors
+    card: {
+      background: '#ffffff',
+      border: '#e5e7eb',
+      shadow: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05)',
+      hoverShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04)'
+    },
+    
+    // Form colors
+    form: {
+      inputBackground: '#ffffff',
+      inputBorder: '#d1d5db',
+      inputFocus: '#70843d',
+      label: '#374151',
+      placeholder: '#9ca3af',
+      error: '#ef4444',
+      success: '#22c55e'
+    },
+    
+    // Navigation colors
+    nav: {
+      background: '#ffffff',
+      text: '#374151',
+      hover: '#70843d',
+      active: '#70843d',
+      border: '#e5e7eb'
+    },
+    
+    // Footer colors
+    footer: {
+      background: '#f9fafb',
+      text: '#6b7280',
+      link: '#70843d',
+      linkHover: '#5a6b34',
+      border: '#e5e7eb'
+    },
+    
+    // Hero section colors
+    hero: {
+      background: 'linear-gradient(135deg, #70843d 0%, #7bd63c 100%)',
+      text: '#ffffff',
+      overlay: 'rgba(0, 0, 0, 0.1)'
+    },
+    
+    // Pagination colors
+    pagination: {
+      background: '#ffffff',
+      text: '#374151',
+      hover: '#f3f4f6',
+      active: '#70843d',
+      border: '#d1d5db'
+    },
+    
+    // Loading colors
+    loading: {
+      spinner: '#70843d',
+      background: '#f9fafb',
+      text: '#6b7280'
+    },
+    
+    // Alert colors
+    alert: {
+      info: '#3b82f6',
+      warning: '#f59e0b',
+      error: '#ef4444',
+      success: '#22c55e'
+    }
   }
 };
 

@@ -132,11 +132,11 @@ export default async function OrderPage({ params, searchParams }: OrderPageProps
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">Order Details</h1>
               <nav className="flex text-sm text-gray-600">
-                <Link href="/" className="hover:text-[#70843d] transition-colors">
+                <Link href="/" className="interactive-hover transition-colors">
                   Home
                 </Link>
                 <span className="mx-2">/</span>
-                <Link href="/orders" className="hover:text-[#70843d] transition-colors">
+                <Link href="/orders" className="interactive-hover transition-colors">
                   Orders
                 </Link>
                 <span className="mx-2">/</span>
@@ -146,7 +146,7 @@ export default async function OrderPage({ params, searchParams }: OrderPageProps
             
             <Link
               href="/orders"
-              className="text-[#70843d] hover:text-[#70843d]/80 font-medium transition-colors"
+              className="interactive-hover font-medium transition-colors"
             >
               ← All Orders
             </Link>
@@ -235,14 +235,20 @@ export default async function OrderPage({ params, searchParams }: OrderPageProps
                     <div className="flex-grow">
                       {/* Brand */}
                       {item.product.brand && (
-                        <span className="inline-block bg-[#70843d]/10 text-[#70843d] px-2 py-1 rounded-full text-xs font-medium mb-2">
+                        <span 
+                          className="inline-block px-2 py-1 rounded-full text-xs font-medium mb-2"
+                          style={{
+                            backgroundColor: 'var(--color-primary-50, rgba(112, 132, 61, 0.1))',
+                            color: 'var(--ui-interactive-hover, #70843d)'
+                          }}
+                        >
                           {item.product.brand.name}
                         </span>
                       )}
 
                       {/* Product Name */}
                       <h3 className="font-semibold text-gray-900 mb-1">
-                        <Link href={`/products/${item.product.slug}`} className="hover:text-[#70843d] transition-colors">
+                        <Link href={`/products/${item.product.slug}`} className="interactive-hover transition-colors">
                           {item.product.name}
                         </Link>
                       </h3>
@@ -325,17 +331,22 @@ export default async function OrderPage({ params, searchParams }: OrderPageProps
             </div>
 
             {/* Contact Support */}
-            <div className="bg-gradient-to-br from-[#70843d]/5 to-[#7bd63c]/10 rounded-2xl p-6">
+            <div 
+              className="rounded-2xl p-6"
+              style={{
+                background: 'linear-gradient(135deg, rgba(112, 132, 61, 0.05) 0%, rgba(123, 214, 60, 0.1) 100%)'
+              }}
+            >
               <h3 className="text-lg font-bold text-gray-900 mb-4">Need Help?</h3>
               <div className="space-y-3 text-sm">
                 <div className="flex items-center space-x-2">
-                  <svg className="w-5 h-5 text-[#70843d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: 'var(--ui-interactive-hover, #70843d)' }}>
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                   <span>support@ecom.com</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <svg className="w-5 h-5 text-[#70843d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: 'var(--ui-interactive-hover, #70843d)' }}>
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
                   <span>+91 98765 43210</span>

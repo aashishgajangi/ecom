@@ -132,7 +132,7 @@ export default function OrdersPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">My Orders</h1>
           <nav className="flex text-sm text-gray-600">
-            <Link href="/" className="hover:text-[#70843d] transition-colors">
+            <Link href="/" className="interactive-hover transition-colors">
               Home
             </Link>
             <span className="mx-2">/</span>
@@ -227,7 +227,7 @@ export default function OrdersPage() {
                         
                         <Link
                           href={`/orders/${order.orderNumber}`}
-                          className="inline-flex items-center px-4 py-2 border-2 border-[#70843d] text-[#70843d] rounded-lg font-medium hover:bg-[#70843d]/10 transition-colors"
+                          className="inline-flex items-center px-4 py-2 border-2 rounded-lg font-medium transition-colors btn-secondary"
                         >
                           View Details
                         </Link>
@@ -263,7 +263,7 @@ export default function OrdersPage() {
 
                           <div className="flex-grow">
                             <h4 className="font-medium text-gray-900 text-sm line-clamp-2">
-                              <Link href={`/products/${item.product.slug}`} className="hover:text-[#70843d] transition-colors">
+                              <Link href={`/products/${item.product.slug}`} className="interactive-hover transition-colors">
                                 {item.product.name}
                               </Link>
                             </h4>
@@ -280,7 +280,7 @@ export default function OrdersPage() {
                       <div className="mt-4 text-center">
                         <Link
                           href={`/orders/${order.orderNumber}`}
-                          className="text-[#70843d] hover:text-[#70843d]/80 text-sm font-medium transition-colors"
+                          className="interactive-hover text-sm font-medium transition-colors"
                         >
                           View all {order.items.length} items
                         </Link>
@@ -310,7 +310,7 @@ export default function OrdersPage() {
                       onClick={() => setPage(pageNum)}
                       className={`px-4 py-2 border rounded-lg transition-colors ${
                         pageNum === page
-                          ? 'gradient-bg text-white border-[#70843d]'
+                          ? 'gradient-bg text-white pagination-active'
                           : 'border-gray-300 hover:bg-gray-50'
                       }`}
                     >

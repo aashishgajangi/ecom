@@ -122,7 +122,7 @@ export default function AdminLogin() {
             <div className="text-center">
               <Link 
                 href="/"
-                className="text-[#70843d] hover:text-[#7bd63c] transition-colors text-sm font-medium"
+                className="interactive-hover transition-colors text-sm font-medium"
               >
                 ← Back to Website
               </Link>

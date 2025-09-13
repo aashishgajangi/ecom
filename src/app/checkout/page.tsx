@@ -166,7 +166,7 @@ export default function CheckoutPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Checkout</h1>
           <nav className="flex text-sm text-gray-600">
-            <Link href="/cart" className="hover:text-[#70843d] transition-colors">
+            <Link href="/cart" className="interactive-hover transition-colors">
               Cart
             </Link>
             <span className="mx-2">/</span>
@@ -280,7 +280,7 @@ export default function CheckoutPage() {
                     value="COD"
                     checked={paymentMethod === 'COD'}
                     onChange={(e) => setPaymentMethod(e.target.value)}
-                    className="h-4 w-4 text-[#70843d] focus:ring-[#70843d] border-gray-300"
+                    className="h-4 w-4 border-gray-300 form-input"
                   />
                   <label htmlFor="cod" className="ml-3 block text-sm font-medium text-gray-700">
                     Cash on Delivery (COD)
@@ -294,7 +294,7 @@ export default function CheckoutPage() {
                     type="radio"
                     value="ONLINE"
                     disabled
-                    className="h-4 w-4 text-[#70843d] focus:ring-[#70843d] border-gray-300"
+                    className="h-4 w-4 border-gray-300 form-input"
                   />
                   <label htmlFor="online" className="ml-3 block text-sm font-medium text-gray-500">
                     Online Payment (Coming Soon)
@@ -402,9 +402,14 @@ export default function CheckoutPage() {
             </button>
 
             {/* Security Info */}
-            <div className="bg-gradient-to-br from-[#70843d]/5 to-[#7bd63c]/10 rounded-2xl p-4">
+            <div 
+              className="rounded-2xl p-4"
+              style={{
+                background: 'linear-gradient(135deg, rgba(112, 132, 61, 0.05) 0%, rgba(123, 214, 60, 0.1) 100%)'
+              }}
+            >
               <div className="flex items-center space-x-2 text-sm text-gray-700">
-                <svg className="w-5 h-5 text-[#70843d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: 'var(--ui-interactive-hover, #70843d)' }}>
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
                 <span>Your information is secure and encrypted</span>

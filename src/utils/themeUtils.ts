@@ -67,6 +67,93 @@ export function generateThemeCSS(theme: Theme): string {
     });
   }
 
+  // UI Component Colors
+  if (colorScheme.ui) {
+    // Badge colors
+    if (colorScheme.ui.badge) {
+      Object.entries(colorScheme.ui.badge).forEach(([key, value]) => {
+        css += `      --ui-badge-${key}: ${value};\n`;
+      });
+    }
+    
+    // Rating colors
+    if (colorScheme.ui.rating) {
+      Object.entries(colorScheme.ui.rating).forEach(([key, value]) => {
+        css += `      --ui-rating-${key}: ${value};\n`;
+      });
+    }
+    
+    // Status colors
+    if (colorScheme.ui.status) {
+      Object.entries(colorScheme.ui.status).forEach(([key, value]) => {
+        css += `      --ui-status-${key}: ${value};\n`;
+      });
+    }
+    
+    // Interactive colors
+    if (colorScheme.ui.interactive) {
+      Object.entries(colorScheme.ui.interactive).forEach(([key, value]) => {
+        css += `      --ui-interactive-${key}: ${value};\n`;
+      });
+    }
+    
+    // Card colors
+    if (colorScheme.ui.card) {
+      Object.entries(colorScheme.ui.card).forEach(([key, value]) => {
+        css += `      --ui-card-${key}: ${value};\n`;
+      });
+    }
+    
+    // Form colors
+    if (colorScheme.ui.form) {
+      Object.entries(colorScheme.ui.form).forEach(([key, value]) => {
+        css += `      --ui-form-${key}: ${value};\n`;
+      });
+    }
+    
+    // Navigation colors
+    if (colorScheme.ui.nav) {
+      Object.entries(colorScheme.ui.nav).forEach(([key, value]) => {
+        css += `      --ui-nav-${key}: ${value};\n`;
+      });
+    }
+    
+    // Footer colors
+    if (colorScheme.ui.footer) {
+      Object.entries(colorScheme.ui.footer).forEach(([key, value]) => {
+        css += `      --ui-footer-${key}: ${value};\n`;
+      });
+    }
+    
+    // Hero colors
+    if (colorScheme.ui.hero) {
+      Object.entries(colorScheme.ui.hero).forEach(([key, value]) => {
+        css += `      --ui-hero-${key}: ${value};\n`;
+      });
+    }
+    
+    // Pagination colors
+    if (colorScheme.ui.pagination) {
+      Object.entries(colorScheme.ui.pagination).forEach(([key, value]) => {
+        css += `      --ui-pagination-${key}: ${value};\n`;
+      });
+    }
+    
+    // Loading colors
+    if (colorScheme.ui.loading) {
+      Object.entries(colorScheme.ui.loading).forEach(([key, value]) => {
+        css += `      --ui-loading-${key}: ${value};\n`;
+      });
+    }
+    
+    // Alert colors
+    if (colorScheme.ui.alert) {
+      Object.entries(colorScheme.ui.alert).forEach(([key, value]) => {
+        css += `      --ui-alert-${key}: ${value};\n`;
+      });
+    }
+  }
+
   // Typography
   if (theme.typography) {
     const typography = theme.typography;

@@ -44,6 +44,11 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
         setAvailableThemes(data.themes || []);
         setCurrentTheme(data.activeTheme || null);
         setThemeSettings(data.settings || null);
+        
+        // Apply theme to document when first loaded
+        if (data.activeTheme) {
+          applyThemeToDocument(data.activeTheme);
+        }
       }
     } catch (error) {
       console.error('Error fetching themes:', error);
@@ -51,6 +56,35 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       setIsLoading(false);
     }
   };
+
+  // Load themes on mount
+  useEffect(() => {
+    refreshThemes();
+  }, []);
+
+  // Apply theme whenever currentTheme changes
+  useEffect(() => {
+    if (currentTheme) {
+      applyThemeToDocument(currentTheme);
+    }
+  }, [currentTheme]);
+
+  // Force theme application on mount (for SSR compatibility)
+  useEffect(() => {
+    const applyThemeOnMount = () => {
+      if (currentTheme) {
+        applyThemeToDocument(currentTheme);
+      }
+    };
+
+    // Apply immediately
+    applyThemeOnMount();
+    
+    // Also apply after a short delay to ensure DOM is ready
+    const timeoutId = setTimeout(applyThemeOnMount, 100);
+    
+    return () => clearTimeout(timeoutId);
+  }, [currentTheme]);
 
   // Switch to a different theme
   const switchTheme = async (themeId: string) => {
@@ -171,6 +205,93 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       Object.entries(colorScheme.gradients).forEach(([key, value]) => {
         root.style.setProperty(`--gradient-${key}`, value);
       });
+    }
+
+    // Apply UI component colors
+    if (colorScheme.ui) {
+      // Badge colors
+      if (colorScheme.ui.badge) {
+        Object.entries(colorScheme.ui.badge).forEach(([key, value]) => {
+          root.style.setProperty(`--ui-badge-${key}`, value);
+        });
+      }
+      
+      // Rating colors
+      if (colorScheme.ui.rating) {
+        Object.entries(colorScheme.ui.rating).forEach(([key, value]) => {
+          root.style.setProperty(`--ui-rating-${key}`, value);
+        });
+      }
+      
+      // Status colors
+      if (colorScheme.ui.status) {
+        Object.entries(colorScheme.ui.status).forEach(([key, value]) => {
+          root.style.setProperty(`--ui-status-${key}`, value);
+        });
+      }
+      
+      // Interactive colors
+      if (colorScheme.ui.interactive) {
+        Object.entries(colorScheme.ui.interactive).forEach(([key, value]) => {
+          root.style.setProperty(`--ui-interactive-${key}`, value);
+        });
+      }
+      
+      // Card colors
+      if (colorScheme.ui.card) {
+        Object.entries(colorScheme.ui.card).forEach(([key, value]) => {
+          root.style.setProperty(`--ui-card-${key}`, value);
+        });
+      }
+      
+      // Form colors
+      if (colorScheme.ui.form) {
+        Object.entries(colorScheme.ui.form).forEach(([key, value]) => {
+          root.style.setProperty(`--ui-form-${key}`, value);
+        });
+      }
+      
+      // Navigation colors
+      if (colorScheme.ui.nav) {
+        Object.entries(colorScheme.ui.nav).forEach(([key, value]) => {
+          root.style.setProperty(`--ui-nav-${key}`, value);
+        });
+      }
+      
+      // Footer colors
+      if (colorScheme.ui.footer) {
+        Object.entries(colorScheme.ui.footer).forEach(([key, value]) => {
+          root.style.setProperty(`--ui-footer-${key}`, value);
+        });
+      }
+      
+      // Hero colors
+      if (colorScheme.ui.hero) {
+        Object.entries(colorScheme.ui.hero).forEach(([key, value]) => {
+          root.style.setProperty(`--ui-hero-${key}`, value);
+        });
+      }
+      
+      // Pagination colors
+      if (colorScheme.ui.pagination) {
+        Object.entries(colorScheme.ui.pagination).forEach(([key, value]) => {
+          root.style.setProperty(`--ui-pagination-${key}`, value);
+        });
+      }
+      
+      // Loading colors
+      if (colorScheme.ui.loading) {
+        Object.entries(colorScheme.ui.loading).forEach(([key, value]) => {
+          root.style.setProperty(`--ui-loading-${key}`, value);
+        });
+      }
+      
+      // Alert colors
+      if (colorScheme.ui.alert) {
+        Object.entries(colorScheme.ui.alert).forEach(([key, value]) => {
+          root.style.setProperty(`--ui-alert-${key}`, value);
+        });
+      }
     }
 
     // Apply typography if available

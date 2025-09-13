@@ -298,6 +298,12 @@ export default function AdminDashboard() {
               <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">🏢 Site Settings</h3>
               <div className="space-y-3">
                 <Link
+                  href="/admin/themes"
+                  className="block w-full text-left px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-md text-sm font-medium hover:from-purple-600 hover:to-purple-700"
+                >
+                  🎨 Theme Management
+                </Link>
+                <Link
                   href="/admin/content/branding"
                   className="block w-full text-left px-4 py-2 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-md text-sm font-medium hover:from-indigo-600 hover:to-indigo-700"
                 >

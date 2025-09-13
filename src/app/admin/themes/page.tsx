@@ -26,7 +26,9 @@ export default function AdminThemesPage() {
 
   const fetchThemes = async () => {
     try {
-      const response = await fetch('/api/admin/themes');
+      const response = await fetch('/api/admin/themes', {
+        credentials: 'include'
+      });
       if (response.ok) {
         const data = await response.json();
         setThemes(data.themes);
@@ -46,6 +48,7 @@ export default function AdminThemesPage() {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ themeId }),
       });
 
@@ -67,6 +70,7 @@ export default function AdminThemesPage() {
     try {
       const response = await fetch(`/api/admin/themes/${themeId}`, {
         method: 'DELETE',
+        credentials: 'include',
       });
 
       if (response.ok) {
@@ -83,7 +87,9 @@ export default function AdminThemesPage() {
 
   const exportThemes = async () => {
     try {
-      const response = await fetch('/api/admin/themes/export');
+      const response = await fetch('/api/admin/themes/export', {
+        credentials: 'include'
+      });
       if (response.ok) {
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);

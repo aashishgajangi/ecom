@@ -56,7 +56,7 @@ const Footer = () => {
 
   if (loading) {
     return (
-      <footer className="bg-gray-900 text-white py-8">
+      <footer className="footer-bg text-white py-8">
         <div className="container-custom">
           <div className="text-center">Loading footer...</div>
         </div>
@@ -66,7 +66,7 @@ const Footer = () => {
 
   if (!footerSettings) {
     return (
-      <footer className="bg-gray-900 text-white py-8">
+      <footer className="footer-bg text-white py-8">
         <div className="container-custom">
           <div className="text-center">Footer settings not available</div>
         </div>
@@ -75,7 +75,7 @@ const Footer = () => {
   }
 
   return (
-    <footer className="bg-gray-900 text-white py-12">
+    <footer className="footer-bg text-white py-12">
       <div className="container-custom">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}

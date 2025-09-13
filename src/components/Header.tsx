@@ -31,6 +31,17 @@ const Header = () => {
     fetchHeaderSettings();
   }, []);
 
+  // Debug logo settings
+  useEffect(() => {
+    if (headerSettings) {
+      console.log('Header settings loaded:', {
+        logoText: headerSettings.logoText,
+        logoImage: headerSettings.logoImage,
+        logoType: headerSettings.logoType
+      });
+    }
+  }, [headerSettings]);
+
   const fetchHeaderSettings = async () => {
     try {
       const response = await fetch('/api/settings/header');
@@ -57,7 +68,7 @@ const Header = () => {
 
   if (loading) {
     return (
-      <header className="fixed w-full bg-white/95 backdrop-blur-sm shadow-sm z-50">
+      <header className="fixed w-full backdrop-blur-sm shadow-sm z-50 nav-bg">
         <div className="container-custom py-3">
           <div className="flex items-center justify-between">
             <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>
@@ -75,7 +86,7 @@ const Header = () => {
 
   if (!headerSettings) {
     return (
-      <header className="fixed w-full bg-white/95 backdrop-blur-sm shadow-sm z-50">
+      <header className="fixed w-full backdrop-blur-sm shadow-sm z-50 nav-bg">
         <div className="container-custom py-3">
           <div className="flex items-center justify-between">
             <div className="text-2xl font-bold">
@@ -92,7 +103,7 @@ const Header = () => {
     .sort((a, b) => a.order - b.order);
 
   return (
-    <header className="fixed w-full bg-white/95 backdrop-blur-sm shadow-sm z-50">
+    <header className="fixed w-full backdrop-blur-sm shadow-sm z-50 nav-bg">
       <div className="container-custom py-3">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
@@ -102,6 +113,8 @@ const Header = () => {
                 src={headerSettings.logoImage} 
                 alt="Logo" 
                 className="h-8 md:h-10 w-auto object-contain"
+                onLoad={() => console.log('Logo image loaded:', headerSettings.logoImage)}
+                onError={(e) => console.error('Logo image failed to load:', headerSettings.logoImage, e)}
               />
             )}
             
@@ -119,7 +132,7 @@ const Header = () => {
               <Link
                 key={item.url || `nav-item-${index}`}
                 href={item.url || '#'}
-                className="hover:text-primary-start transition-colors"
+                className="interactive-hover transition-colors"
               >
                 {item.name}
               </Link>
@@ -127,7 +140,7 @@ const Header = () => {
 
             {/* Cart Button */}
             {headerSettings.showCart && (
-              <div className="flex items-center gap-1 hover:text-primary-start">
+              <div className="flex items-center gap-1 interactive-hover">
                 <CartIcon />
                 <span className="text-sm">Cart</span>
               </div>
@@ -137,7 +150,7 @@ const Header = () => {
             {headerSettings.showLogin && (
               <Link 
                 href="/account/login" 
-                className="hover:text-primary-start transition-colors flex items-center gap-1"
+                className="interactive-hover transition-colors flex items-center gap-1"
               >
                 <AccountIcon />
                 <span>Login</span>
@@ -149,14 +162,14 @@ const Header = () => {
           <div className="flex items-center gap-3 md:hidden">
             {/* Mobile Cart Button */}
             {headerSettings.showCart && (
-              <CartIcon className="hover:text-primary-start transition-colors" />
+              <CartIcon className="interactive-hover transition-colors" />
             )}
             
             {/* Mobile Account Icon */}
             {headerSettings.showLogin && (
               <Link 
                 href="/account/login" 
-                className="hover:text-primary-start transition-colors"
+                className="interactive-hover transition-colors"
                 aria-label="Login"
               >
                 <AccountIcon className="h-6 w-6" />
@@ -203,7 +216,7 @@ const Header = () => {
               <Link
                 key={item.url || `mobile-nav-item-${index}`}
                 href={item.url || '#'}
-                className="block hover:text-primary-start transition-colors"
+                className="block interactive-hover transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {item.name}

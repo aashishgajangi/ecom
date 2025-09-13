@@ -140,15 +140,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <div className="bg-white border-b">
         <div className="container-custom py-4">
           <nav className="flex text-sm text-gray-600">
-            <Link href="/" className="hover:text-[#70843d] transition-colors">
+            <Link href="/" className="interactive-hover transition-colors">
               Home
             </Link>
             <span className="mx-2">/</span>
-            <Link href="/products" className="hover:text-[#70843d] transition-colors">
+            <Link href="/products" className="interactive-hover transition-colors">
               Products
             </Link>
             <span className="mx-2">/</span>
-            <Link href={`/category/${product.category.slug}`} className="hover:text-[#70843d] transition-colors">
+            <Link href={`/category/${product.category.slug}`} className="interactive-hover transition-colors">
               {product.category.name}
             </Link>
             <span className="mx-2">/</span>
@@ -214,7 +214,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {/* Brand */}
             {product.brand && (
               <div className="inline-block">
-                <span className="bg-[#70843d]/10 text-[#70843d] px-3 py-1 rounded-full text-sm font-medium">
+                <span 
+                  className="px-3 py-1 rounded-full text-sm font-medium"
+                  style={{
+                    backgroundColor: 'var(--color-primary-50, rgba(112, 132, 61, 0.1))',
+                    color: 'var(--ui-interactive-hover, #70843d)'
+                  }}
+                >
                   {product.brand.name}
                 </span>
               </div>
@@ -253,7 +259,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
               
               {product._count.orderItems > 0 && (
-                <span className="text-sm text-[#70843d] font-medium">
+                <span 
+                  className="text-sm font-medium"
+                  style={{ color: 'var(--ui-interactive-hover, #70843d)' }}
+                >
                   {product._count.orderItems} sold
                 </span>
               )}
@@ -288,8 +297,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div className="flex items-center space-x-2">
               {product.quantity > 0 ? (
                 <>
-                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  <span className="text-[#70843d] font-medium">
+                  <div 
+                    className="w-3 h-3 rounded-full"
+                    style={{ backgroundColor: 'var(--ui-status-inStock, #22c55e)' }}
+                  ></div>
+                  <span 
+                    className="font-medium status-in-stock"
+                  >
                     In Stock ({product.quantity} available)
                   </span>
                 </>
@@ -336,7 +350,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Category:</span>
-                <Link href={`/category/${product.category.slug}`} className="text-[#70843d] hover:text-[#70843d] font-medium">
+                <Link href={`/category/${product.category.slug}`} className="interactive-hover font-medium">
                   {product.category.name}
                 </Link>
               </div>
@@ -404,7 +418,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     <div key={review.id} className="border-b border-gray-200 pb-6 last:border-b-0">
                       <div className="flex items-center space-x-4 mb-3">
                         <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                          <span className="text-[#70843d] font-semibold">
+                          <span 
+                            className="font-semibold"
+                            style={{ color: 'var(--ui-interactive-hover, #70843d)' }}
+                          >
                             {review.user.name?.charAt(0) || 'U'}
                           </span>
                         </div>
@@ -455,23 +472,28 @@ export default async function ProductPage({ params }: ProductPageProps) {
             )}
 
             {/* Shipping Info */}
-            <div className="bg-gradient-to-br from-[#70843d]/5 to-[#7bd63c]/10 rounded-2xl p-6">
+            <div 
+              className="rounded-2xl p-6"
+              style={{
+                background: 'linear-gradient(135deg, rgba(112, 132, 61, 0.05) 0%, rgba(123, 214, 60, 0.1) 100%)'
+              }}
+            >
               <h3 className="text-lg font-bold text-gray-900 mb-4">Shipping & Returns</h3>
               <div className="space-y-3 text-sm">
                 <div className="flex items-center space-x-2">
-                  <svg className="w-5 h-5 text-[#70843d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: 'var(--ui-interactive-hover, #70843d)' }}>
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                   </svg>
                   <span>Free shipping on orders over ₹500</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <svg className="w-5 h-5 text-[#70843d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: 'var(--ui-interactive-hover, #70843d)' }}>
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <span>30-day return policy</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <svg className="w-5 h-5 text-[#70843d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: 'var(--ui-interactive-hover, #70843d)' }}>
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                   <span>Same-day delivery available</span>

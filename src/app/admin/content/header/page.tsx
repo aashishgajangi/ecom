@@ -119,6 +119,8 @@ export default function HeaderSettingsPage() {
       const formData = new FormData();
       formData.append('file', file);
 
+      console.log('Uploading logo:', file.name, file.type, file.size);
+
       const response = await fetch('/api/admin/media', {
         method: 'POST',
         body: formData,
@@ -126,14 +128,20 @@ export default function HeaderSettingsPage() {
 
       if (response.ok) {
         const data = await response.json();
+        console.log('Upload response:', data);
+        
+        const newLogoType = headerSettings!.logoText ? 'BOTH' : 'IMAGE';
         setHeaderSettings({
           ...headerSettings!,
-          logoImage: data.url,
-          logoType: headerSettings!.logoText ? 'BOTH' : 'IMAGE'
+          logoImage: data.file?.url || data.url,
+          logoType: newLogoType
         });
+        console.log('Updated logo type to:', newLogoType);
         setMessage('Logo uploaded successfully!');
       } else {
-        setMessage('Failed to upload logo');
+        const errorData = await response.json();
+        console.error('Upload failed:', errorData);
+        setMessage(`Failed to upload logo: ${errorData.error || 'Unknown error'}`);
       }
     } catch (error) {
       console.error('Error uploading logo:', error);
@@ -195,7 +203,11 @@ export default function HeaderSettingsPage() {
                   name="logoType"
                   value="TEXT"
                   checked={headerSettings.logoType === 'TEXT'}
-                  onChange={(e) => setHeaderSettings({ ...headerSettings, logoType: e.target.value as 'TEXT' | 'IMAGE' | 'BOTH' })}
+                  onChange={(e) => {
+                    const newType = e.target.value as 'TEXT' | 'IMAGE' | 'BOTH';
+                    console.log('Logo type changed to:', newType);
+                    setHeaderSettings({ ...headerSettings, logoType: newType });
+                  }}
                   className="mr-2"
                 />
                 Text Only
@@ -206,7 +218,11 @@ export default function HeaderSettingsPage() {
                   name="logoType"
                   value="IMAGE"
                   checked={headerSettings.logoType === 'IMAGE'}
-                  onChange={(e) => setHeaderSettings({ ...headerSettings, logoType: e.target.value as 'TEXT' | 'IMAGE' | 'BOTH' })}
+                  onChange={(e) => {
+                    const newType = e.target.value as 'TEXT' | 'IMAGE' | 'BOTH';
+                    console.log('Logo type changed to:', newType);
+                    setHeaderSettings({ ...headerSettings, logoType: newType });
+                  }}
                   className="mr-2"
                 />
                 Image Only
@@ -217,7 +233,11 @@ export default function HeaderSettingsPage() {
                   name="logoType"
                   value="BOTH"
                   checked={headerSettings.logoType === 'BOTH'}
-                  onChange={(e) => setHeaderSettings({ ...headerSettings, logoType: e.target.value as 'TEXT' | 'IMAGE' | 'BOTH' })}
+                  onChange={(e) => {
+                    const newType = e.target.value as 'TEXT' | 'IMAGE' | 'BOTH';
+                    console.log('Logo type changed to:', newType);
+                    setHeaderSettings({ ...headerSettings, logoType: newType });
+                  }}
                   className="mr-2"
                 />
                 Text + Image
@@ -233,7 +253,7 @@ export default function HeaderSettingsPage() {
                 type="text"
                 value={headerSettings.logoText}
                 onChange={(e) => setHeaderSettings({ ...headerSettings, logoText: e.target.value })}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-start focus:border-transparent"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent form-input"
                 placeholder="Enter logo text"
               />
             </div>
@@ -272,7 +292,7 @@ export default function HeaderSettingsPage() {
                   accept="image/*"
                   onChange={handleLogoUpload}
                   disabled={uploading}
-                  className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-start focus:border-transparent"
+                  className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent form-input"
                 />
                 {uploading && (
                   <div className="text-sm text-gray-600">Uploading...</div>
@@ -367,7 +387,7 @@ export default function HeaderSettingsPage() {
         <button
           type="submit"
           disabled={saving}
-          className="px-6 py-3 bg-primary-start text-white rounded-lg hover:bg-primary-mid disabled:opacity-50"
+          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 btn-primary"
         >
           {saving ? 'Saving...' : 'Save Settings'}
         </button>
