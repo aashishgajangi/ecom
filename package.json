@@ -10,14 +10,13 @@
     "create-admin": "node scripts/create-admin.js"
   },
   "dependencies": {
-    "@prisma/client": "^6.15.0",
+    "@prisma/client": "^6.16.1",
     "@types/bcrypt": "^6.0.0",
     "axios": "^1.11.0",
     "bcrypt": "^6.0.0",
     "next": "15.5.2",
     "next-auth": "^4.24.11",
     "pg": "^8.16.3",
-    "prisma": "^6.15.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-markdown": "^10.1.0"
@@ -32,6 +31,7 @@
     "@types/uuid": "^10.0.0",
     "eslint": "^9",
     "eslint-config-next": "15.5.2",
+    "prisma": "^6.16.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

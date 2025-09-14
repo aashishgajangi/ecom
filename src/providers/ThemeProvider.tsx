@@ -33,9 +33,17 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   const [availableThemes, setAvailableThemes] = useState<Theme[]>([]);
   const [themeSettings, setThemeSettings] = useState<ThemeSettings | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
+
+  // Prevent hydration mismatch by only rendering after mount
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Fetch themes and settings
   const refreshThemes = async () => {
+    if (!mounted) return;
+    
     try {
       setIsLoading(true);
       const response = await fetch('/api/themes');
@@ -45,10 +53,8 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
         setCurrentTheme(data.activeTheme || null);
         setThemeSettings(data.settings || null);
         
-        // Apply theme to document when first loaded
-        if (data.activeTheme) {
-          applyThemeToDocument(data.activeTheme);
-        }
+        // Theme application is now handled by the script in layout.tsx
+        // to prevent hydration mismatches
       }
     } catch (error) {
       console.error('Error fetching themes:', error);
@@ -59,35 +65,19 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
   // Load themes on mount
   useEffect(() => {
-    refreshThemes();
-  }, []);
+    if (mounted) {
+      refreshThemes();
+    }
+  }, [mounted]);
 
   // Apply theme whenever currentTheme changes
-  useEffect(() => {
-    if (currentTheme) {
-      applyThemeToDocument(currentTheme);
-    }
-  }, [currentTheme]);
-
-  // Force theme application on mount (for SSR compatibility)
-  useEffect(() => {
-    const applyThemeOnMount = () => {
-      if (currentTheme) {
-        applyThemeToDocument(currentTheme);
-      }
-    };
-
-    // Apply immediately
-    applyThemeOnMount();
-    
-    // Also apply after a short delay to ensure DOM is ready
-    const timeoutId = setTimeout(applyThemeOnMount, 100);
-    
-    return () => clearTimeout(timeoutId);
-  }, [currentTheme]);
+  // Note: Theme application is now handled by the script in layout.tsx
+  // to prevent hydration mismatches
 
   // Switch to a different theme
   const switchTheme = async (themeId: string) => {
+    if (!mounted) return;
+    
     try {
       const response = await fetch('/api/themes', {
         method: 'POST',
@@ -101,10 +91,8 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
         const data = await response.json();
         setCurrentTheme(data.activeTheme);
         
-        // Apply theme to document
-        if (data.activeTheme) {
-          applyThemeToDocument(data.activeTheme);
-        }
+        // Theme application is now handled by the script in layout.tsx
+        // to prevent hydration mismatches
       }
     } catch (error) {
       console.error('Error switching theme:', error);
@@ -143,7 +131,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
   // Apply theme colors to CSS variables
   const applyThemeToDocument = (theme: Theme) => {
-    if (typeof document === 'undefined') return;
+    if (typeof document === 'undefined' || !mounted) return;
 
     const root = document.documentElement;
     const colorScheme = theme.colorScheme;
@@ -326,18 +314,6 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       });
     }
   };
-
-  // Initialize themes on mount
-  useEffect(() => {
-    refreshThemes();
-  }, []);
-
-  // Apply theme when current theme changes
-  useEffect(() => {
-    if (currentTheme) {
-      applyThemeToDocument(currentTheme);
-    }
-  }, [currentTheme]);
 
   const value: ThemeContextType = {
     currentTheme,

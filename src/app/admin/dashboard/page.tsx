@@ -22,8 +22,16 @@ export default function AdminDashboard() {
     backups: 0
   });
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
+
+  // Prevent hydration mismatch by only rendering after mount
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
+    if (!mounted) return;
+    
     if (status === "unauthenticated") {
       router.push("/admin");
       return;
@@ -32,7 +40,7 @@ export default function AdminDashboard() {
     if (status === "authenticated") {
       fetchStats();
     }
-  }, [status, router]);
+  }, [status, router, mounted]);
 
   const fetchStats = async () => {
     try {
@@ -65,7 +73,8 @@ export default function AdminDashboard() {
     router.push("/admin");
   };
 
-  if (status === "loading" || loading) {
+  // Show loading state until mounted and authenticated
+  if (!mounted || status === "loading" || loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">

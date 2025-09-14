@@ -34,68 +34,71 @@ export default function RootLayout({
               // Apply theme immediately to prevent FOUC
               (function() {
                 try {
-                  fetch('/api/themes')
-                    .then(res => res.json())
-                    .then(data => {
-                      if (data.activeTheme && data.activeTheme.colorScheme) {
-                        const root = document.documentElement;
-                        const colorScheme = data.activeTheme.colorScheme;
-                        
-                        // Apply primary colors
-                        if (colorScheme.primary) {
-                          Object.entries(colorScheme.primary).forEach(([key, value]) => {
-                            root.style.setProperty('--color-primary-' + key, value);
-                          });
+                  // Only run on client side to prevent hydration mismatch
+                  if (typeof window !== 'undefined') {
+                    fetch('/api/themes')
+                      .then(res => res.json())
+                      .then(data => {
+                        if (data.activeTheme && data.activeTheme.colorScheme) {
+                          const root = document.documentElement;
+                          const colorScheme = data.activeTheme.colorScheme;
+                          
+                          // Apply primary colors
+                          if (colorScheme.primary) {
+                            Object.entries(colorScheme.primary).forEach(([key, value]) => {
+                              root.style.setProperty('--color-primary-' + key, value);
+                            });
+                          }
+                          
+                          // Apply UI colors
+                          if (colorScheme.ui) {
+                            // Badge colors
+                            if (colorScheme.ui.badge) {
+                              Object.entries(colorScheme.ui.badge).forEach(([key, value]) => {
+                                root.style.setProperty('--ui-badge-' + key, value);
+                              });
+                            }
+                            // Interactive colors
+                            if (colorScheme.ui.interactive) {
+                              Object.entries(colorScheme.ui.interactive).forEach(([key, value]) => {
+                                root.style.setProperty('--ui-interactive-' + key, value);
+                              });
+                            }
+                            // Status colors
+                            if (colorScheme.ui.status) {
+                              Object.entries(colorScheme.ui.status).forEach(([key, value]) => {
+                                root.style.setProperty('--ui-status-' + key, value);
+                              });
+                            }
+                            // Rating colors
+                            if (colorScheme.ui.rating) {
+                              Object.entries(colorScheme.ui.rating).forEach(([key, value]) => {
+                                root.style.setProperty('--ui-rating-' + key, value);
+                              });
+                            }
+                            // Form colors
+                            if (colorScheme.ui.form) {
+                              Object.entries(colorScheme.ui.form).forEach(([key, value]) => {
+                                root.style.setProperty('--ui-form-' + key, value);
+                              });
+                            }
+                            // Navigation colors
+                            if (colorScheme.ui.nav) {
+                              Object.entries(colorScheme.ui.nav).forEach(([key, value]) => {
+                                root.style.setProperty('--ui-nav-' + key, value);
+                              });
+                            }
+                            // Footer colors
+                            if (colorScheme.ui.footer) {
+                              Object.entries(colorScheme.ui.footer).forEach(([key, value]) => {
+                                root.style.setProperty('--ui-footer-' + key, value);
+                              });
+                            }
+                          }
                         }
-                        
-                        // Apply UI colors
-                        if (colorScheme.ui) {
-                          // Badge colors
-                          if (colorScheme.ui.badge) {
-                            Object.entries(colorScheme.ui.badge).forEach(([key, value]) => {
-                              root.style.setProperty('--ui-badge-' + key, value);
-                            });
-                          }
-                          // Interactive colors
-                          if (colorScheme.ui.interactive) {
-                            Object.entries(colorScheme.ui.interactive).forEach(([key, value]) => {
-                              root.style.setProperty('--ui-interactive-' + key, value);
-                            });
-                          }
-                          // Status colors
-                          if (colorScheme.ui.status) {
-                            Object.entries(colorScheme.ui.status).forEach(([key, value]) => {
-                              root.style.setProperty('--ui-status-' + key, value);
-                            });
-                          }
-                          // Rating colors
-                          if (colorScheme.ui.rating) {
-                            Object.entries(colorScheme.ui.rating).forEach(([key, value]) => {
-                              root.style.setProperty('--ui-rating-' + key, value);
-                            });
-                          }
-                          // Form colors
-                          if (colorScheme.ui.form) {
-                            Object.entries(colorScheme.ui.form).forEach(([key, value]) => {
-                              root.style.setProperty('--ui-form-' + key, value);
-                            });
-                          }
-                          // Navigation colors
-                          if (colorScheme.ui.nav) {
-                            Object.entries(colorScheme.ui.nav).forEach(([key, value]) => {
-                              root.style.setProperty('--ui-nav-' + key, value);
-                            });
-                          }
-                          // Footer colors
-                          if (colorScheme.ui.footer) {
-                            Object.entries(colorScheme.ui.footer).forEach(([key, value]) => {
-                              root.style.setProperty('--ui-footer-' + key, value);
-                            });
-                          }
-                        }
-                      }
-                    })
-                    .catch(err => console.log('Theme preload failed:', err));
+                      })
+                      .catch(err => console.log('Theme preload failed:', err));
+                  }
                 } catch (e) {
                   console.log('Theme preload error:', e);
                 }
